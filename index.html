@@ -335,8 +335,8 @@
   <!-- ========================================================================
        ROUTE 2: DEDICATED PROJECT SUBPAGE (`#/<project-slug>`)
        ======================================================================== -->
-  <main id="projectSubpageView" class="hidden flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
-    <!-- Populated dynamically by renderProjectSubpage(slug) -->
+  <main id="projectSubpageView" class="hidden flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
+    <!-- Populated dynamically by renderProjectSubpage(proj) -->
   </main>
 
   <!-- ========================================================================
@@ -358,11 +358,11 @@
   </footer>
 
   <!-- ========================================================================
-       APPLICATION DATA, ROUTER & INTERACTIVE PHYSICS ENGINES
+       APPLICATION DATA, ROUTER, SUBPAGE TOOLS & INTERACTIVE PHYSICS ENGINES
        ======================================================================== -->
   <script>
     /* ========================================================================
-       1. READINESS RUNGS & CORE ASKA-PHYSICAL R&D SUBPAGES
+       1. READINESS RUNGS & BESPOKE ASKA-PHYSICAL R&D SUBPAGES
        ======================================================================== */
     const READINESS_RUNGS = [
       { rung: 5, label: "Code-Stamped / In Daily Floor Use", desc: "Third-party tested, stamped where required, running on live production.", badge: "badge-verified" },
@@ -409,6 +409,26 @@
           { value: "312 kN", label: "mean tensile pull-out across 6 CNC S355 bench units", cite: "results/instron-v2.json" },
           { value: "0 welds", label: "field hot-work eliminated on erection floor", cite: "docs/method-statement.md" }
         ],
+        shopMethod: {
+          tooling: "CNC lathe/mill (IT8 shoulder flatness), dry MoS₂ anti-seize coat, 4 kg dead-blow hammer on site.",
+          steps: [
+            { phase: "01 · Shop Weld Prep", detail: "Submerged-arc or MAG weld male spigot & female socket onto HSS/W-column ends using alignment fixture (±0.25 mm concentricity).", hold: "Ultrasonic root check" },
+            { phase: "02 · Captive Wedge Tether", detail: "Insert 8° hardened 42CrMo4 cross-wedge into socket slot with retaining spring pin so hardware cannot drop from height.", hold: "Tether pull check" },
+            { phase: "03 · Crane Hook Lowering", detail: "Guide upper column within ±18 mm capture throat; slack crane line once conical taper seats onto flat bearing shoulder.", hold: "Visual witness slot = 0 mm" },
+            { phase: "04 · Preload Lock & Release", detail: "Strike captive wedge 3–4 blows until laser witness mark clears exit window (85 kN preload). Release crane hook immediately.", hold: "Witness mark + cotter pin" }
+          ]
+        },
+        calcConfig: {
+          title: "Connection Series & Crane-Hour Savings Sizer",
+          subtitle: "Size the S355 Taper-Lock series for your gravity/uplift demand and estimate tower-crane savings.",
+          inputs: [
+            { key: "axialKn", label: "Factored Gravity Load (kN)", min: 100, max: 1400, step: 25, default: 450, unit: "kN" },
+            { key: "upliftKn", label: "Factored Net Uplift (kN)", min: 0, max: 360, step: 10, default: 120, unit: "kN" },
+            { key: "nodeCount", label: "Connections on Project", min: 8, max: 240, step: 4, default: 48, unit: "nodes" },
+            { key: "craneRate", label: "Crane + Crew Rate ($/hr)", min: 250, max: 900, step: 25, default: 475, unit: "$/hr" }
+          ]
+        },
+        specFilename: "taper-lock-cnc-spec.toml",
         verification: {
           propose: "4,800 cone angles and friction tapers swept to prevent self-jamming while resisting uplift (sim/taper_sweep.py).",
           verify: "480/480 dusty-steel friction cases passed in contact solver + 18 physical S355 prototypes pulled to failure (results/instron-v2.json).",
@@ -459,6 +479,26 @@
           { value: "19.2×", label: "bending stiffness gain (Ixx) from flat sheet to locked box", cite: "calc/section_ixx.py" },
           { value: "3.0 min", label: "two-person fold & latch time for a 6 m × 150 mm beam", cite: "pilot/shop-run-04.md" }
         ],
+        shopMethod: {
+          tooling: "3 kW+ N₂ fiber laser, twin ratchet-strap folding sawhorses, pneumatic 6.4 mm structural blind riveter or MIG stitch gun.",
+          steps: [
+            { phase: "01 · Single-Pass Laser Blank", detail: "Cut outer profile, dovetail seam teeth, MEP pass-through holes, and staggered 2.2 mm kerf bridges in one sheet setup.", hold: "Bridge width 2.8 ± 0.15 mm" },
+            { phase: "02 · Flat-Stack Palletizing", detail: "Band 40 flat blanks per skid with steel strapping—zero dunnage air gaps, 240 beams per 40-ft flatbed.", hold: "Max skid height 740 mm" },
+            { phase: "03 · Bench Strap Folding", detail: "Lay blank on V-channel horses and cinch two ratchet straps to bring walls smoothly to 90° until dovetail teeth click home.", hold: "Squareness ≤ 1.0 mm" },
+            { phase: "04 · Seam Shear Lock", detail: "Pop 6.4 mm structural blind rivets (or 25 mm MIG stitch tacks) every 300 mm along the top dovetail seam.", hold: "Full tab engagement" }
+          ]
+        },
+        calcConfig: {
+          title: "Span Deflection & Flatbed Logistics Calculator",
+          subtitle: "Check L/360 serviceability for folded Kerf-Box sections and compare truckloads vs standard hollow HSS.",
+          inputs: [
+            { key: "spanM", label: "Clear Beam Span (m)", min: 2.0, max: 7.5, step: 0.5, default: 4.5, unit: "m" },
+            { key: "loadKnm", label: "Service Line Load (kN/m)", min: 1.0, max: 12.0, step: 0.5, default: 4.0, unit: "kN/m" },
+            { key: "totalMeters", label: "Total Project Framing (m)", min: 120, max: 6000, step: 120, default: 1440, unit: "m" },
+            { key: "gaugeMm", label: "Sheet Thickness (mm)", min: 2.5, max: 4.5, step: 0.5, default: 3.0, unit: "mm" }
+          ]
+        },
+        specFilename: "kerf-box-dxf-params.json",
         verification: {
           propose: "11,200 kerf bridge patterns optimized for minimum fold torque vs maximum post-latch web shear (optim/kerf_pareto.py).",
           verify: "24 full-scale 3.0 mm ASTM A1011 beams laser-cut, folded, and 4-point bend tested to buckling (pilot/bend-summary.csv).",
@@ -509,6 +549,26 @@
           { value: "−61% CO₂e", label: "binder emissions vs Type GU/I Portland cement", cite: "lca/binder-epd.json" },
           { value: "48 min", label: "workable slump window using dry-bagged retarder dose", cite: "batches/slump-flow.csv" }
         ],
+        shopMethod: {
+          tooling: "Standard planetary or twin-shaft precast mixer, moisture probe on sand bin, maturity thermocouple + 2 field cylinders per bed.",
+          steps: [
+            { phase: "01 · Dry Aggregate + Precursor Blend", detail: "Charge coarse aggregate, bimodal sand, GGBFS slag, and calcined clay; dry-blend 45 seconds for uniform fines dispersion.", hold: "Sand moisture ±0.3%" },
+            { phase: "02 · Wet-Out + Citrate Dose", detail: "Add 85% batch water + dry-bagged silicate activator + temp-indexed citrate retarder; mix 90 seconds until plastic shear break.", hold: "w/b ratio ≤ 0.31" },
+            { phase: "03 · Place & Consolidate", detail: "Discharge within 45-minute open window using external form vibrators; cover top surface with poly sheet to retain exotherm.", hold: "Slump flow 580 ± 40 mm" },
+            { phase: "04 · Maturity Gate & Strip", detail: "Verify maturity curve + crush one companion cylinder ≥ 20.0 MPa before engaging lifting clutches.", hold: "Cylinder break ≥ 20 MPa" }
+          ]
+        },
+        calcConfig: {
+          title: "Precast Batch Ticket & Mold Turnover Calculator",
+          subtitle: "Generate exact dry/wet batch weights, retarder dose, strip time, and CO₂e savings for your yard pour.",
+          inputs: [
+            { key: "volumeM3", label: "Batch Pour Volume (m³)", min: 0.5, max: 12.0, step: 0.5, default: 2.5, unit: "m³" },
+            { key: "yardTemp", label: "Ambient Yard Temp (°C)", min: 2, max: 36, step: 1, default: 15, unit: "°C" },
+            { key: "moldCount", label: "Active Steel Molds", min: 2, max: 24, step: 2, default: 6, unit: "beds" },
+            { key: "targetSlumpMin", label: "Needed Open Window (min)", min: 30, max: 75, step: 5, default: 45, unit: "min" }
+          ]
+        },
+        specFilename: "geobinder-b19-batch-ticket.json",
         verification: {
           propose: "940 slag/clay/activator/sand packing ratios modeled for ≥45 min slump life + ≤4 hr strip strength (mix_opt/bayesian_mix.py).",
           verify: "162 cylinders crushed under ASTM C39 at 2h, 4h, 8h, 24h, and 28d across 4°C, 15°C, and 32°C chambers (batches/c39-breaks.csv).",
@@ -559,6 +619,26 @@
           { value: "42 / 42", label: "seeded grade, heat & CEV traps caught across 610 real MTCs", cite: "tests/mtc-golden.py" },
           { value: "100% Local", label: "runs offline inside metal warehouses with zero Wi-Fi", cite: "docs/offline-mode.md" }
         ],
+        shopMethod: {
+          tooling: "Mill-Eye magnetic V-clamp line-laser head, ruggedized offline shop tablet, Invar reference check block, QR weatherproof bundle printer.",
+          steps: [
+            { phase: "01 · Zero Check on Invar Block", detail: "Snap laser gauge onto dock Invar step-block at shift start (takes 4 seconds) to verify ±0.18 mm calibration.", hold: "Delta ≤ 0.05 mm" },
+            { phase: "02 · Scan MTC PDF / Stencil", detail: "Photograph heat tag on steel bundle + load supplier PDF; OCR extracts heat chemistry & tensile rows into deterministic checker.", hold: "Heat ID match 100%" },
+            { phase: "03 · Sweep Bar End on Flatbed", detail: "Hold magnetic V-guide against end of W-shape or HSS tube before forklift breaks bands.", hold: "ASTM A6 tilt ≤ 4.0 mm" },
+            { phase: "04 · Print Dock Gate Tag", detail: "Apply green SAW-READY QR label, amber PREHEAT-REQ weld tag, or red HOLD-ON-TRUCK non-conformance report.", hold: "Receiving lead sign-off" }
+          ]
+        },
+        calcConfig: {
+          title: "Interactive ASTM A992 / AWS D1.1 Dock Gate Checker",
+          subtitle: "Test real Mill Test Certificate chemistry, yield strength, and laser flange tilt against deterministic dock rules.",
+          inputs: [
+            { key: "yieldMpa", label: "MTC Measured Yield (MPa)", min: 235, max: 480, step: 5, default: 368, unit: "MPa" },
+            { key: "carbonPct", label: "Carbon Content C (% ×100)", min: 8, max: 32, step: 1, default: 17, unit: "×0.01%" },
+            { key: "mnPct", label: "Manganese + Alloy Factor (×100)", min: 80, max: 185, step: 5, default: 135, unit: "×0.01%" },
+            { key: "flangeTiltMm", label: "Laser Flange Tilt (mm)", min: 0.2, max: 7.5, step: 0.2, default: 1.8, unit: "mm" }
+          ]
+        },
+        specFilename: "astm-a992-dock-rules.toml",
         verification: {
           propose: "Vision OCR extracts candidate heat numbers, chemistry, and yield tables from messy multi-language PDFs (pipeline/ocr_extract.py).",
           verify: "34 deterministic ASTM A6 / A992 / AWS D1.1 rules check geometry, yield/tensile ratio, and CEV bounds (checker/astm_gate.py).",
@@ -609,6 +689,26 @@
           { value: "−31%", label: "plasma torch pierces via common-line shared cuts", cite: "solver/kerf_stats.py" },
           { value: "0 collisions", label: "exact polygon & grain-angle gate verifies every DXF/NC file", cite: "checker/dxf_gate.py" }
         ],
+        shopMethod: {
+          tooling: "Existing CNC plasma, oxy-fuel, fiber laser, or 5-axis CLT router + zinc/laser part-marking head + 4–6 wheeled job totes at unload table.",
+          steps: [
+            { phase: "01 · MorningTekla/DXF Ingest", detail: "Export approved BOM DXFs across next 3–5 days grouped by grade & thickness (e.g. 12 mm A572-50).", hold: "IFC/Approved-for-Fab flag" },
+            { phase: "02 · 90-Second Pooled Solve + Gate", detail: "Solver packs filler parts into primary skeletons; rational-arithmetic gate confirms kerf clearance & grain-lock.", hold: "0 polygon overlaps" },
+            { phase: "03 · Etch Tote IDs + Common-Line Cut", detail: "Marker head scribes `J1`–`J6` + part mark before torch cuts shared edges to prevent thermal tip-up.", hold: "Lead-in away from weld prep" },
+            { phase: "04 · Color-Coded Tote Unload", detail: "Table operator drops parts into matching J1–J6 rolling bins; usable rectangular remnants ≥300 mm auto-logged back to rack.", hold: "Scan tote complete" }
+          ]
+        },
+        calcConfig: {
+          title: "Monthly Shop Plate & Offcut Savings Calculator",
+          subtitle: "Model net steel or mass-timber savings, scrap hopper reduction, and torch consumable life for your shop.",
+          inputs: [
+            { key: "monthlyTonnes", label: "Monthly Plate Volume (t)", min: 20, max: 500, step: 10, default: 100, unit: "t/mo" },
+            { key: "platePrice", label: "Delivered Plate Cost ($/t)", min: 900, max: 2600, step: 50, default: 1450, unit: "$/t" },
+            { key: "poolJobs", label: "Jobs Pooled per Cut Window", min: 1, max: 6, step: 1, default: 4, unit: "jobs" },
+            { key: "baseScrap", label: "Current Single-Job Scrap (%)", min: 10, max: 26, step: 1, default: 18, unit: "%" }
+          ]
+        },
+        specFilename: "pooled-nest-release.json",
         verification: {
           propose: "50,000+ multi-sheet rotational packings searched in under 90 seconds per morning cut release (solver/nfp_search.rs).",
           verify: "Exact rational-arithmetic polygon separator checks minimum bridge width, kerf offset, and grain lock (checker/dxf_gate.py).",
@@ -626,7 +726,7 @@
     ];
 
     /* ========================================================================
-       2. STATE & HASH SUBPAGE ROUTER (`#/` and `#/<project-slug>`)
+       2. STATE, SUBPAGE CALCULATOR STATE & HASH ROUTER
        ======================================================================== */
     const state = {
       theme: "light",
@@ -636,12 +736,24 @@
       baySelectedSlug: CORE_PROJECTS[0].slug,
       currentRouteSlug: null, // null => Dock Index (#/), string => Project Subpage (#/<slug>)
       sliderValues: {},
-      activeStepIdx: 0
+      calcValues: {},
+      activeStepIdx: 0,
+      copiedSlug: null
     };
 
-    CORE_PROJECTS.forEach(p => {
-      state.sliderValues[p.slug] = p.sliderDefault;
-    });
+    function initProjectDefaults(p) {
+      if (state.sliderValues[p.slug] === undefined) {
+        state.sliderValues[p.slug] = p.sliderDefault;
+      }
+      if (!state.calcValues[p.slug] && p.calcConfig) {
+        state.calcValues[p.slug] = {};
+        p.calcConfig.inputs.forEach(inp => {
+          state.calcValues[p.slug][inp.key] = inp.default;
+        });
+      }
+    }
+
+    CORE_PROJECTS.forEach(initProjectDefaults);
 
     function parseHashRoute() {
       const raw = (window.location.hash || "#/").replace(/^#\/?/, "").trim();
@@ -661,11 +773,15 @@
       window.location.hash = slug ? `#/${slug}` : "#/";
     }
 
+    function scrollToSubSection(sectionId) {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     window.addEventListener("hashchange", parseHashRoute);
 
     /* ========================================================================
        3. BACKGROUND GITHUB ORG DISCOVERY (`github.com/orgs/aska-physical`)
-       Automatically mounts any newly published org repos as live subpages!
        ======================================================================== */
     async function syncAskaPhysicalOrg() {
       const pill = document.getElementById("orgSyncPill");
@@ -700,7 +816,7 @@
               coords: { x: 0.20 + ((i * 0.23) % 0.68), y: 0.38 + ((i * 0.19) % 0.30) }
             };
             state.projects.push(newProj);
-            state.sliderValues[newProj.slug] = newProj.sliderDefault;
+            initProjectDefaults(newProj);
           }
         });
 
@@ -720,7 +836,309 @@
     }
 
     /* ========================================================================
-       4. UI CONTROLS (THEME & SHOP/ENGINEER LENS)
+       4. DOMAIN CALCULATORS & LIVE SHOP SPEC GENERATORS PER SUBPAGE
+       ======================================================================== */
+    function evaluateSubpageCalculator(p) {
+      const c = state.calcValues[p.slug] || {};
+
+      if (p.visualType === "interlock") {
+        const axial = Number(c.axialKn ?? 450);
+        const uplift = Number(c.upliftKn ?? 120);
+        const nodes = Number(c.nodeCount ?? 48);
+        const rate = Number(c.craneRate ?? 475);
+
+        let series = "TL-160 (S355)";
+        let areaMm2 = 3400;
+        let upliftCap = 210;
+        if (axial > 900 || uplift > 280) {
+          series = "TL-300 Heavy (S355J2)";
+          areaMm2 = 6800;
+          upliftCap = 440;
+        } else if (axial > 480 || uplift > 180) {
+          series = "TL-220 Standard (S355)";
+          areaMm2 = 4600;
+          upliftCap = 312;
+        }
+
+        const bearingMpa = Math.round((axial * 1000) / areaMm2);
+        const utilPct = Math.min(99, Math.round(Math.max(bearingMpa / 310, uplift / upliftCap) * 100));
+        const hookHoursSaved = ((38 - 5.5) / 60) * nodes;
+        const dollarsSaved = Math.round(hookHoursSaved * rate);
+        const preloadKn = Math.max(65, Math.round(uplift * 0.72));
+
+        const specText = [
+          `# ASKA PHYSICAL // TAPER-LOCK SHOP & ERECTION PACKET`,
+          `project_slug = "${p.slug}"`,
+          `selected_series = "${series}"`,
+          `cone_half_angle_deg = 14.0`,
+          `capture_envelope_mm = 18.0`,
+          `shoulder_bearing_area_mm2 = ${areaMm2}`,
+          `factored_bearing_stress_mpa = ${bearingMpa} # allowable 310 MPa (S355)`,
+          `captive_wedge_preload_kn = ${preloadKn}`,
+          `project_nodes = ${nodes}`,
+          `est_crane_hours_saved = ${hookHoursSaved.toFixed(1)}`,
+          `est_erection_cost_saved_usd = ${dollarsSaved}`,
+          `note = "Non-seismic pilot spec; verify local PE stamp & fire-protection clearance."`
+        ].join("\n");
+
+        return {
+          outputs: [
+            { label: "Recommended Connector", value: series, sub: `${bearingMpa} MPa shoulder stress (${utilPct}% util)` },
+            { label: "Wedge Preload Target", value: `${preloadKn} kN`, sub: `Rated ${upliftCap} kN pull-out capacity` },
+            { label: "Crane Hook Time Saved", value: `${hookHoursSaved.toFixed(1)} hrs`, sub: `Across ${nodes} field splices (38→5.5m)` },
+            { label: "Direct Rigging Savings", value: `$${dollarsSaved.toLocaleString()}`, sub: `At $${rate}/hr crane + ironworker crew` }
+          ],
+          statusBadge: utilPct <= 85 ? { cls: "badge-verified", text: "✓ WITHIN BENCH ENVELOPE" } : { cls: "badge-amber", text: "⚠ HIGH UTILIZATION — CHECK SERIES" },
+          specText
+        };
+      }
+
+      if (p.visualType === "kerf") {
+        const span = Number(c.spanM ?? 4.5);
+        const wLoad = Number(c.loadKnm ?? 4.0);
+        const totalM = Number(c.totalMeters ?? 1440);
+        const tMm = Number(c.gaugeMm ?? 3.0);
+
+        const depthMm = span > 5.0 || wLoad > 6.5 ? 200 : 150;
+        const widthMm = 150;
+        // Effective closed-box Ixx with 0.89 kerf efficiency factor (mm^4)
+        const outerI = (widthMm * Math.pow(depthMm, 3)) / 12;
+        const innerI = ((widthMm - 2 * tMm) * Math.pow(depthMm - 2 * tMm, 3)) / 12;
+        const ixxEffMm4 = (outerI - innerI) * 0.89;
+        // 5*w*L^4 / (384*E*I)
+        const Lmm = span * 1000;
+        const wNmm = wLoad; // kN/m == N/mm
+        const deflMm = (5 * wNmm * Math.pow(Lmm, 4)) / (384 * 200000 * ixxEffMm4);
+        const limitMm = Lmm / 360;
+        const passDefl = deflMm <= limitMm;
+
+        const beams6m = Math.ceil(totalM / 6);
+        const hssTrucks = Math.ceil(beams6m / 38);
+        const kerfTrucks = Math.max(1, Math.ceil(beams6m / 240));
+
+        const specText = JSON.stringify({
+          generator: "aska-physical/kerf-box-beam",
+          section_mm: `${depthMm}x${widthMm}x${tMm.toFixed(1)}`,
+          clear_span_m: span,
+          service_load_kn_m: wLoad,
+          effective_ixx_cm4: Number((ixxEffMm4 / 10000).toFixed(1)),
+          midspan_deflection_mm: Number(deflMm.toFixed(2)),
+          l_360_limit_mm: Number(limitMm.toFixed(2)),
+          kerf_schedule: { slot_len_mm: 28.0, bridge_web_mm: 2.8, row_stagger_mm: 14.0 },
+          logistics: { six_meter_blanks: beams6m, flatpack_trucks: kerfTrucks, conventional_hss_trucks: hssTrucks }
+        }, null, 2);
+
+        return {
+          outputs: [
+            { label: "Selected Folded Box", value: `${depthMm}×${widthMm}×${tMm.toFixed(1)}`, sub: `Ixx,eff = ${(ixxEffMm4 / 10000).toFixed(0)} cm⁴ (89% HSS)` },
+            { label: "Midspan Deflection", value: `${deflMm.toFixed(1)} mm`, sub: `L/360 limit = ${limitMm.toFixed(1)} mm` },
+            { label: "Flat-Pack Freight", value: `${kerfTrucks} truck(s)`, sub: `vs ${hssTrucks} flatbed(s) for hollow HSS` },
+            { label: "Shop Fold Effort", value: `${Math.round(260 * Math.pow(tMm / 3, 1.8))} N`, sub: `2-person strap jig · rivets @ 300 mm` }
+          ],
+          statusBadge: passDefl ? { cls: "badge-verified", text: "✓ PASSES L/360 SERVICEABILITY" } : { cls: "badge-accent", text: "✕ EXCEEDS L/360 — INCREASE GAUGE OR REDUCE SPAN" },
+          specText
+        };
+      }
+
+      if (p.visualType === "cure") {
+        const vol = Number(c.volumeM3 ?? 2.5);
+        const temp = Number(c.yardTemp ?? 15);
+        const beds = Number(c.moldCount ?? 6);
+        const openMin = Number(c.targetSlumpMin ?? 45);
+
+        const binderKgM3 = 410;
+        const slagKg = Math.round(vol * binderKgM3 * 0.62);
+        const clayKg = Math.round(vol * binderKgM3 * 0.26);
+        const silicateKg = Math.round(vol * binderKgM3 * 0.12);
+        const sandKg = Math.round(vol * 830);
+        const coarseKg = Math.round(vol * 980);
+        const waterL = Math.round(vol * 124);
+        const citratePct = Math.max(0.05, Number((0.06 + Math.max(0, temp - 10) * 0.006 + (openMin - 35) * 0.002).toFixed(2)));
+        const citrateKg = Number(((vol * binderKgM3 * citratePct) / 100).toFixed(2));
+
+        const kGeo = 0.24 * Math.exp(0.038 * (temp - 15));
+        const stripHr = 0.55 - Math.log(1 - 20 / 41) / kGeo;
+        const turnsPerDay = stripHr <= 4.8 ? 2 : 1;
+        const co2SavedKg = Math.round(vol * 218);
+
+        const specText = JSON.stringify({
+          mix_id: "GEOBINDER-B19-PRECAST",
+          batch_volume_m3: vol,
+          ambient_temp_c: temp,
+          weights_kg: {
+            ggbfs_slag: slagKg,
+            calcined_clay: clayKg,
+            alkali_silicate_solids: silicateKg,
+            bimodal_sand_0_4mm: sandKg,
+            coarse_agg_4_16mm: coarseKg,
+            batch_water_liters: waterL,
+            sodium_citrate_retarder: citrateKg
+          },
+          predicted_20mpa_strip_hr: Number(stripHr.toFixed(1)),
+          target_open_window_min: openMin,
+          embodied_carbon_saved_kg_co2e: co2SavedKg
+        }, null, 2);
+
+        return {
+          outputs: [
+            { label: "20 MPa Strip Gate", value: `${stripHr.toFixed(1)} hrs`, sub: `${turnsPerDay}× daily turn (${beds * turnsPerDay} pcs/day)` },
+            { label: "Precursor Solids", value: `${slagKg + clayKg + silicateKg} kg`, sub: `${slagKg} slag · ${clayKg} clay · ${silicateKg} sil` },
+            { label: "Water & Retarder", value: `${waterL} L / ${citrateKg} kg`, sub: `${citratePct}% citrate for ${openMin}m slump` },
+            { label: "Batch Carbon Cut", value: `−${co2SavedKg} kg`, sub: `CO₂e saved vs Type I/GU Portland` }
+          ],
+          statusBadge: stripHr <= 4.5 ? { cls: "badge-verified", text: "✓ 2× DAILY MOLD TURNOVER" } : { cls: "badge-amber", text: "● 1× DAILY TURN (COLD AMBIENT)" },
+          specText
+        };
+      }
+
+      if (p.visualType === "vision") {
+        const yieldMpa = Number(c.yieldMpa ?? 368);
+        const cPct = Number(c.carbonPct ?? 17) / 100;
+        const mnFactor = Number(c.mnPct ?? 135) / 100;
+        const tiltMm = Number(c.flangeTiltMm ?? 1.8);
+
+        const cev = cPct + mnFactor / 6;
+        const gradeOk = yieldMpa >= 345 && yieldMpa <= 450;
+        const tiltOk = tiltMm <= 4.0;
+        const preheatReq = cev > 0.45;
+
+        let decision = "RELEASE TO CNC SAW";
+        let badge = { cls: "badge-verified", text: "✓ PASS — PRINT GREEN SAW TAG" };
+        if (!gradeOk) {
+          decision = "REJECT ON FLATBED (YIELD)";
+          badge = { cls: "badge-accent", text: "✕ REJECT — A992 YIELD OUT OF BOUNDS" };
+        } else if (!tiltOk) {
+          decision = "QUARANTINE — FLANGE TILT > 4.0mm";
+          badge = { cls: "badge-amber", text: "⚠ HOLD — WILL JAM AUTO-COPING JIG" };
+        } else if (preheatReq) {
+          decision = "ACCEPT + TAG 110°C PREHEAT";
+          badge = { cls: "badge-amber", text: "⚠ CEV > 0.45 — AWS D1.1 PREHEAT TAG" };
+        }
+
+        const specText = [
+          `# MILL-EYE DETERMINISTIC RECEIVING RECORD`,
+          `standard_gate = "ASTM_A992_A6 + AWS_D1_1"`,
+          `measured_yield_mpa = ${yieldMpa} # bounds [345, 450]`,
+          `carbon_pct = ${cPct.toFixed(2)}`,
+          `cev_iiw = ${cev.toFixed(3)} # preheat threshold 0.450`,
+          `laser_flange_tilt_mm = ${tiltMm.toFixed(1)} # ASTM A6 jig gate 4.0 mm`,
+          `aws_preheat_min_c = ${preheatReq ? 110 : 20}`,
+          `disposition = "${decision}"`
+        ].join("\n");
+
+        return {
+          outputs: [
+            { label: "Dock Disposition", value: gradeOk && tiltOk ? (preheatReq ? "TAG PREHEAT" : "SAW-READY") : "HOLD / REJECT", sub: decision },
+            { label: "IIW Carbon Eq. (CEV)", value: cev.toFixed(3), sub: preheatReq ? "Requires 110°C weld preheat" : "No preheat above 10°C" },
+            { label: "ASTM A992 Yield Gate", value: `${yieldMpa} MPa`, sub: gradeOk ? "Within 345–450 MPa window" : "Fails 345–450 MPa spec!" },
+            { label: "Laser Flange Square", value: `${tiltMm.toFixed(1)} mm`, sub: tiltOk ? "Clears ≤4.0 mm CNC saw vise" : "Exceeds 4.0 mm vise jaw limit" }
+          ],
+          statusBadge: badge,
+          specText
+        };
+      }
+
+      // Pooled-Cut Nest
+      const tonnes = Number(c.monthlyTonnes ?? 100);
+      const price = Number(c.platePrice ?? 1450);
+      const jobs = Math.round(Number(c.poolJobs ?? 4));
+      const baseScrap = Number(c.baseScrap ?? 18);
+
+      const factorByJobs = { 1: 1.0, 2: 0.59, 3: 0.39, 4: 0.25, 5: 0.21, 6: 0.175 };
+      const newScrapPct = Number((baseScrap * (factorByJobs[jobs] || 0.25)).toFixed(1));
+      const tonnesSaved = Number(((tonnes * Math.max(0, baseScrap - newScrapPct)) / 100).toFixed(1));
+      const monthlyUsd = Math.round(tonnesSaved * price);
+      const pierceDropPct = Math.round((1 - Math.pow(jobs, -0.22)) * 42);
+
+      const specText = JSON.stringify({
+        solver: "aska-physical/pooled-cut-nest",
+        horizon_jobs_pooled: jobs,
+        monthly_plate_tonnes: tonnes,
+        baseline_scrap_pct: baseScrap,
+        pooled_scrap_pct: newScrapPct,
+        monthly_tonnes_saved: tonnesSaved,
+        monthly_savings_usd: monthlyUsd,
+        common_line_pierce_reduction_pct: pierceDropPct,
+        unload_station_totes: Array.from({ length: jobs }, (_, i) => `TOTE-J${i + 1}`)
+      }, null, 2);
+
+      return {
+        outputs: [
+          { label: "New Offcut Scrap Rate", value: `${newScrapPct}%`, sub: `Down from ${baseScrap}% single-job silo` },
+          { label: "Steel Saved / Month", value: `${tonnesSaved} t`, sub: `${(tonnesSaved * 12).toFixed(0)} tonnes/yr kept out of scrap` },
+          { label: "Net Material Savings", value: `$${monthlyUsd.toLocaleString()}/mo`, sub: `$${(monthlyUsd * 12).toLocaleString()} annualized @ $${price}/t` },
+          { label: "Torch Pierce Cut", value: `−${pierceDropPct}%`, sub: `${jobs} wheeled unload totes beside table` }
+        ],
+        statusBadge: jobs >= 3 ? { cls: "badge-verified", text: `✓ OPTIMAL ${jobs}-JOB ROLLING WINDOW` } : { cls: "badge-amber", text: "● INCREASE POOL TO 3–4 JOBS FOR PEAK YIELD" },
+        specText
+      };
+    }
+
+    function updateCalcInput(slug, key, rawVal) {
+      const p = getProject(slug);
+      if (!state.calcValues[slug]) initProjectDefaults(p);
+      state.calcValues[slug][key] = Number(rawVal);
+
+      // Update live input readout
+      const valSpan = document.getElementById(`calc-val-${slug}-${key}`);
+      const inpDef = p.calcConfig.inputs.find(i => i.key === key);
+      if (valSpan && inpDef) {
+        valSpan.textContent = `${rawVal} ${inpDef.unit}`;
+      }
+      renderSubpageCalcResults(p);
+    }
+
+    function renderSubpageCalcResults(p) {
+      const resBox = document.getElementById("subpageCalcOutputs");
+      const badgeBox = document.getElementById("subpageCalcStatusBadge");
+      const specPre = document.getElementById("subpageSpecCode");
+      if (!resBox) return;
+
+      const evalData = evaluateSubpageCalculator(p);
+
+      if (badgeBox) {
+        badgeBox.className = `badge-pill ${evalData.statusBadge.cls}`;
+        badgeBox.textContent = evalData.statusBadge.text;
+      }
+
+      resBox.innerHTML = evalData.outputs.map(o => `
+        <div class="surface-card p-3.5 bg-[var(--bg-subtle)] flex flex-col justify-between">
+          <div class="font-mono-tech text-[11px] text-[var(--fg-muted)]">${escapeHtml(o.label)}</div>
+          <div class="font-serif-editorial text-2xl sm:text-3xl text-[var(--fg)] mt-1">${escapeHtml(o.value)}</div>
+          <div class="text-[11px] text-[var(--fg-muted)] mt-1 leading-snug">${escapeHtml(o.sub)}</div>
+        </div>
+      `).join("");
+
+      if (specPre) {
+        specPre.textContent = evalData.specText;
+      }
+    }
+
+    function copySubpageSpec(slug) {
+      const p = getProject(slug);
+      const evalData = evaluateSubpageCalculator(p);
+      const ta = document.createElement("textarea");
+      ta.value = evalData.specText;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        const btn = document.getElementById("copySpecBtn");
+        if (btn) {
+          const orig = btn.textContent;
+          btn.textContent = "✓ Copied Shop Spec Packet";
+          setTimeout(() => { btn.textContent = orig; }, 2000);
+        }
+      } catch (_) {
+        // Fallback no-op without alert()
+      }
+      document.body.removeChild(ta);
+    }
+
+    /* ========================================================================
+       5. UI CONTROLS (THEME & SHOP/ENGINEER LENS)
        ======================================================================== */
     function toggleTheme() {
       state.theme = state.theme === "light" ? "dark" : "light";
@@ -757,7 +1175,7 @@
     }
 
     /* ========================================================================
-       5. RENDERING: HEADER SUBPAGE BAR, DOCK INDEX & PROJECT SUBPAGE
+       6. RENDERING: HEADER SUBPAGE BAR, DOCK INDEX & BESPOKE PROJECT SUBPAGES
        ======================================================================== */
     function renderApp() {
       renderSubpageNav();
@@ -776,6 +1194,7 @@
         subEl.classList.remove("hidden");
         if (badge) badge.textContent = `/${state.currentRouteSlug}`;
         const proj = getProject(state.currentRouteSlug);
+        initProjectDefaults(proj);
         document.title = `${proj.shortName} · The Dock — ASKA Physical`;
         renderProjectSubpage(proj);
       }
@@ -904,17 +1323,18 @@
         ? state.projects
         : state.projects.filter(p => p.sector === state.sectorFilter);
 
-      grid.innerHTML = filtered.map(p => {
+      grid.innerHTML = filtered.map((p, i) => {
         const rung = getRungMeta(p.rung);
         const val = state.sliderValues[p.slug] ?? p.sliderDefault;
         const summary = state.lens === "builder" ? p.builderSummary : p.engineerSummary;
+        const subpageIndex = String(state.projects.findIndex(x => x.slug === p.slug) + 1).padStart(2, "0");
 
         return `
           <article class="surface-card p-5 flex flex-col justify-between space-y-4">
             <div class="space-y-3">
-              <!-- Card Top Meta -->
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center gap-1.5">
+                  <span class="badge-pill font-semibold">SUBPAGE ${subpageIndex}</span>
                   <span class="badge-pill">${escapeHtml(p.sector)}</span>
                   <span class="badge-pill ${rung.badge}">Rung ${p.rung}/5</span>
                 </div>
@@ -923,7 +1343,6 @@
                 </a>
               </div>
 
-              <!-- Title & Summary -->
               <div>
                 <h3 class="font-serif-editorial text-2xl sm:text-[1.7rem] leading-tight">
                   <a href="#/${p.slug}" class="hover:underline">${escapeHtml(p.title)}</a>
@@ -933,7 +1352,6 @@
                 </p>
               </div>
 
-              <!-- Interactive Preview Canvas right inside the Index Card -->
               <div class="canvas-frame p-2.5 space-y-2">
                 <canvas id="card-canvas-${p.slug}" class="w-full h-[185px] rounded block"></canvas>
                 <div class="flex items-center gap-3 px-1 pt-1">
@@ -951,7 +1369,6 @@
                 />
               </div>
 
-              <!-- Key Sourced Metrics -->
               <div class="grid grid-cols-2 gap-2.5">
                 ${p.metrics.slice(0, 2).map(m => `
                   <div class="p-2.5 rounded bg-[var(--bg-subtle)] border border-[var(--border)]">
@@ -962,11 +1379,10 @@
               </div>
             </div>
 
-            <!-- Subpage CTA Footer -->
             <div class="pt-3 border-t border-[var(--border)] flex items-center justify-between gap-3">
-              <span class="font-mono-tech text-[11px] text-[var(--fg-faint)] truncate">${escapeHtml(p.statusNote)}</span>
+              <span class="font-mono-tech text-[11px] text-[var(--fg-faint)] truncate">+ Interactive Sizer &amp; Shop Spec inside</span>
               <a href="#/${p.slug}" class="px-3.5 py-2 rounded font-mono-tech text-xs font-semibold bg-[var(--fg)] text-[var(--bg)] hover:opacity-90 transition-opacity shrink-0">
-                Open Project Subpage →
+                Enter Subpage →
               </a>
             </div>
           </article>
@@ -1000,35 +1416,46 @@
       }).join("");
     }
 
-    /* --- Route 2: Full Dedicated Project Subpage (`#/<slug>`) --- */
+    /* --- Route 2: Complete Bespoke Project Subpage (`#/<slug>`) --- */
     function renderProjectSubpage(p) {
       const container = document.getElementById("projectSubpageView");
       if (!container) return;
 
       const idx = state.projects.findIndex(item => item.slug === p.slug);
+      const subpageNum = String(idx + 1).padStart(2, "0");
       const prevProj = state.projects[(idx - 1 + state.projects.length) % state.projects.length];
       const nextProj = state.projects[(idx + 1) % state.projects.length];
       const rung = getRungMeta(p.rung);
       const val = state.sliderValues[p.slug] ?? p.sliderDefault;
+      const calcState = state.calcValues[p.slug] || {};
       const repoUrl = p.externalRepoUrl || `https://github.com/aska-physical/${p.slug}`;
       const headlineSummary = state.lens === "builder" ? p.builderSummary : p.engineerSummary;
       const secondarySummary = state.lens === "builder" ? p.engineerSummary : p.builderSummary;
       const secondaryLabel = state.lens === "builder" ? "Engineering Mechanism" : "Shop & Jobsite Translation";
 
       container.innerHTML = `
-        <!-- Breadcrumb & Repo Link -->
-        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[var(--border)]">
-          <div class="flex items-center gap-2 font-mono-tech text-xs">
-            <a href="#/" class="ctrl-btn inline-flex items-center gap-1.5">← Back to The Dock</a>
+        <!-- Subpage Top Bar: Breadcrumb + In-Page Section Jump Links + GitHub Link -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-4 border-b border-[var(--border)]">
+          <div class="flex flex-wrap items-center gap-2 font-mono-tech text-xs">
+            <a href="#/" class="ctrl-btn inline-flex items-center gap-1.5">← Dock Index</a>
             <span class="text-[var(--fg-faint)]">/</span>
-            <span class="text-[var(--accent)] font-semibold">${escapeHtml(p.slug)}</span>
+            <span class="badge-pill badge-accent">SUBPAGE ${subpageNum}</span>
+            <span class="font-semibold text-[var(--fg)]">${escapeHtml(p.slug)}</span>
           </div>
-          <a href="${escapeHtml(repoUrl)}" target="_blank" rel="noopener" class="ctrl-btn inline-flex items-center gap-1.5">
-            github.com/aska-physical/${escapeHtml(p.slug)} ↗
-          </a>
+
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button onclick="scrollToSubSection('sec-workbench')" class="ctrl-btn">01 Workbench</button>
+            <button onclick="scrollToSubSection('sec-sizer')" class="ctrl-btn">02 Shop Sizer</button>
+            <button onclick="scrollToSubSection('sec-method')" class="ctrl-btn">03 Execution</button>
+            <button onclick="scrollToSubSection('sec-bench')" class="ctrl-btn">04 Bench &amp; Limits</button>
+            <button onclick="scrollToSubSection('sec-spec')" class="ctrl-btn">05 Spec Sheet</button>
+            <a href="${escapeHtml(repoUrl)}" target="_blank" rel="noopener" class="ctrl-btn inline-flex items-center gap-1">
+              Repo ↗
+            </a>
+          </div>
         </div>
 
-        <!-- Subpage Header -->
+        <!-- Subpage Editorial Hero -->
         <header class="space-y-5">
           <div class="flex flex-wrap items-center gap-2">
             <span class="badge-pill">${escapeHtml(p.station)}</span>
@@ -1066,11 +1493,11 @@
         </header>
 
         <!-- 01 // INTERACTIVE MECHANISM WORKBENCH + STEP-BY-STEP WALKTHROUGH -->
-        <section class="space-y-4 pt-4 border-t border-[var(--border)]">
+        <section id="sec-workbench" class="scroll-mt-28 space-y-4 pt-6 border-t border-[var(--border)]">
           <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
             <div>
               <div class="font-mono-tech text-xs text-[var(--fg-faint)]">01 // INTERACTIVE PHYSICAL WORKBENCH</div>
-              <h2 class="font-serif-editorial text-3xl">Test the mechanism directly</h2>
+              <h2 class="font-serif-editorial text-3xl">Manipulate the mechanism directly</h2>
             </div>
             <div class="flex flex-wrap gap-1.5">
               ${p.presets.map(pre => `
@@ -1086,7 +1513,6 @@
           </p>
 
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
-            <!-- Large Interactive Canvas + Slider -->
             <div class="lg:col-span-8 canvas-frame p-4 flex flex-col justify-between space-y-4">
               <canvas id="subpage-main-canvas" class="w-full h-[290px] sm:h-[340px] rounded block"></canvas>
 
@@ -1107,7 +1533,6 @@
               </div>
             </div>
 
-            <!-- 4-Step Plain-Language Walkthrough -->
             <div class="lg:col-span-4 flex flex-col justify-between space-y-2.5">
               ${p.walkthrough.map((step, sIdx) => {
                 const isSelected = state.activeStepIdx === sIdx;
@@ -1129,11 +1554,84 @@
           </div>
         </section>
 
-        <!-- 02 // THREE-STEP VERIFICATION LEDGER -->
-        <section class="space-y-4 pt-6 border-t border-[var(--border)]">
+        <!-- 02 // BESPOKE DOMAIN SIZER & SHOP ECONOMICS CALCULATOR -->
+        <section id="sec-sizer" class="scroll-mt-28 space-y-4 pt-6 border-t border-[var(--border)]">
+          <div class="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <div class="font-mono-tech text-xs text-[var(--fg-faint)]">02 // PARAMETRIC SHOP &amp; JOBSITE SIZER</div>
+              <h2 class="font-serif-editorial text-3xl">${escapeHtml(p.calcConfig.title)}</h2>
+              <p class="text-xs sm:text-sm text-[var(--fg-muted)] mt-1">${escapeHtml(p.calcConfig.subtitle)}</p>
+            </div>
+            <span id="subpageCalcStatusBadge" class="badge-pill badge-verified">✓ READY</span>
+          </div>
+
+          <div class="surface-card p-5 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <!-- 4 Parametric Sliders -->
+            <div class="lg:col-span-5 space-y-4">
+              ${p.calcConfig.inputs.map(inp => {
+                const cur = calcState[inp.key] ?? inp.default;
+                return `
+                  <div class="space-y-1.5">
+                    <div class="flex items-center justify-between text-xs font-mono-tech">
+                      <label class="text-[var(--fg)] font-medium">${escapeHtml(inp.label)}</label>
+                      <span id="calc-val-${p.slug}-${inp.key}" class="text-[var(--accent)] font-semibold">${cur} ${escapeHtml(inp.unit)}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="${inp.min}"
+                      max="${inp.max}"
+                      step="${inp.step}"
+                      value="${cur}"
+                      oninput="updateCalcInput('${p.slug}', '${inp.key}', this.value)"
+                      class="precision-slider w-full"
+                    />
+                  </div>
+                `;
+              }).join("")}
+            </div>
+
+            <!-- Live Computed Engineering & Cost Outputs -->
+            <div id="subpageCalcOutputs" class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Populated by renderSubpageCalcResults(p) -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 03 // SHOP & SITE EXECUTION SEQUENCE + TOOLING -->
+        <section id="sec-method" class="scroll-mt-28 space-y-4 pt-6 border-t border-[var(--border)]">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+            <div>
+              <div class="font-mono-tech text-xs text-[var(--fg-faint)]">03 // FLOOR &amp; FIELD METHOD STATEMENT</div>
+              <h2 class="font-serif-editorial text-3xl">How a crew actually runs this</h2>
+            </div>
+          </div>
+
+          <div class="surface-card p-3.5 bg-[var(--bg-subtle)] text-xs sm:text-sm flex flex-wrap items-center gap-2">
+            <span class="badge-pill badge-blueprint">REQUIRED TOOLING</span>
+            <span class="text-[var(--fg-muted)]">${escapeHtml(p.shopMethod.tooling)}</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            ${p.shopMethod.steps.map(st => `
+              <div class="surface-card p-4 flex flex-col justify-between space-y-3">
+                <div class="space-y-1.5">
+                  <div class="font-mono-tech text-xs font-semibold text-[var(--accent)]">${escapeHtml(st.phase)}</div>
+                  <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-relaxed">${escapeHtml(st.detail)}</p>
+                </div>
+                <div class="pt-2 border-t border-[var(--border)] flex items-center justify-between font-mono-tech text-[11px]">
+                  <span class="text-[var(--fg-faint)]">QC GATE:</span>
+                  <span class="text-[var(--fg)] font-medium">${escapeHtml(st.hold)}</span>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </section>
+
+        <!-- 04 // PROPOSE · VERIFY · SIGN + MEASURED BENCHMARK TABLE + UNTESTED BOUNDARIES -->
+        <section id="sec-bench" class="scroll-mt-28 space-y-5 pt-6 border-t border-[var(--border)]">
           <div>
-            <div class="font-mono-tech text-xs text-[var(--fg-faint)]">02 // PROPOSE · VERIFY · SIGN</div>
-            <h2 class="font-serif-editorial text-3xl">How this repository was checked</h2>
+            <div class="font-mono-tech text-xs text-[var(--fg-faint)]">04 // VERIFICATION LEDGER &amp; BENCHMARK DATA</div>
+            <h2 class="font-serif-editorial text-3xl">Propose · Verify · Sign, measured runs, and untested limits</h2>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1149,14 +1647,6 @@
               <span class="badge-pill badge-amber">03 · ENGINEERS TEST &amp; SIGN</span>
               <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-relaxed">${escapeHtml(p.verification.sign)}</p>
             </div>
-          </div>
-        </section>
-
-        <!-- 03 // MEASURED BENCH TABLE & HONEST UNTESTED LIMITS -->
-        <section class="space-y-5 pt-6 border-t border-[var(--border)]">
-          <div>
-            <div class="font-mono-tech text-xs text-[var(--fg-faint)]">03 // BENCHMARK DATA &amp; BOUNDARIES</div>
-            <h2 class="font-serif-editorial text-3xl">Measured numbers and what is NOT tested yet</h2>
           </div>
 
           <div class="surface-card overflow-x-auto">
@@ -1176,7 +1666,6 @@
             </table>
           </div>
 
-          <!-- Explicit Untested Boundaries Callout -->
           <div class="surface-card p-5 border-l-4 border-l-[var(--accent)] space-y-1.5">
             <div class="font-mono-tech text-xs font-semibold text-[var(--accent)]">
               BOUNDARY NOTICE // WHAT HAS NOT BEEN TESTED YET
@@ -1187,22 +1676,59 @@
           </div>
         </section>
 
-        <!-- SUBPAGE PAGER FOOTER -->
-        <nav aria-label="Adjacent project subpages" class="pt-6 border-t border-[var(--border)] grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <a href="#/${prevProj.slug}" class="surface-card p-4 hover:border-[var(--fg)] transition-colors">
-            <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">← PREVIOUS SUBPAGE</div>
-            <div class="font-serif-editorial text-xl mt-0.5">${escapeHtml(prevProj.shortName)}</div>
-          </a>
-          <a href="#/" class="surface-card p-4 flex flex-col items-center justify-center text-center hover:border-[var(--fg)] transition-colors">
-            <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">∅ CENTRAL HUB</div>
-            <div class="font-mono-tech text-xs font-semibold mt-1">Return to Dock Index</div>
-          </a>
-          <a href="#/${nextProj.slug}" class="surface-card p-4 sm:text-right hover:border-[var(--fg)] transition-colors">
-            <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">NEXT SUBPAGE →</div>
-            <div class="font-serif-editorial text-xl mt-0.5">${escapeHtml(nextProj.shortName)}</div>
-          </a>
+        <!-- 05 // LIVE MACHINE-READABLE SHOP SPEC PACKET -->
+        <section id="sec-spec" class="scroll-mt-28 space-y-4 pt-6 border-t border-[var(--border)]">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div class="font-mono-tech text-xs text-[var(--fg-faint)]">05 // LIVE SHOP &amp; REPO ARTIFACT</div>
+              <h2 class="font-serif-editorial text-2xl sm:text-3xl">Generated shop ticket (<span class="font-mono-tech text-lg text-[var(--accent)]">${escapeHtml(p.specFilename)}</span>)</h2>
+            </div>
+            <button id="copySpecBtn" onclick="copySubpageSpec('${p.slug}')" class="ctrl-btn font-semibold">
+              Copy Shop Spec Packet
+            </button>
+          </div>
+
+          <div class="surface-card bg-[var(--bg-canvas)] p-4 overflow-x-auto">
+            <pre id="subpageSpecCode" class="font-mono-tech text-xs leading-relaxed text-[var(--fg)]"></pre>
+          </div>
+        </section>
+
+        <!-- ALL SUBPAGES DIRECTORY MATRIX + PREV/NEXT FOOTER -->
+        <nav aria-label="Project subpages directory" class="pt-8 border-t border-[var(--border)] space-y-4">
+          <div class="font-mono-tech text-xs text-[var(--fg-faint)]">JUMP TO ANY SUBPAGE ON THE DOCK</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+            ${state.projects.map((item, itemIdx) => {
+              const isCurrent = item.slug === p.slug;
+              return `
+                <a href="#/${item.slug}" class="surface-card p-3 transition-colors ${isCurrent ? "border-[var(--accent)] bg-[var(--accent-soft)]" : "hover:border-[var(--fg)]"}">
+                  <div class="flex items-center justify-between font-mono-tech text-[10.5px] text-[var(--fg-muted)]">
+                    <span>0${itemIdx + 1} · ${escapeHtml(item.sector)}</span>
+                    <span>R${item.rung}</span>
+                  </div>
+                  <div class="font-semibold text-xs sm:text-sm mt-1 text-[var(--fg)] truncate">${escapeHtml(item.shortName)}</div>
+                </a>
+              `;
+            }).join("")}
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <a href="#/${prevProj.slug}" class="surface-card p-4 hover:border-[var(--fg)] transition-colors">
+              <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">← PREVIOUS SUBPAGE</div>
+              <div class="font-serif-editorial text-xl mt-0.5">${escapeHtml(prevProj.shortName)}</div>
+            </a>
+            <a href="#/" class="surface-card p-4 flex flex-col items-center justify-center text-center hover:border-[var(--fg)] transition-colors">
+              <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">∅ CENTRAL LOADING BAY</div>
+              <div class="font-mono-tech text-xs font-semibold mt-1">Return to Dock Index</div>
+            </a>
+            <a href="#/${nextProj.slug}" class="surface-card p-4 sm:text-right hover:border-[var(--fg)] transition-colors">
+              <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">NEXT SUBPAGE →</div>
+              <div class="font-serif-editorial text-xl mt-0.5">${escapeHtml(nextProj.shortName)}</div>
+            </a>
+          </div>
         </nav>
       `;
+
+      renderSubpageCalcResults(p);
 
       requestAnimationFrame(() => {
         const canvas = document.getElementById("subpage-main-canvas");
@@ -1215,13 +1741,11 @@
       state.sliderValues[slug] = val;
       const p = getProject(slug);
 
-      // Update Index card if visible
       const cardReadout = document.getElementById(`card-val-${slug}`);
       if (cardReadout) cardReadout.textContent = `${val} ${p.sliderUnit}`;
       const cardCanvas = document.getElementById(`card-canvas-${slug}`);
       if (cardCanvas) renderPhysicsEngine(cardCanvas, p.visualType, val);
 
-      // Update Subpage workbench if visible
       const subSlider = document.getElementById("subpageSlider");
       if (subSlider && state.currentRouteSlug === slug && Number(subSlider.value) !== val) {
         subSlider.value = val;
@@ -1243,7 +1767,7 @@
     }
 
     /* ========================================================================
-       6. INTERACTIVE 2D CANVAS SCHEMATICS & ALL 5 PHYSICS WORKBENCHES
+       7. INTERACTIVE 2D CANVAS SCHEMATICS & ALL 5 PHYSICS WORKBENCHES
        ======================================================================== */
     function palette() {
       const dark = state.theme === "dark";
@@ -1307,7 +1831,6 @@
       });
     }
 
-    /* --- Plant-to-Jobsite Bay Map --- */
     function drawBaySchematic() {
       const canvas = document.getElementById("bayCanvas");
       const prep = prepCanvas(canvas);
@@ -1338,7 +1861,6 @@
         ctx.fillText(z.title, zx + 9, 47);
       });
 
-      // Supply spine
       ctx.save();
       ctx.strokeStyle = pal.blueprint;
       ctx.setLineDash([5, 5]);
@@ -1349,7 +1871,6 @@
       ctx.stroke();
       ctx.restore();
 
-      // Station beacons
       state.projects.forEach((p, idx) => {
         const px = p.coords.x * w;
         const py = p.coords.y * h;
@@ -1403,7 +1924,6 @@
       }
     }
 
-    /* --- Master Dispatcher for the 5 Domain Visual Engines --- */
     function renderPhysicsEngine(canvas, type, val) {
       const prep = prepCanvas(canvas);
       if (!prep) return;
@@ -1417,7 +1937,6 @@
       else drawPooledNest(ctx, w, h, val, pal);
     }
 
-    /* 1. TAPER-LOCK STRUCTURAL NODE */
     function drawInterlock(ctx, w, h, pct, pal) {
       const t = Math.max(0, Math.min(100, pct)) / 100;
       const cx = w * 0.38;
@@ -1428,7 +1947,6 @@
       const lift = (1 - t) * 52 * scale;
       const wedge = Math.max(0, (t - 0.72) / 0.28);
 
-      // Centerline datum
       ctx.save();
       ctx.strokeStyle = pal.faint;
       ctx.setLineDash([4, 4]);
@@ -1438,7 +1956,6 @@
       ctx.stroke();
       ctx.restore();
 
-      // Lower steel female socket
       const hw = 56 * scale;
       const shW = 28 * scale;
       const tipW = 16 * scale;
@@ -1460,7 +1977,6 @@
       ctx.fill();
       ctx.stroke();
 
-      // Upper descending male spigot
       const ux = cx + sway;
       const uy = baseY - sockH - lift;
       ctx.fillStyle = t >= 0.95 ? pal.verified : pal.blueprint;
@@ -1479,7 +1995,6 @@
       ctx.globalAlpha = 1;
       ctx.stroke();
 
-      // Captive cross-wedge
       const wx = cx - 68 * scale + wedge * 44 * scale;
       const wy = baseY - 38 * scale;
       ctx.fillStyle = pal.accent;
@@ -1501,7 +2016,6 @@
       ], pal);
     }
 
-    /* 2. FLAT-PACK LASER-KERFED BOX FOLDING */
     function drawKerfFold(ctx, w, h, degVal, pal) {
       const deg = Math.max(0, Math.min(90, degVal));
       const rad = (deg * Math.PI) / 180;
@@ -1538,7 +2052,6 @@
       ctx.lineTo(lid.x, lid.y);
       ctx.stroke();
 
-      // Kerf hinges
       [p0, p1, rWall].forEach(pt => {
         ctx.fillStyle = pal.accent;
         ctx.beginPath();
@@ -1555,7 +2068,6 @@
       ], pal);
     }
 
-    /* 3. RAPID-GEOBINDER STRENGTH CURVE VS OPC */
     function drawCureCurve(ctx, w, h, tempC, pal) {
       const T = Math.max(0, Math.min(40, tempC));
       const padL = 36, padR = 16, padT = 18, padB = 26;
@@ -1573,7 +2085,6 @@
       const xHr = hr => padL + (hr / 24) * gw;
       const yMpa = mpa => padT + gh - (Math.min(45, mpa) / 45) * gh;
 
-      // 20 MPa Form-Strip Gate
       const yGate = yMpa(20);
       ctx.save();
       ctx.strokeStyle = pal.verified;
@@ -1591,7 +2102,6 @@
       const kGeo = 0.24 * Math.exp(0.038 * (T - 15));
       const kOpc = 0.045 * Math.exp(0.052 * (T - 15));
 
-      // OPC Baseline (Dashed)
       ctx.save();
       ctx.strokeStyle = pal.muted;
       ctx.lineWidth = 1.8;
@@ -1605,7 +2115,6 @@
       ctx.stroke();
       ctx.restore();
 
-      // ASKA GeoBinder (Solid Accent)
       ctx.strokeStyle = pal.accent;
       ctx.lineWidth = 2.6;
       let stripHr = null;
@@ -1626,7 +2135,6 @@
         ctx.fill();
       }
 
-      // Axis labels
       ctx.fillStyle = pal.muted;
       ctx.font = "500 9.5px 'JetBrains Mono', monospace";
       [0, 4, 8, 12, 18, 24].forEach(hr => {
@@ -1640,7 +2148,6 @@
       ], pal);
     }
 
-    /* 4. MILL-EYE LASER PROFILE & MTC VERIFIER */
     function drawVisionGate(ctx, w, h, severity, pal) {
       const sev = Math.max(0, Math.min(100, severity)) / 100;
       const cx = w * 0.28;
@@ -1649,7 +2156,6 @@
       const flangeW = Math.min(w * 0.26, 86);
       const tiltPx = sev * 14;
 
-      // Laser scan plane line
       ctx.save();
       ctx.strokeStyle = pal.accent;
       ctx.setLineDash([3, 3]);
@@ -1659,32 +2165,26 @@
       ctx.stroke();
       ctx.restore();
 
-      // Ideal ASTM A6 envelope (ghost outline)
       ctx.strokeStyle = pal.faint;
       ctx.lineWidth = 1;
       ctx.strokeRect(cx - flangeW / 2, cy - beamH / 2, flangeW, beamH);
 
-      // Actual scanned Wide-Flange I-Beam section with flange tilt anomaly
       ctx.strokeStyle = sev > 0.45 ? pal.accent : pal.verified;
       ctx.lineWidth = 5;
       ctx.lineCap = "round";
-      // Top flange (tilted by anomaly)
       ctx.beginPath();
       ctx.moveTo(cx - flangeW / 2, cy - beamH / 2 - tiltPx);
       ctx.lineTo(cx + flangeW / 2, cy - beamH / 2 + tiltPx);
       ctx.stroke();
-      // Web
       ctx.beginPath();
       ctx.moveTo(cx, cy - beamH / 2);
       ctx.lineTo(cx, cy + beamH / 2);
       ctx.stroke();
-      // Bottom flange
       ctx.beginPath();
       ctx.moveTo(cx - flangeW / 2, cy + beamH / 2);
       ctx.lineTo(cx + flangeW / 2, cy + beamH / 2);
       ctx.stroke();
 
-      // Right side: Deterministic MTC Check Card
       const rx = w * 0.54;
       const rw = w * 0.42;
       const tiltMm = (0.3 + sev * 6.4).toFixed(1);
@@ -1700,34 +2200,26 @@
       ], pal);
     }
 
-    /* 5. MULTI-JOB POOLED CUT NESTER */
     function drawPooledNest(ctx, w, h, jobsCount, pal) {
       const jobs = Math.max(1, Math.min(6, Math.round(jobsCount)));
       const pad = 14;
       const sheetW = w - 166;
       const sheetH = h - pad * 2;
 
-      // Raw Steel Plate Stock (Red-tinted unused scrap background)
       ctx.fillStyle = state.theme === "dark" ? "rgba(234,106,71,0.16)" : "rgba(194,65,36,0.13)";
       ctx.strokeStyle = pal.ink;
       ctx.lineWidth = 1.4;
       drawBox(ctx, pad, pad, sheetW, sheetH, 4, true, true);
 
-      // Job 1 Primary Large Structural Parts (Always present)
       const blocks = [
         { j: 1, x: 0.02, y: 0.04, w: 0.44, h: 0.58 },
         { j: 1, x: 0.48, y: 0.04, w: 0.49, h: 0.36 },
         { j: 1, x: 0.02, y: 0.66, w: 0.56, h: 0.29 },
-        // Job 2 fills medium pockets
         { j: 2, x: 0.48, y: 0.43, w: 0.26, h: 0.20 },
         { j: 2, x: 0.60, y: 0.66, w: 0.22, h: 0.29 },
-        // Job 3 gussets
         { j: 3, x: 0.76, y: 0.43, w: 0.21, h: 0.20 },
-        // Job 4 baseplates
         { j: 4, x: 0.84, y: 0.66, w: 0.13, h: 0.16 },
-        // Job 5 shims
         { j: 5, x: 0.84, y: 0.84, w: 0.13, h: 0.11 },
-        // Job 6 stiffener clips
         { j: 6, x: 0.48, y: 0.64, w: 0.10, h: 0.02 }
       ];
 
@@ -1760,7 +2252,6 @@
       ], pal);
     }
 
-    /* --- Bay Canvas Pointer Interaction --- */
     function bindBayCanvasInteraction() {
       const canvas = document.getElementById("bayCanvas");
       if (!canvas) return;
@@ -1805,7 +2296,7 @@
     }
 
     /* ========================================================================
-       7. INITIALIZE MVP ON LOAD & RESIZE
+       8. INITIALIZE MVP ON LOAD & RESIZE
        ======================================================================== */
     window.addEventListener("resize", () => requestAnimationFrame(redrawVisibleCanvases));
 
