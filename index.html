@@ -1702,7 +1702,7 @@
               return `
                 <a href="#/${item.slug}" class="surface-card p-3 transition-colors ${isCurrent ? "border-[var(--accent)] bg-[var(--accent-soft)]" : "hover:border-[var(--fg)]"}">
                   <div class="flex items-center justify-between font-mono-tech text-[10.5px] text-[var(--fg-muted)]">
-                    <span>0${itemIdx + 1} · ${escapeHtml(item.sector)}</span>
+                    <span>${String(itemIdx + 1).padStart(2, "0")} · ${escapeHtml(item.sector)}</span>
                     <span>R${item.rung}</span>
                   </div>
                   <div class="font-semibold text-xs sm:text-sm mt-1 text-[var(--fg)] truncate">${escapeHtml(item.shortName)}</div>
