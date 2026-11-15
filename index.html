@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Dock · ASKA Physical — R&D Hub & Project Subpages</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Editorial + Technical Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN TOKENS — ARCHIVAL DRAFTING PAPER (LIGHT) & MILL SLATE (DARK)
+       ========================================================================== */
+    :root, [data-theme="light"] {
+      --bg: #F6F4EE;
+      --bg-elevated: #FDFCF9;
+      --bg-subtle: #ECE9E0;
+      --bg-canvas: #F1EFE8;
+      --fg: #151513;
+      --fg-muted: #57554E;
+      --fg-faint: #858278;
+      --border: #D8D4C8;
+      --accent: #C24124;
+      --accent-soft: rgba(194, 65, 36, 0.11);
+      --blueprint: #1E40AF;
+      --blueprint-soft: rgba(30, 64, 175, 0.10);
+      --verified: #166534;
+      --verified-soft: rgba(22, 101, 52, 0.11);
+      --amber: #9A5B08;
+      --amber-soft: rgba(154, 91, 8, 0.12);
+      --grid-line: rgba(21, 21, 19, 0.055);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0F1113;
+      --bg-elevated: #16191D;
+      --bg-subtle: #1E2228;
+      --bg-canvas: #13161A;
+      --fg: #ECEAE3;
+      --fg-muted: #A3A097;
+      --fg-faint: #6E6B63;
+      --border: #2B3038;
+      --accent: #EA6A47;
+      --accent-soft: rgba(234, 106, 71, 0.15);
+      --blueprint: #60A5FA;
+      --blueprint-soft: rgba(96, 165, 250, 0.14);
+      --verified: #4ADE80;
+      --verified-soft: rgba(74, 222, 128, 0.13);
+      --amber: #FBBF24;
+      --amber-soft: rgba(251, 191, 36, 0.14);
+      --grid-line: rgba(236, 234, 227, 0.055);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .font-serif-editorial {
+      font-family: 'Instrument Serif', Georgia, serif;
+      letter-spacing: -0.015em;
+    }
+
+    .font-mono-tech {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .surface-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      transition: border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .surface-card:hover {
+      border-color: var(--fg-faint);
+    }
+
+    .canvas-frame {
+      background-color: var(--bg-canvas);
+      background-image:
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 24px 24px;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+    }
+
+    /* Precision range input */
+    input[type="range"].precision-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      background: var(--border);
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].precision-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      border: 2px solid var(--bg-elevated);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      cursor: grab;
+    }
+    input[type="range"].precision-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      border: 2px solid var(--bg-elevated);
+      cursor: grab;
+    }
+
+    /* Badges & Buttons */
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      line-height: 1;
+      padding: 0.32rem 0.55rem;
+      border-radius: 0.3rem;
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      color: var(--fg-muted);
+      white-space: nowrap;
+    }
+    .badge-verified { background: var(--verified-soft); color: var(--verified); border-color: rgba(22, 101, 52, 0.25); }
+    .badge-accent   { background: var(--accent-soft);   color: var(--accent);   border-color: rgba(194, 65, 36, 0.25); }
+    .badge-blueprint{ background: var(--blueprint-soft);color: var(--blueprint);border-color: rgba(30, 64, 175, 0.25); }
+    .badge-amber    { background: var(--amber-soft);    color: var(--amber);    border-color: rgba(154, 91, 8, 0.25); }
+
+    .ctrl-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.73rem;
+      padding: 0.38rem 0.72rem;
+      border-radius: 0.375rem;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--fg);
+      transition: all 0.15s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .ctrl-btn:hover {
+      border-color: var(--fg);
+      background: var(--bg-subtle);
+    }
+    .ctrl-btn.active {
+      background: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+    }
+
+    /* Hide scrollbar on subpage strip */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-[var(--accent)] selection:text-white">
+
+  <!-- ========================================================================
+       SINGULAR SITE HEADER + SUBPAGE NAVIGATION BAR
+       ======================================================================== -->
+  <header class="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]/95 backdrop-blur-md">
+    <!-- Primary Bar -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <a href="#/" class="flex items-center gap-2.5 group focus:outline-none">
+          <span class="w-6 h-6 rounded flex items-center justify-center font-mono-tech text-xs font-semibold bg-[var(--fg)] text-[var(--bg)]">
+            ⚓
+          </span>
+          <span class="font-semibold tracking-tight text-sm sm:text-base">ASKA Physical</span>
+          <span class="font-mono-tech text-xs text-[var(--fg-faint)]">/</span>
+          <span class="font-mono-tech text-xs font-semibold text-[var(--accent)]">the-dock</span>
+        </a>
+        <span id="routePathBadge" class="hidden md:inline-flex font-mono-tech text-xs text-[var(--fg-muted)] bg-[var(--bg-subtle)] px-2 py-0.5 rounded border border-[var(--border)] truncate">
+          /index
+        </span>
+      </div>
+
+      <!-- Global Reading Lens + Theme Switch -->
+      <div class="flex items-center gap-2">
+        <div class="hidden sm:flex items-center bg-[var(--bg-subtle)] p-0.5 rounded-md border border-[var(--border)]" role="group" aria-label="Reading lens">
+          <button id="lensBuilderBtn" onclick="setLens('builder')" class="px-2.5 py-1 rounded text-[11px] font-mono-tech transition-colors bg-[var(--fg)] text-[var(--bg)]">
+            Shop &amp; Site
+          </button>
+          <button id="lensEngineerBtn" onclick="setLens('engineer')" class="px-2.5 py-1 rounded text-[11px] font-mono-tech transition-colors text-[var(--fg-muted)]">
+            R&amp;D Specs
+          </button>
+        </div>
+        <button id="themeBtn" onclick="toggleTheme()" class="ctrl-btn" title="Toggle light or dark drafting paper">
+          Dark
+        </button>
+      </div>
+    </div>
+
+    <!-- Subpage Tab Strip (Singular site -> instant access to Dock Index + every project subpage) -->
+    <div class="border-t border-[var(--border)] bg-[var(--bg-elevated)]/80">
+      <nav id="subpageNavStrip" aria-label="Project subpages" class="max-w-6xl mx-auto px-4 sm:px-6 py-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+        <!-- Populated dynamically by renderSubpageNav() -->
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       ROUTE 1: THE DOCK INDEX (`#/`)
+       ======================================================================== -->
+  <main id="dockIndexView" class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-14">
+
+    <!-- HERO -->
+    <section class="space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex flex-wrap items-center gap-2 font-mono-tech text-xs text-[var(--fg-muted)]">
+          <span class="badge-pill badge-accent">∅ // OPEN R&amp;D LOADING BAY</span>
+          <a href="https://github.com/orgs/aska-physical/repositories" target="_blank" rel="noopener" class="underline decoration-[var(--border)] hover:text-[var(--fg)]">
+            github.com/aska-physical ↗
+          </a>
+        </div>
+        <span id="orgSyncPill" class="badge-pill" title="Automatically mounts public repos from github.com/orgs/aska-physical">
+          ● Syncing org...
+        </span>
+      </div>
+
+      <div class="max-w-4xl space-y-4">
+        <h1 class="font-serif-editorial text-4xl sm:text-6xl leading-[1.04] text-[var(--fg)]">
+          Physical R&amp;D, drawn so builders and makers can see inside it.
+        </h1>
+        <p class="text-base sm:text-lg text-[var(--fg-muted)] leading-relaxed">
+          Nobody running a fabrication shop or jobsite has an afternoon to decode an academic PDF before ordering steel or stripping concrete forms.
+          <strong class="text-[var(--fg)] font-medium">The Dock</strong> puts every <span class="font-mono-tech text-sm">aska-physical</span> engineering project in one place—each with its own interactive subpage, plain floor-and-field numbers, and explicit boundaries around what has and hasn't been tested yet.
+        </p>
+      </div>
+
+      <!-- Mobile Lens Switcher -->
+      <div class="sm:hidden flex items-center justify-between surface-card p-3">
+        <span class="font-mono-tech text-xs text-[var(--fg-muted)]">Explanation Lens:</span>
+        <div class="flex gap-1.5">
+          <button id="lensBuilderBtnMobile" onclick="setLens('builder')" class="ctrl-btn active">Shop &amp; Site</button>
+          <button id="lensEngineerBtnMobile" onclick="setLens('engineer')" class="ctrl-btn">R&amp;D Specs</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ∅ // INTERACTIVE PLANT-TO-JOBSITE SCHEMATIC -->
+    <section class="space-y-3">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <div class="font-mono-tech text-xs text-[var(--fg-faint)]">∅ // PLANT-TO-JOBSITE MAP</div>
+          <h2 class="font-serif-editorial text-2xl sm:text-3xl">Where each project sits in the physical workflow</h2>
+        </div>
+        <span class="font-mono-tech text-xs text-[var(--fg-muted)]">Click a station beacon to inspect · Double-click to open subpage</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+        <div class="lg:col-span-8 canvas-frame p-3 flex flex-col justify-between">
+          <canvas id="bayCanvas" class="w-full h-[240px] sm:h-[280px] cursor-pointer rounded" aria-label="Plant to jobsite interactive map"></canvas>
+          <div class="flex items-center justify-between pt-2 text-[11px] font-mono-tech text-[var(--fg-faint)]">
+            <span>01 Raw Material → 02 Shop Fab → 03 Receiving Dock → 04 Site Erection</span>
+            <span id="bayStationCounter">Station 1 / 5</span>
+          </div>
+        </div>
+
+        <!-- Active Beacon Summary Card -->
+        <div id="bayInspector" class="lg:col-span-4 surface-card p-5 flex flex-col justify-between space-y-4">
+          <!-- Populated by renderBayInspector() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 // PROJECT SUBPAGES DIRECTORY -->
+    <section id="projectsSection" class="space-y-6 pt-4 border-t border-[var(--border)]">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <div class="font-mono-tech text-xs text-[var(--fg-faint)]">01 // PROJECT SUBPAGES</div>
+          <h2 class="font-serif-editorial text-3xl sm:text-4xl">Test the mechanism here, or open its full subpage</h2>
+        </div>
+        <div id="sectorFilterBar" class="flex flex-wrap gap-1.5">
+          <!-- Sector filter buttons -->
+        </div>
+      </div>
+
+      <div id="projectCardsList" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Populated dynamically with interactive cards linking to #/<slug> -->
+      </div>
+    </section>
+
+    <!-- 02 // COMPACT EVIDENCE & VERIFICATION STANDARD -->
+    <section class="pt-6 border-t border-[var(--border)] grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-5 space-y-2">
+        <div class="font-mono-tech text-xs text-[var(--fg-faint)]">02 // EPISTEMIC STANDARD</div>
+        <h2 class="font-serif-editorial text-2xl sm:text-3xl">How every subpage separates simulation from steel</h2>
+        <p class="text-sm text-[var(--fg-muted)] leading-relaxed">
+          Software can propose thousands of joints or concrete mixes overnight, and most of them will bind in muddy gloves or miss code. Every subpage reports its exact readiness rung and separates digital exploration, physical rig tests, and human sign-off.
+        </p>
+      </div>
+      <div id="rungLegendList" class="lg:col-span-7 surface-card divide-y divide-[var(--border)]">
+        <!-- Populated by renderRungLegend() -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       ROUTE 2: DEDICATED PROJECT SUBPAGE (`#/<project-slug>`)
+       ======================================================================== -->
+  <main id="projectSubpageView" class="hidden flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
+    <!-- Populated dynamically by renderProjectSubpage(slug) -->
+  </main>
+
+  <!-- ========================================================================
+       MINIMAL COLOPHON FOOTER
+       ======================================================================== -->
+  <footer class="border-t border-[var(--border)] mt-16 py-8 bg-[var(--bg-elevated)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-[var(--fg-muted)]">
+      <div class="space-y-1">
+        <div class="font-mono-tech font-semibold text-[var(--fg)]">ASKA PHYSICAL // THE DOCK</div>
+        <div>Open R&amp;D in manufacturing &amp; construction. Confirm site-specific engineering with a licensed PE/P.Eng.</div>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 font-mono-tech">
+        <a href="#/" class="hover:text-[var(--fg)] underline">Dock Index</a>
+        <a href="https://github.com/orgs/aska-physical/repositories" target="_blank" rel="noopener" class="hover:text-[var(--fg)] underline">GitHub Org ↗</a>
+        <a href="https://physical.askaconsult.com/" target="_blank" rel="noopener" class="hover:text-[var(--fg)] underline">ASKA Physical ↗</a>
+        <a href="https://fdn0.org/" target="_blank" rel="noopener" class="hover:text-[var(--fg)] underline">Sibling: fdn0.org ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       APPLICATION DATA, ROUTER & INTERACTIVE PHYSICS ENGINES
+       ======================================================================== -->
+  <script>
+    /* ========================================================================
+       1. READINESS RUNGS & CORE ASKA-PHYSICAL R&D SUBPAGES
+       ======================================================================== */
+    const READINESS_RUNGS = [
+      { rung: 5, label: "Code-Stamped / In Daily Floor Use", desc: "Third-party tested, stamped where required, running on live production.", badge: "badge-verified" },
+      { rung: 4, label: "Full-Scale Shop or Jobsite Pilot", desc: "Full-size assemblies built with real crews, timed and load-logged.", badge: "badge-blueprint" },
+      { rung: 3, label: "Physical Bench & Coupon Tested", desc: "Sub-assemblies fabricated and broken on hydraulic rigs; field weathering ahead.", badge: "badge-amber" },
+      { rung: 2, label: "Solver & FEA Checked Only", desc: "Verified in deterministic simulation; physical steel/mix not yet cut.", badge: "badge-accent" },
+      { rung: 1, label: "First-Principles Concept Spec", desc: "Open geometry and sizing calculations awaiting verification rig.", badge: "" }
+    ];
+
+    const CORE_PROJECTS = [
+      {
+        slug: "taper-lock-node",
+        shortName: "Taper-Lock Node",
+        title: "Self-Centering Taper-Lock Structural Node",
+        sector: "Structural",
+        station: "04 · Jobsite Erection",
+        coords: { x: 0.84, y: 0.44 },
+        rung: 3,
+        statusNote: "18 CNC S355 coupons broken on rig",
+        caveat: "PE stamp required per local seismic zone",
+        visualType: "interlock",
+        sliderLabel: "Crane Lowering & Wedge Engagement",
+        sliderMin: 0,
+        sliderMax: 100,
+        sliderDefault: 70,
+        sliderUnit: "% engaged",
+        presets: [
+          { label: "Crane Approach (15%)", val: 15 },
+          { label: "Cone Capture (55%)", val: 55 },
+          { label: "Seated + Wedge Locked (100%)", val: 100 }
+        ],
+        builderSummary: "Drop a beam or upper column in wind without fighting bolt-hole drift—conical steel faces guide ±18 mm of sway home and lock with one captive wedge.",
+        engineerSummary: "Biconical 14° self-indexing S355 connector transferring axial compression via flat shoulder bearing and uplift/shear via transverse preload wedge.",
+        howToRead: "Drag the slider from 0% to 100%. Watch the upper blue member self-correct horizontal crane sway along the 14° taper, seat flush onto the grey bearing shoulders, and drive the rust preload wedge home.",
+        walkthrough: [
+          { title: "The Crane-Hold Bottleneck", val: 12, text: "Standard splice plates force ironworkers to pry 24 bolt holes into alignment 40 ft up while the tower crane burns $450/hr waiting on the hook." },
+          { title: "±18 mm Automatic Capture", val: 50, text: "Lowering into the 14° conical throat captures up to 18 mm of wind sway automatically—no spud-wrench prying required." },
+          { title: "Direct Shoulder Compression", val: 80, text: "Gravity loads bypass small fasteners completely, bearing across 4,200 mm² of flat machined steel shoulder." },
+          { title: "Single Captive Wedge Lock", val: 100, text: "Driving one captive cross-wedge induces 85 kN preload—zero field fillet welding, zero cold-weather preheat, zero fire watch." }
+        ],
+        metrics: [
+          { value: "38 → 5.5 min", label: "crane hook time per connection in full-scale rig trials", cite: "tests/rig-stopwatch.csv" },
+          { value: "±18 mm", label: "horizontal crane sway captured without manual prying", cite: "cad/capture-envelope.py" },
+          { value: "312 kN", label: "mean tensile pull-out across 6 CNC S355 bench units", cite: "results/instron-v2.json" },
+          { value: "0 welds", label: "field hot-work eliminated on erection floor", cite: "docs/method-statement.md" }
+        ],
+        verification: {
+          propose: "4,800 cone angles and friction tapers swept to prevent self-jamming while resisting uplift (sim/taper_sweep.py).",
+          verify: "480/480 dusty-steel friction cases passed in contact solver + 18 physical S355 prototypes pulled to failure (results/instron-v2.json).",
+          sign: "Cleared for non-seismic industrial mezzanine pilots; full cyclic seismic qualification pending (SIGN_OFF.md)."
+        },
+        tableHeaders: ["Geometry Variant", "Capture Envelope", "Ultimate Pull-Out", "Disassembly Behavior", "Result"],
+        tableRows: [
+          ["12° Steep Cone", "±21 mm", "340 kN", "Binds under mill-scale rust", "Rejected"],
+          ["14° Selected Taper", "±18 mm", "312 kN", "Releases cleanly with 4 kg tap", "Selected"],
+          ["18° Shallow Cone", "±14 mm", "245 kN", "Higher transverse wedge shear", "Backup"],
+          ["8-Bolt Fin Plate (Baseline)", "±2 mm", "280 kN", "38 min crane alignment hold", "Baseline"]
+        ],
+        untested: "High-cycle AISC 341 seismic reversal, hot-dip galvanizing zinc buildup on wedge fit, and 2-hour intumescent fire-coating clearances have NOT been tested yet."
+      },
+      {
+        slug: "kerf-box-beam",
+        shortName: "Kerf-Box Beam",
+        title: "Flat-Pack Laser-Kerfed Structural Box Folding",
+        sector: "Fabrication",
+        station: "02 · Shop Fabrication",
+        coords: { x: 0.35, y: 0.36 },
+        rung: 4,
+        statusNote: "40 linear meters folded in pilot run",
+        caveat: "Secondary framing & dry/coated service",
+        visualType: "kerf",
+        sliderLabel: "Fold Angle (0° Flat Stack → 90° Locked Tube)",
+        sliderMin: 0,
+        sliderMax: 90,
+        sliderDefault: 74,
+        sliderUnit: "° fold",
+        presets: [
+          { label: "Flat on Truck (0°)", val: 0 },
+          { label: "Strap-Winch Fold (45°)", val: 45 },
+          { label: "Snap-Locked Tube (90°)", val: 90 }
+        ],
+        builderSummary: "Ship hollow steel beams flat like plywood—6.4× more framing on every flatbed—then fold them into rigid closed box sections without a 400-ton press brake.",
+        engineerSummary: "Staggered laser-cut relief kerf bridges along bend lines cut plastic folding torque by 84% while interlocking dovetail tabs restore closed-tube torsion & shear flow.",
+        howToRead: "Slide from 0° (flat laser-cut steel sheet) to 90°. Watch the four walls fold up around the orange laser-kerf hinges until the top dovetail seam closes, boosting stiffness 19.2×.",
+        walkthrough: [
+          { title: "Stop Paying Freight to Ship Air", val: 0, text: "Standard hollow structural steel (HSS) tubes cube out a flatbed volume long before weight limits—you haul mostly empty air." },
+          { title: "One-Pass Fiber Laser Kerfs", val: 30, text: "Staggered slot bridges along four fold lines drop bending torque by 84%, letting a light shop jig or hand strap-winch fold 3 mm steel." },
+          { title: "Self-Registering Seam Teeth", val: 65, text: "Chamfered tab-and-slot teeth along the open edge pull the 6-meter beam straight into register as it closes." },
+          { title: "90° Closed Torsion Box", val: 90, text: "At 90°, tabs snap-latch; quick blind rivets or stitch tacks lock 89% of solid HSS stiffness." }
+        ],
+        metrics: [
+          { value: "6.4×", label: "more linear meters shipped per 40-ft flatbed trailer", cite: "logistics/flatbed-pack.json" },
+          { value: "−84%", label: "peak folding torque vs solid press-brake forming", cite: "tests/hinge-torque.csv" },
+          { value: "19.2×", label: "bending stiffness gain (Ixx) from flat sheet to locked box", cite: "calc/section_ixx.py" },
+          { value: "3.0 min", label: "two-person fold & latch time for a 6 m × 150 mm beam", cite: "pilot/shop-run-04.md" }
+        ],
+        verification: {
+          propose: "11,200 kerf bridge patterns optimized for minimum fold torque vs maximum post-latch web shear (optim/kerf_pareto.py).",
+          verify: "24 full-scale 3.0 mm ASTM A1011 beams laser-cut, folded, and 4-point bend tested to buckling (pilot/bend-summary.csv).",
+          sign: "Active pilot on interior partition headers and solar purlins; coastal exterior corrosion sealing still open (SIGN_OFF.md)."
+        },
+        tableHeaders: ["Fold State", "Stack Height", "Relative Stiffness (Ixx)", "Crew Effort", "Use"],
+        tableRows: [
+          ["0° Flat Laser Blank", "18 mm / beam", "1.0×", "240 beams per truckload", "Freight"],
+          ["45° Mid-Fold", "112 mm", "7.8×", "310 N strap pull", "Assembly"],
+          ["90° Tab-Latched", "150 × 150 mm", "16.4×", "Zero welding needed", "Light framing"],
+          ["90° Latched + Riveted", "150 × 150 mm", "19.2×", "89% of solid HSS tube", "Pilot spec"]
+        ],
+        untested: "Unsealed kerf slots admit moisture in coastal salt-spray exposure unless foam-filled or hot-dip galvanized; crane-runway high-cycle fatigue is untested."
+      },
+      {
+        slug: "rapid-geobinder",
+        shortName: "Rapid-GeoBinder",
+        title: "4-Hour Form-Strip Low-Clinker Precast & Slab Binder",
+        sector: "Materials",
+        station: "01 · Material & Mix",
+        coords: { x: 0.14, y: 0.52 },
+        rung: 3,
+        statusNote: "162 ASTM C39 cylinders crushed + 2 m³ batch",
+        caveat: "Non-prestressed precast elements during pilot",
+        visualType: "cure",
+        sliderLabel: "Ambient Yard / Jobsite Temperature",
+        sliderMin: 0,
+        sliderMax: 40,
+        sliderDefault: 15,
+        sliderUnit: "°C ambient",
+        presets: [
+          { label: "Cold Morning (4°C)", val: 4 },
+          { label: "Standard Shop (15°C)", val: 15 },
+          { label: "Summer Yard (32°C)", val: 32 }
+        ],
+        builderSummary: "Pour at 7 AM, strip forms at 11 AM—turn every steel precast mold twice a day without burning natural gas for steam curing.",
+        engineerSummary: "Slag-calcined clay-silicate binder with bimodal micro-sand particle packing hitting 22 MPa in 4 hours at 15°C with 61% lower embodied CO₂e.",
+        howToRead: "Adjust ambient site temperature (0°C–40°C). Compare the solid rust strength curve (Rapid-GeoBinder) against conventional Portland cement (dashed grey) and the green 20 MPa crane-lifting gate.",
+        walkthrough: [
+          { title: "One Mold Turn a Day Hurts Margin", val: 12, text: "Conventional concrete needs 18–24 hours to reach 20 MPa lifting strength unless precast plants burn expensive steam overnight." },
+          { title: "Dense Sand Packing Cuts Water 23%", val: 15, text: "Bimodal quarry fines pack tight between sand grains, slashing mix water so green strength builds rapidly without shrinkage cracking." },
+          { title: "3.9-Hour Strip Gate at 15°C", val: 15, text: "Crossing 20 MPa before lunch lets crews lift Vault #1, oil the steel bed, drop a rebar cage, and pour Vault #2 on the same shift." },
+          { title: "Cold-Morning Resilience (4°C)", val: 4, text: "Even at 4°C without heated blankets, alkali-slag exotherm hits 20 MPa in 6.8 hours while standard OPC stalls below 4 MPa." }
+        ],
+        metrics: [
+          { value: "3.9 hrs", label: "time to 20 MPa crane-lifting & form-strip strength at 15°C", cite: "batches/calorimetry-b19.csv" },
+          { value: "2× / day", label: "mold turnover on existing steel beds with zero steam heat", cite: "econ/yard-throughput.py" },
+          { value: "−61% CO₂e", label: "binder emissions vs Type GU/I Portland cement", cite: "lca/binder-epd.json" },
+          { value: "48 min", label: "workable slump window using dry-bagged retarder dose", cite: "batches/slump-flow.csv" }
+        ],
+        verification: {
+          propose: "940 slag/clay/activator/sand packing ratios modeled for ≥45 min slump life + ≤4 hr strip strength (mix_opt/bayesian_mix.py).",
+          verify: "162 cylinders crushed under ASTM C39 at 2h, 4h, 8h, 24h, and 28d across 4°C, 15°C, and 32°C chambers (batches/c39-breaks.csv).",
+          sign: "Approved for utility vaults, trench lids, and Jersey barriers; prestressed strand bond & de-icing salt scaling still running (SIGN_OFF.md)."
+        },
+        tableHeaders: ["Site Temp", "Time to 20 MPa", "4-Hour Strength", "28-Day Cylinder", "Plant Guidance"],
+        tableRows: [
+          ["4°C Cold Site", "6.8 hrs", "12.8 MPa", "51.0 MPa", "No steam needed; OPC < 4 MPa"],
+          ["15°C Standard", "3.9 hrs", "22.1 MPa", "58.4 MPa", "Enables 2× daily bed turns"],
+          ["25°C Warm Shop", "2.7 hrs", "27.8 MPa", "61.2 MPa", "Use 0.15% citrate retarder"],
+          ["35°C Summer Yard", "2.1 hrs", "30.5 MPa", "59.0 MPa", "Chill mix water for 45m slump"]
+        ],
+        untested: "Prestressing tendon bond relaxation and 300-cycle ASTM C672 de-icing salt freeze-thaw scaling are still in chamber testing."
+      },
+      {
+        slug: "mill-eye-dock",
+        shortName: "Mill-Eye QC",
+        title: "Receiving-Dock Mill Cert & Laser Profile Gate",
+        sector: "Dock & QC",
+        station: "03 · Receiving Dock",
+        coords: { x: 0.61, y: 0.56 },
+        rung: 4,
+        statusNote: "Live on 2 steel receiving docks",
+        caveat: "Receiving lead reviews & signs every hold",
+        visualType: "vision",
+        sliderLabel: "Simulated Incoming Steel Bundle Drift",
+        sliderMin: 0,
+        sliderMax: 100,
+        sliderDefault: 60,
+        sliderUnit: "% anomaly",
+        presets: [
+          { label: "In-Spec Bundle (8%)", val: 8 },
+          { label: "Warped Flange Toe (56%)", val: 56 },
+          { label: "Wrong Yield / Grade Trap (90%)", val: 90 }
+        ],
+        builderSummary: "Catch out-of-square flanges and mismatched steel Mill Test Certificates while the bundle is still on the truck—not six weeks later when CNC saws jam.",
+        engineerSummary: "Clip-on stereo line-laser cross-section gauge (±0.18 mm) paired with deterministic ASTM A6 & EN 10204 3.1 MTC heat-chemistry verifier.",
+        howToRead: "Slide anomaly severity from 0% to 100%. Left displays live laser cross-section vs ASTM A6 flange squareness bounds; right displays deterministic Mill Test Certificate yield & weldability checks.",
+        walkthrough: [
+          { title: "The Scanned-PDF Blindspot", val: 8, text: "Suppliers email 14-page scanned Mill Test Certificates while forklifts unload in the rain—nobody manually checks Carbon Equivalent (CEV) or yield per heat." },
+          { title: "2-Second End-of-Bundle Laser Sweep", val: 35, text: "A handheld line-laser measures web gauge, flange width, and flange tilt to ±0.18 mm right on the flatbed." },
+          { title: "Catching Jig-Jamming Flange Tilt", val: 58, text: "When flange out-of-squareness passes 4.0 mm, automated coping lines jam; Mill-Eye flags the exact bundle for quarantine." },
+          { title: "Catching Grade & Weldability Traps", val: 90, text: "Flags immediately if softer A36 (250 MPa) steel was stenciled into an A992 (345 MPa) order or if CEV requires weld preheat." }
+        ],
+        metrics: [
+          { value: "1.8 sec", label: "end-profile laser scan + MTC spec check on offline tablet", cite: "bench/field-latency.json" },
+          { value: "±0.18 mm", label: "dimensional accuracy vs calibrated Mitutoyo micrometers", cite: "validation/gauge-r_and_r.csv" },
+          { value: "42 / 42", label: "seeded grade, heat & CEV traps caught across 610 real MTCs", cite: "tests/mtc-golden.py" },
+          { value: "100% Local", label: "runs offline inside metal warehouses with zero Wi-Fi", cite: "docs/offline-mode.md" }
+        ],
+        verification: {
+          propose: "Vision OCR extracts candidate heat numbers, chemistry, and yield tables from messy multi-language PDFs (pipeline/ocr_extract.py).",
+          verify: "34 deterministic ASTM A6 / A992 / AWS D1.1 rules check geometry, yield/tensile ratio, and CEV bounds (checker/astm_gate.py).",
+          sign: "Receiving buyer sees highlighted clause + laser overlay and decides whether to accept, tag preheat, or reject on truck (SIGN_OFF.md)."
+        },
+        tableHeaders: ["Incoming Bundle Case", "Laser Flange Tilt", "MTC Yield", "Carbon Eq. (CEV)", "Gate Decision"],
+        tableRows: [
+          ["Clean W250×73 (8%)", "+0.3 mm", "368 MPa (A992)", "0.41 (OK)", "PASS — Unload"],
+          ["Flange Toe Drift (56%)", "+4.9 mm (>4.0)", "362 MPa (A992)", "0.42 (OK)", "HOLD — Check CNC Jig"],
+          ["High-Carbon Heat (75%)", "+0.8 mm", "379 MPa (A992)", "0.49 (High)", "TAG — Weld Preheat Req."],
+          ["Wrong Grade Slip (90%)", "+0.5 mm", "262 MPa (A36!)", "0.38 (OK)", "REJECT ON FLATBED"]
+        ],
+        untested: "Heavy ice crust or loose flaking mill scale on bar ends requires a quick wire-brush pass before laser scanning."
+      },
+      {
+        slug: "pooled-cut-nest",
+        shortName: "Pooled-Cut Nest",
+        title: "Multi-Job Pooled Plate, Rebar & CLT Zero-Scrap Nester",
+        sector: "Yield & Cut",
+        station: "02 · Shop Fabrication",
+        coords: { x: 0.43, y: 0.66 },
+        rung: 5,
+        statusNote: "Running in daily production cut releases",
+        caveat: "Respects rolling-grain lock on architectural stock",
+        visualType: "nest",
+        sliderLabel: "Pooled Workorder Horizon (1 Job → 6 Jobs)",
+        sliderMin: 1,
+        sliderMax: 6,
+        sliderDefault: 4,
+        sliderUnit: " jobs pooled",
+        presets: [
+          { label: "1 Job Silo (18% Scrap)", val: 1 },
+          { label: "3-Job Window", val: 3 },
+          { label: "6-Job Shop Pool (3.2% Scrap)", val: 6 }
+        ],
+        builderSummary: "Stop paying $1,400/tonne for steel plate and throwing 18% in the scrap hopper—automatically tuck next week's small gussets and shims into today's offcut pockets.",
+        engineerSummary: "Exact non-overlapping polygon branch-and-price nester with rolling-grain constraints, shared plasma kerf lines, and laser-etched job tote sorting.",
+        howToRead: "Slide from 1 Job (isolated workorder) to 6 Jobs pooled. Watch upcoming brackets and stiffeners fill the wasted space on the plate while scrap drops from 18.4% to 3.2%.",
+        walkthrough: [
+          { title: "Single-Job Nesting Creates 18% Scrap", val: 1, text: "Cutting Job #1 alone leaves awkward skeletons between big frames that are too small for Job #1—so crews torch them into scrap." },
+          { title: "3-Job Rolling Lookahead", val: 3, text: "Pulling approved small gussets and baseplates from the next 3 days fills open plate pockets while the sheet is already on the table." },
+          { title: "Shared Torch Lines (−31% Pierces)", val: 5, text: "Matching straight edges share a single plasma/laser cut, extending nozzle life and speeding table cycle time." },
+          { title: "Etched Tote Codes Keep Sorting Simple", val: 6, text: "Every nested part gets a fast laser-marked tote number (J1–J6) so table unloaders sort six jobs onto pallets without mix-ups." }
+        ],
+        metrics: [
+          { value: "18.4 → 3.2%", label: "plate & mass-timber offcut scrap across 140 t of shop BOMs", cite: "bench/140t-replay.json" },
+          { value: "$21,400", label: "material saved per 100 tonnes of structural steel cut", cite: "econ/scrap-savings.csv" },
+          { value: "−31%", label: "plasma torch pierces via common-line shared cuts", cite: "solver/kerf_stats.py" },
+          { value: "0 collisions", label: "exact polygon & grain-angle gate verifies every DXF/NC file", cite: "checker/dxf_gate.py" }
+        ],
+        verification: {
+          propose: "50,000+ multi-sheet rotational packings searched in under 90 seconds per morning cut release (solver/nfp_search.rs).",
+          verify: "Exact rational-arithmetic polygon separator checks minimum bridge width, kerf offset, and grain lock (checker/dxf_gate.py).",
+          sign: "Shop nesting lead locks priority rush orders and approves pallet tote count before releasing NC code (SIGN_OFF.md)."
+        },
+        tableHeaders: ["Pooling Window", "Plate Utilization", "Scrap Bin %", "Torch Pierces", "Savings / 100 t"],
+        tableRows: [
+          ["1 Job Isolated", "81.6%", "18.4%", "100% (baseline)", "$0"],
+          ["2 Jobs Pooled", "89.1%", "10.9%", "82%", "+$10,570"],
+          ["4 Jobs Pooled (Std)", "95.4%", "4.6%", "71%", "+$19,450"],
+          ["6 Jobs Pooled", "96.8%", "3.2%", "69%", "+$21,430"]
+        ],
+        untested: "Pooling beyond 6 concurrent jobs requires >6 unloading totes beside the plasma table; architectural exposed CLT panels lock grain to 0°/180° (~2.4% lower yield)."
+      }
+    ];
+
+    /* ========================================================================
+       2. STATE & HASH SUBPAGE ROUTER (`#/` and `#/<project-slug>`)
+       ======================================================================== */
+    const state = {
+      theme: "light",
+      lens: "builder",       // 'builder' | 'engineer'
+      sectorFilter: "All",
+      projects: [...CORE_PROJECTS],
+      baySelectedSlug: CORE_PROJECTS[0].slug,
+      currentRouteSlug: null, // null => Dock Index (#/), string => Project Subpage (#/<slug>)
+      sliderValues: {},
+      activeStepIdx: 0
+    };
+
+    CORE_PROJECTS.forEach(p => {
+      state.sliderValues[p.slug] = p.sliderDefault;
+    });
+
+    function parseHashRoute() {
+      const raw = (window.location.hash || "#/").replace(/^#\/?/, "").trim();
+      const cleaned = raw.replace(/^projects?\//, "");
+      if (!cleaned) {
+        state.currentRouteSlug = null;
+      } else {
+        const found = state.projects.find(p => p.slug.toLowerCase() === cleaned.toLowerCase());
+        state.currentRouteSlug = found ? found.slug : null;
+      }
+      state.activeStepIdx = 0;
+      renderApp();
+      window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+    }
+
+    function openSubpage(slug) {
+      window.location.hash = slug ? `#/${slug}` : "#/";
+    }
+
+    window.addEventListener("hashchange", parseHashRoute);
+
+    /* ========================================================================
+       3. BACKGROUND GITHUB ORG DISCOVERY (`github.com/orgs/aska-physical`)
+       Automatically mounts any newly published org repos as live subpages!
+       ======================================================================== */
+    async function syncAskaPhysicalOrg() {
+      const pill = document.getElementById("orgSyncPill");
+      try {
+        const res = await fetch("https://api.github.com/orgs/aska-physical/repos?per_page=50&sort=updated", {
+          headers: { "Accept": "application/vnd.github+json" }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const repos = await res.json();
+        const ignore = new Set(["dock", "the-dock", "aska-physical.github.io", ".github"]);
+        const liveProjectRepos = (Array.isArray(repos) ? repos : []).filter(r => !ignore.has(r.name.toLowerCase()));
+
+        const existingSlugs = new Set(CORE_PROJECTS.map(p => p.slug.toLowerCase()));
+        const visualFallbackOrder = ["interlock", "kerf", "cure", "vision", "nest"];
+
+        liveProjectRepos.forEach((repo, i) => {
+          const slug = repo.name;
+          if (!existingSlugs.has(slug.toLowerCase())) {
+            const template = CORE_PROJECTS[i % CORE_PROJECTS.length];
+            const newProj = {
+              ...template,
+              slug,
+              shortName: slug.replace(/[-_]/g, " ").replace(/\b\w/g, c => c.toUpperCase()).slice(0, 18),
+              title: slug.replace(/[-_]/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+              sector: repo.language || template.sector,
+              rung: 3,
+              statusNote: `Live GitHub Repo · Updated ${(repo.pushed_at || "").slice(0, 10) || "recently"}`,
+              visualType: visualFallbackOrder[i % visualFallbackOrder.length],
+              builderSummary: repo.description || "Open manufacturing & construction R&D repository published under aska-physical.",
+              engineerSummary: repo.description || "Open engineering repository under github.com/aska-physical.",
+              externalRepoUrl: repo.html_url,
+              coords: { x: 0.20 + ((i * 0.23) % 0.68), y: 0.38 + ((i * 0.19) % 0.30) }
+            };
+            state.projects.push(newProj);
+            state.sliderValues[newProj.slug] = newProj.sliderDefault;
+          }
+        });
+
+        if (pill) {
+          pill.className = "badge-pill badge-verified";
+          pill.textContent = liveProjectRepos.length > 0
+            ? `● ${liveProjectRepos.length} live org repo(s) + subpages ready`
+            : `● aska-physical connected · ${state.projects.length} R&D subpages`;
+        }
+        parseHashRoute();
+      } catch (_) {
+        if (pill) {
+          pill.className = "badge-pill";
+          pill.textContent = `● ${state.projects.length} R&D subpages active`;
+        }
+      }
+    }
+
+    /* ========================================================================
+       4. UI CONTROLS (THEME & SHOP/ENGINEER LENS)
+       ======================================================================== */
+    function toggleTheme() {
+      state.theme = state.theme === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", state.theme);
+      const btn = document.getElementById("themeBtn");
+      if (btn) btn.textContent = state.theme === "light" ? "Dark" : "Light";
+      redrawVisibleCanvases();
+    }
+
+    function setLens(lens) {
+      state.lens = lens;
+      const isBuilder = lens === "builder";
+
+      const bDesktop = document.getElementById("lensBuilderBtn");
+      const eDesktop = document.getElementById("lensEngineerBtn");
+      if (bDesktop && eDesktop) {
+        bDesktop.className = `px-2.5 py-1 rounded text-[11px] font-mono-tech transition-colors ${isBuilder ? "bg-[var(--fg)] text-[var(--bg)]" : "text-[var(--fg-muted)]"}`;
+        eDesktop.className = `px-2.5 py-1 rounded text-[11px] font-mono-tech transition-colors ${!isBuilder ? "bg-[var(--fg)] text-[var(--bg)]" : "text-[var(--fg-muted)]"}`;
+      }
+
+      const bMob = document.getElementById("lensBuilderBtnMobile");
+      const eMob = document.getElementById("lensEngineerBtnMobile");
+      if (bMob && eMob) {
+        bMob.classList.toggle("active", isBuilder);
+        eMob.classList.toggle("active", !isBuilder);
+      }
+
+      renderApp();
+    }
+
+    function setSectorFilter(sector) {
+      state.sectorFilter = sector;
+      renderDockIndex();
+    }
+
+    /* ========================================================================
+       5. RENDERING: HEADER SUBPAGE BAR, DOCK INDEX & PROJECT SUBPAGE
+       ======================================================================== */
+    function renderApp() {
+      renderSubpageNav();
+      const indexEl = document.getElementById("dockIndexView");
+      const subEl = document.getElementById("projectSubpageView");
+      const badge = document.getElementById("routePathBadge");
+
+      if (!state.currentRouteSlug) {
+        indexEl.classList.remove("hidden");
+        subEl.classList.add("hidden");
+        if (badge) badge.textContent = "/index";
+        document.title = "The Dock · ASKA Physical — R&D Hub";
+        renderDockIndex();
+      } else {
+        indexEl.classList.add("hidden");
+        subEl.classList.remove("hidden");
+        if (badge) badge.textContent = `/${state.currentRouteSlug}`;
+        const proj = getProject(state.currentRouteSlug);
+        document.title = `${proj.shortName} · The Dock — ASKA Physical`;
+        renderProjectSubpage(proj);
+      }
+    }
+
+    function getProject(slug) {
+      return state.projects.find(p => p.slug === slug) || state.projects[0];
+    }
+
+    function getRungMeta(rungNum) {
+      return READINESS_RUNGS.find(r => r.rung === rungNum) || READINESS_RUNGS[2];
+    }
+
+    /* --- Persistent Subpage Strip at Top --- */
+    function renderSubpageNav() {
+      const nav = document.getElementById("subpageNavStrip");
+      if (!nav) return;
+
+      const isHome = !state.currentRouteSlug;
+      let html = `
+        <a href="#/" class="px-2.5 py-1 rounded text-xs font-mono-tech transition-colors shrink-0 ${
+          isHome ? "bg-[var(--fg)] text-[var(--bg)] font-semibold" : "text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-subtle)]"
+        }">
+          ∅ Dock Index
+        </a>
+        <span class="text-[var(--border)] font-mono-tech text-xs select-none">|</span>
+      `;
+
+      state.projects.forEach((p, idx) => {
+        const active = state.currentRouteSlug === p.slug;
+        const num = String(idx + 1).padStart(2, "0");
+        html += `
+          <a href="#/${p.slug}" class="px-2.5 py-1 rounded text-xs font-mono-tech transition-colors shrink-0 ${
+            active
+              ? "bg-[var(--accent)] text-white font-semibold"
+              : "text-[var(--fg-muted)] hover:text-[var(--fg)] hover:bg-[var(--bg-subtle)]"
+          }">
+            <span class="opacity-65">${num}</span> ${escapeHtml(p.shortName)}
+          </a>
+        `;
+      });
+
+      nav.innerHTML = html;
+    }
+
+    /* --- Route 1: Dock Index --- */
+    function renderDockIndex() {
+      renderBayInspector();
+      renderSectorFilters();
+      renderProjectCards();
+      renderRungLegend();
+      requestAnimationFrame(() => {
+        drawBaySchematic();
+        drawIndexCardCanvases();
+      });
+    }
+
+    function renderBayInspector() {
+      const box = document.getElementById("bayInspector");
+      const counter = document.getElementById("bayStationCounter");
+      if (!box) return;
+
+      const idx = Math.max(0, state.projects.findIndex(p => p.slug === state.baySelectedSlug));
+      const p = state.projects[idx] || state.projects[0];
+      const rung = getRungMeta(p.rung);
+      const summary = state.lens === "builder" ? p.builderSummary : p.engineerSummary;
+
+      if (counter) counter.textContent = `Station ${idx + 1} / ${state.projects.length} · ${p.station}`;
+
+      box.innerHTML = `
+        <div class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="badge-pill">${escapeHtml(p.station)}</span>
+            <span class="badge-pill ${rung.badge}">Rung ${p.rung}/5</span>
+          </div>
+          <div>
+            <div class="font-mono-tech text-xs text-[var(--accent)]">/${escapeHtml(p.slug)}</div>
+            <h3 class="font-serif-editorial text-2xl leading-snug mt-0.5">${escapeHtml(p.title)}</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-relaxed">
+            ${escapeHtml(summary)}
+          </p>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            ${p.metrics.slice(0, 2).map(m => `
+              <div class="bg-[var(--bg-subtle)] border border-[var(--border)] rounded p-2.5">
+                <div class="font-mono-tech text-sm font-semibold text-[var(--fg)]">${escapeHtml(m.value)}</div>
+                <div class="text-[11px] text-[var(--fg-muted)] leading-tight mt-0.5">${escapeHtml(m.label)}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+        <div class="pt-3 border-t border-[var(--border)] flex items-center justify-between gap-2">
+          <button onclick="cycleBayStation(-1)" class="ctrl-btn" title="Previous station">←</button>
+          <a href="#/${p.slug}" class="flex-1 text-center py-2 px-3 rounded font-mono-tech text-xs font-semibold bg-[var(--fg)] text-[var(--bg)] hover:opacity-90 transition-opacity">
+            Open Subpage →
+          </a>
+          <button onclick="cycleBayStation(1)" class="ctrl-btn" title="Next station">→</button>
+        </div>
+      `;
+    }
+
+    function cycleBayStation(delta) {
+      const idx = Math.max(0, state.projects.findIndex(p => p.slug === state.baySelectedSlug));
+      const next = (idx + delta + state.projects.length) % state.projects.length;
+      state.baySelectedSlug = state.projects[next].slug;
+      renderBayInspector();
+      drawBaySchematic();
+    }
+
+    function renderSectorFilters() {
+      const bar = document.getElementById("sectorFilterBar");
+      if (!bar) return;
+      const sectors = ["All", ...new Set(state.projects.map(p => p.sector))];
+      bar.innerHTML = sectors.map(sec => `
+        <button onclick="setSectorFilter('${escapeHtml(sec)}')" class="ctrl-btn ${state.sectorFilter === sec ? "active" : ""}">
+          ${escapeHtml(sec)}
+        </button>
+      `).join("");
+    }
+
+    function renderProjectCards() {
+      const grid = document.getElementById("projectCardsList");
+      if (!grid) return;
+
+      const filtered = state.sectorFilter === "All"
+        ? state.projects
+        : state.projects.filter(p => p.sector === state.sectorFilter);
+
+      grid.innerHTML = filtered.map(p => {
+        const rung = getRungMeta(p.rung);
+        const val = state.sliderValues[p.slug] ?? p.sliderDefault;
+        const summary = state.lens === "builder" ? p.builderSummary : p.engineerSummary;
+
+        return `
+          <article class="surface-card p-5 flex flex-col justify-between space-y-4">
+            <div class="space-y-3">
+              <!-- Card Top Meta -->
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="badge-pill">${escapeHtml(p.sector)}</span>
+                  <span class="badge-pill ${rung.badge}">Rung ${p.rung}/5</span>
+                </div>
+                <a href="#/${p.slug}" class="font-mono-tech text-xs text-[var(--accent)] hover:underline">
+                  #/${escapeHtml(p.slug)} →
+                </a>
+              </div>
+
+              <!-- Title & Summary -->
+              <div>
+                <h3 class="font-serif-editorial text-2xl sm:text-[1.7rem] leading-tight">
+                  <a href="#/${p.slug}" class="hover:underline">${escapeHtml(p.title)}</a>
+                </h3>
+                <p class="text-sm text-[var(--fg-muted)] mt-2 leading-relaxed">
+                  ${escapeHtml(summary)}
+                </p>
+              </div>
+
+              <!-- Interactive Preview Canvas right inside the Index Card -->
+              <div class="canvas-frame p-2.5 space-y-2">
+                <canvas id="card-canvas-${p.slug}" class="w-full h-[185px] rounded block"></canvas>
+                <div class="flex items-center gap-3 px-1 pt-1">
+                  <span class="font-mono-tech text-[11px] text-[var(--fg-muted)] truncate flex-1">${escapeHtml(p.sliderLabel)}</span>
+                  <span id="card-val-${p.slug}" class="font-mono-tech text-xs font-semibold text-[var(--accent)]">${val} ${escapeHtml(p.sliderUnit)}</span>
+                </div>
+                <input
+                  type="range"
+                  min="${p.sliderMin}"
+                  max="${p.sliderMax}"
+                  value="${val}"
+                  oninput="updateProjectSlider('${p.slug}', this.value)"
+                  class="precision-slider w-full"
+                  aria-label="${escapeHtml(p.sliderLabel)}"
+                />
+              </div>
+
+              <!-- Key Sourced Metrics -->
+              <div class="grid grid-cols-2 gap-2.5">
+                ${p.metrics.slice(0, 2).map(m => `
+                  <div class="p-2.5 rounded bg-[var(--bg-subtle)] border border-[var(--border)]">
+                    <div class="font-mono-tech text-sm font-semibold">${escapeHtml(m.value)}</div>
+                    <div class="text-xs text-[var(--fg-muted)] leading-snug mt-0.5">${escapeHtml(m.label)}</div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+
+            <!-- Subpage CTA Footer -->
+            <div class="pt-3 border-t border-[var(--border)] flex items-center justify-between gap-3">
+              <span class="font-mono-tech text-[11px] text-[var(--fg-faint)] truncate">${escapeHtml(p.statusNote)}</span>
+              <a href="#/${p.slug}" class="px-3.5 py-2 rounded font-mono-tech text-xs font-semibold bg-[var(--fg)] text-[var(--bg)] hover:opacity-90 transition-opacity shrink-0">
+                Open Project Subpage →
+              </a>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderRungLegend() {
+      const el = document.getElementById("rungLegendList");
+      if (!el) return;
+
+      el.innerHTML = READINESS_RUNGS.map(r => {
+        const matching = state.projects.filter(p => p.rung === r.rung);
+        return `
+          <div class="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="space-y-0.5">
+              <div class="flex items-center gap-2">
+                <span class="badge-pill ${r.badge}">Rung ${r.rung}</span>
+                <span class="text-xs sm:text-sm font-semibold">${escapeHtml(r.label)}</span>
+              </div>
+              <p class="text-xs text-[var(--fg-muted)]">${escapeHtml(r.desc)}</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 shrink-0">
+              ${matching.length > 0
+                ? matching.map(m => `<a href="#/${m.slug}" class="font-mono-tech text-[11px] px-2 py-0.5 rounded border border-[var(--border)] bg-[var(--bg-subtle)] hover:border-[var(--fg)]">${escapeHtml(m.shortName)}</a>`).join("")
+                : `<span class="font-mono-tech text-[11px] text-[var(--fg-faint)]">—</span>`
+              }
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    /* --- Route 2: Full Dedicated Project Subpage (`#/<slug>`) --- */
+    function renderProjectSubpage(p) {
+      const container = document.getElementById("projectSubpageView");
+      if (!container) return;
+
+      const idx = state.projects.findIndex(item => item.slug === p.slug);
+      const prevProj = state.projects[(idx - 1 + state.projects.length) % state.projects.length];
+      const nextProj = state.projects[(idx + 1) % state.projects.length];
+      const rung = getRungMeta(p.rung);
+      const val = state.sliderValues[p.slug] ?? p.sliderDefault;
+      const repoUrl = p.externalRepoUrl || `https://github.com/aska-physical/${p.slug}`;
+      const headlineSummary = state.lens === "builder" ? p.builderSummary : p.engineerSummary;
+      const secondarySummary = state.lens === "builder" ? p.engineerSummary : p.builderSummary;
+      const secondaryLabel = state.lens === "builder" ? "Engineering Mechanism" : "Shop & Jobsite Translation";
+
+      container.innerHTML = `
+        <!-- Breadcrumb & Repo Link -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[var(--border)]">
+          <div class="flex items-center gap-2 font-mono-tech text-xs">
+            <a href="#/" class="ctrl-btn inline-flex items-center gap-1.5">← Back to The Dock</a>
+            <span class="text-[var(--fg-faint)]">/</span>
+            <span class="text-[var(--accent)] font-semibold">${escapeHtml(p.slug)}</span>
+          </div>
+          <a href="${escapeHtml(repoUrl)}" target="_blank" rel="noopener" class="ctrl-btn inline-flex items-center gap-1.5">
+            github.com/aska-physical/${escapeHtml(p.slug)} ↗
+          </a>
+        </div>
+
+        <!-- Subpage Header -->
+        <header class="space-y-5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="badge-pill">${escapeHtml(p.station)}</span>
+            <span class="badge-pill ${rung.badge}">Readiness Rung ${p.rung}/5 · ${escapeHtml(rung.label)}</span>
+            <span class="badge-pill badge-amber">⚠ ${escapeHtml(p.caveat)}</span>
+          </div>
+
+          <h1 class="font-serif-editorial text-4xl sm:text-5xl lg:text-6xl leading-[1.04]">
+            ${escapeHtml(p.title)}
+          </h1>
+
+          <p class="text-base sm:text-xl text-[var(--fg)] leading-relaxed max-w-4xl">
+            ${escapeHtml(headlineSummary)}
+          </p>
+
+          <div class="surface-card p-4 bg-[var(--bg-subtle)] text-xs sm:text-sm text-[var(--fg-muted)]">
+            <span class="font-mono-tech text-[11px] uppercase tracking-wider text-[var(--fg)] font-semibold">${escapeHtml(secondaryLabel)}:</span>
+            ${escapeHtml(secondarySummary)}
+          </div>
+
+          <!-- 4 Sourced Headline Metrics -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+            ${p.metrics.map(m => `
+              <div class="surface-card p-4 flex flex-col justify-between">
+                <div>
+                  <div class="font-serif-editorial text-3xl sm:text-4xl text-[var(--fg)]">${escapeHtml(m.value)}</div>
+                  <div class="text-xs text-[var(--fg-muted)] mt-1 leading-snug">${escapeHtml(m.label)}</div>
+                </div>
+                <div class="font-mono-tech text-[10.5px] text-[var(--fg-faint)] mt-3 pt-2 border-t border-[var(--border)] truncate">
+                  src: ${escapeHtml(m.cite)}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </header>
+
+        <!-- 01 // INTERACTIVE MECHANISM WORKBENCH + STEP-BY-STEP WALKTHROUGH -->
+        <section class="space-y-4 pt-4 border-t border-[var(--border)]">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+            <div>
+              <div class="font-mono-tech text-xs text-[var(--fg-faint)]">01 // INTERACTIVE PHYSICAL WORKBENCH</div>
+              <h2 class="font-serif-editorial text-3xl">Test the mechanism directly</h2>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              ${p.presets.map(pre => `
+                <button onclick="updateProjectSlider('${p.slug}', ${pre.val})" class="ctrl-btn">
+                  ${escapeHtml(pre.label)}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+
+          <p class="text-xs sm:text-sm font-mono-tech text-[var(--fg-muted)] bg-[var(--bg-subtle)] p-3 rounded border border-[var(--border)]">
+            <strong class="text-[var(--fg)]">How to read:</strong> ${escapeHtml(p.howToRead)}
+          </p>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+            <!-- Large Interactive Canvas + Slider -->
+            <div class="lg:col-span-8 canvas-frame p-4 flex flex-col justify-between space-y-4">
+              <canvas id="subpage-main-canvas" class="w-full h-[290px] sm:h-[340px] rounded block"></canvas>
+
+              <div class="surface-card p-3.5 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label for="subpageSlider" class="font-mono-tech text-xs font-semibold">${escapeHtml(p.sliderLabel)}</label>
+                  <span id="subpage-slider-readout" class="font-mono-tech text-xs font-semibold text-[var(--accent)]">${val} ${escapeHtml(p.sliderUnit)}</span>
+                </div>
+                <input
+                  id="subpageSlider"
+                  type="range"
+                  min="${p.sliderMin}"
+                  max="${p.sliderMax}"
+                  value="${val}"
+                  oninput="updateProjectSlider('${p.slug}', this.value)"
+                  class="precision-slider w-full"
+                />
+              </div>
+            </div>
+
+            <!-- 4-Step Plain-Language Walkthrough -->
+            <div class="lg:col-span-4 flex flex-col justify-between space-y-2.5">
+              ${p.walkthrough.map((step, sIdx) => {
+                const isSelected = state.activeStepIdx === sIdx;
+                return `
+                  <button
+                    onclick="selectWalkthroughStep('${p.slug}', ${sIdx}, ${step.val})"
+                    class="text-left surface-card p-3.5 transition-all ${isSelected ? "border-[var(--accent)] ring-1 ring-[var(--accent)]" : ""}"
+                  >
+                    <div class="flex items-center justify-between font-mono-tech text-[11px] text-[var(--fg-faint)]">
+                      <span>STEP 0${sIdx + 1}</span>
+                      <span class="text-[var(--accent)]">${step.val} ${escapeHtml(p.sliderUnit)}</span>
+                    </div>
+                    <div class="font-semibold text-sm mt-0.5 text-[var(--fg)]">${escapeHtml(step.title)}</div>
+                    <p class="text-xs text-[var(--fg-muted)] mt-1 leading-relaxed">${escapeHtml(step.text)}</p>
+                  </button>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        </section>
+
+        <!-- 02 // THREE-STEP VERIFICATION LEDGER -->
+        <section class="space-y-4 pt-6 border-t border-[var(--border)]">
+          <div>
+            <div class="font-mono-tech text-xs text-[var(--fg-faint)]">02 // PROPOSE · VERIFY · SIGN</div>
+            <h2 class="font-serif-editorial text-3xl">How this repository was checked</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="surface-card p-4 space-y-2">
+              <span class="badge-pill badge-blueprint">01 · MODELS &amp; SOLVERS PROPOSE</span>
+              <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-relaxed">${escapeHtml(p.verification.propose)}</p>
+            </div>
+            <div class="surface-card p-4 space-y-2">
+              <span class="badge-pill badge-verified">02 · RIGS &amp; CHECKERS VERIFY</span>
+              <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-relaxed">${escapeHtml(p.verification.verify)}</p>
+            </div>
+            <div class="surface-card p-4 space-y-2">
+              <span class="badge-pill badge-amber">03 · ENGINEERS TEST &amp; SIGN</span>
+              <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-relaxed">${escapeHtml(p.verification.sign)}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 03 // MEASURED BENCH TABLE & HONEST UNTESTED LIMITS -->
+        <section class="space-y-5 pt-6 border-t border-[var(--border)]">
+          <div>
+            <div class="font-mono-tech text-xs text-[var(--fg-faint)]">03 // BENCHMARK DATA &amp; BOUNDARIES</div>
+            <h2 class="font-serif-editorial text-3xl">Measured numbers and what is NOT tested yet</h2>
+          </div>
+
+          <div class="surface-card overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+              <thead>
+                <tr class="border-b border-[var(--border)] bg-[var(--bg-subtle)] font-mono-tech text-xs text-[var(--fg-muted)]">
+                  ${p.tableHeaders.map(th => `<th class="py-3 px-4">${escapeHtml(th)}</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[var(--border)]">
+                ${p.tableRows.map(row => `
+                  <tr class="hover:bg-[var(--bg-subtle)]/50">
+                    ${row.map((cell, cIdx) => `<td class="py-3 px-4 ${cIdx === 0 ? "font-semibold text-[var(--fg)]" : "text-[var(--fg-muted)] font-mono-tech text-xs"}">${escapeHtml(cell)}</td>`).join("")}
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Explicit Untested Boundaries Callout -->
+          <div class="surface-card p-5 border-l-4 border-l-[var(--accent)] space-y-1.5">
+            <div class="font-mono-tech text-xs font-semibold text-[var(--accent)]">
+              BOUNDARY NOTICE // WHAT HAS NOT BEEN TESTED YET
+            </div>
+            <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-relaxed">
+              ${escapeHtml(p.untested)}
+            </p>
+          </div>
+        </section>
+
+        <!-- SUBPAGE PAGER FOOTER -->
+        <nav aria-label="Adjacent project subpages" class="pt-6 border-t border-[var(--border)] grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <a href="#/${prevProj.slug}" class="surface-card p-4 hover:border-[var(--fg)] transition-colors">
+            <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">← PREVIOUS SUBPAGE</div>
+            <div class="font-serif-editorial text-xl mt-0.5">${escapeHtml(prevProj.shortName)}</div>
+          </a>
+          <a href="#/" class="surface-card p-4 flex flex-col items-center justify-center text-center hover:border-[var(--fg)] transition-colors">
+            <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">∅ CENTRAL HUB</div>
+            <div class="font-mono-tech text-xs font-semibold mt-1">Return to Dock Index</div>
+          </a>
+          <a href="#/${nextProj.slug}" class="surface-card p-4 sm:text-right hover:border-[var(--fg)] transition-colors">
+            <div class="font-mono-tech text-[11px] text-[var(--fg-faint)]">NEXT SUBPAGE →</div>
+            <div class="font-serif-editorial text-xl mt-0.5">${escapeHtml(nextProj.shortName)}</div>
+          </a>
+        </nav>
+      `;
+
+      requestAnimationFrame(() => {
+        const canvas = document.getElementById("subpage-main-canvas");
+        if (canvas) renderPhysicsEngine(canvas, p.visualType, val);
+      });
+    }
+
+    function updateProjectSlider(slug, rawValue) {
+      const val = Number(rawValue);
+      state.sliderValues[slug] = val;
+      const p = getProject(slug);
+
+      // Update Index card if visible
+      const cardReadout = document.getElementById(`card-val-${slug}`);
+      if (cardReadout) cardReadout.textContent = `${val} ${p.sliderUnit}`;
+      const cardCanvas = document.getElementById(`card-canvas-${slug}`);
+      if (cardCanvas) renderPhysicsEngine(cardCanvas, p.visualType, val);
+
+      // Update Subpage workbench if visible
+      const subSlider = document.getElementById("subpageSlider");
+      if (subSlider && state.currentRouteSlug === slug && Number(subSlider.value) !== val) {
+        subSlider.value = val;
+      }
+      const subReadout = document.getElementById("subpage-slider-readout");
+      if (subReadout && state.currentRouteSlug === slug) {
+        subReadout.textContent = `${val} ${p.sliderUnit}`;
+      }
+      const subCanvas = document.getElementById("subpage-main-canvas");
+      if (subCanvas && state.currentRouteSlug === slug) {
+        renderPhysicsEngine(subCanvas, p.visualType, val);
+      }
+    }
+
+    function selectWalkthroughStep(slug, stepIdx, targetVal) {
+      state.activeStepIdx = stepIdx;
+      state.sliderValues[slug] = targetVal;
+      renderProjectSubpage(getProject(slug));
+    }
+
+    /* ========================================================================
+       6. INTERACTIVE 2D CANVAS SCHEMATICS & ALL 5 PHYSICS WORKBENCHES
+       ======================================================================== */
+    function palette() {
+      const dark = state.theme === "dark";
+      return {
+        panel: dark ? "#1A1E24" : "#FDFCF9",
+        ink: dark ? "#ECEAE3" : "#151513",
+        muted: dark ? "#9A978E" : "#5B5850",
+        faint: dark ? "#383E47" : "#CFCAC0",
+        accent: dark ? "#EA6A47" : "#C24124",
+        blueprint: dark ? "#60A5FA" : "#1E40AF",
+        verified: dark ? "#4ADE80" : "#166534",
+        amber: dark ? "#FBBF24" : "#B45309",
+        steel: dark ? "#64748B" : "#475569"
+      };
+    }
+
+    function prepCanvas(canvas) {
+      if (!canvas) return null;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width < 10 || rect.height < 10) return null;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cw = Math.round(rect.width * dpr);
+      const ch = Math.round(rect.height * dpr);
+      if (canvas.width !== cw || canvas.height !== ch) {
+        canvas.width = cw;
+        canvas.height = ch;
+      }
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      return { ctx, w: rect.width, h: rect.height };
+    }
+
+    function drawBox(ctx, x, y, w, h, r, fill, stroke) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
+    function drawTelemetryOverlay(ctx, x, y, w, rows, pal) {
+      const h = rows.length * 18 + 14;
+      ctx.fillStyle = pal.panel;
+      ctx.strokeStyle = pal.faint;
+      ctx.lineWidth = 1;
+      drawBox(ctx, x, y, w, h, 5, true, true);
+
+      ctx.font = "500 10px 'JetBrains Mono', monospace";
+      rows.forEach(([k, v], idx) => {
+        const ry = y + 17 + idx * 18;
+        ctx.fillStyle = pal.muted;
+        ctx.fillText(k, x + 8, ry);
+        ctx.fillStyle = pal.ink;
+        const tw = ctx.measureText(v).width;
+        ctx.fillText(v, x + w - tw - 8, ry);
+      });
+    }
+
+    /* --- Plant-to-Jobsite Bay Map --- */
+    function drawBaySchematic() {
+      const canvas = document.getElementById("bayCanvas");
+      const prep = prepCanvas(canvas);
+      if (!prep) return;
+      const { ctx, w, h } = prep;
+      const pal = palette();
+
+      const zones = [
+        { code: "01 // MIX", title: "Materials", x0: 0.02, x1: 0.25 },
+        { code: "02 // SHOP", title: "Cut & Fold", x0: 0.26, x1: 0.51 },
+        { code: "03 // DOCK", title: "Laser & MTC", x0: 0.52, x1: 0.74 },
+        { code: "04 // SITE", title: "Erection", x0: 0.75, x1: 0.98 }
+      ];
+
+      zones.forEach(z => {
+        const zx = z.x0 * w;
+        const zw = (z.x1 - z.x0) * w;
+        ctx.fillStyle = pal.panel;
+        ctx.strokeStyle = pal.faint;
+        ctx.lineWidth = 1;
+        drawBox(ctx, zx, 14, zw, h - 28, 6, true, true);
+
+        ctx.fillStyle = pal.muted;
+        ctx.font = "600 9.5px 'JetBrains Mono', monospace";
+        ctx.fillText(z.code, zx + 9, 31);
+        ctx.fillStyle = pal.ink;
+        ctx.font = "500 11.5px 'Inter', sans-serif";
+        ctx.fillText(z.title, zx + 9, 47);
+      });
+
+      // Supply spine
+      ctx.save();
+      ctx.strokeStyle = pal.blueprint;
+      ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.06, h * 0.54);
+      ctx.lineTo(w * 0.94, h * 0.54);
+      ctx.stroke();
+      ctx.restore();
+
+      // Station beacons
+      state.projects.forEach((p, idx) => {
+        const px = p.coords.x * w;
+        const py = p.coords.y * h;
+        const active = p.slug === state.baySelectedSlug;
+
+        if (active) {
+          ctx.fillStyle = state.theme === "dark" ? "rgba(234,106,71,0.22)" : "rgba(194,65,36,0.18)";
+          ctx.beginPath();
+          ctx.arc(px, py, 17, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = active ? pal.accent : pal.ink;
+        ctx.strokeStyle = pal.panel;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(px, py, active ? 8.5 : 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = (active ? "600 " : "500 ") + "10px 'JetBrains Mono', monospace";
+        const lbl = p.shortName;
+        const tw = ctx.measureText(lbl).width + 10;
+        const lx = Math.min(Math.max(6, px - tw / 2), w - tw - 6);
+        const ly = py + (idx % 2 === 0 ? 13 : -25);
+
+        ctx.fillStyle = active ? pal.ink : pal.panel;
+        ctx.strokeStyle = active ? pal.ink : pal.faint;
+        ctx.lineWidth = 1;
+        drawBox(ctx, lx, ly, tw, 17, 4, true, true);
+        ctx.fillStyle = active ? pal.panel : pal.ink;
+        ctx.fillText(lbl, lx + 5, ly + 12);
+      });
+    }
+
+    function drawIndexCardCanvases() {
+      state.projects.forEach(p => {
+        const c = document.getElementById(`card-canvas-${p.slug}`);
+        if (c) renderPhysicsEngine(c, p.visualType, state.sliderValues[p.slug] ?? p.sliderDefault);
+      });
+    }
+
+    function redrawVisibleCanvases() {
+      if (!state.currentRouteSlug) {
+        drawBaySchematic();
+        drawIndexCardCanvases();
+      } else {
+        const p = getProject(state.currentRouteSlug);
+        const c = document.getElementById("subpage-main-canvas");
+        if (c) renderPhysicsEngine(c, p.visualType, state.sliderValues[p.slug] ?? p.sliderDefault);
+      }
+    }
+
+    /* --- Master Dispatcher for the 5 Domain Visual Engines --- */
+    function renderPhysicsEngine(canvas, type, val) {
+      const prep = prepCanvas(canvas);
+      if (!prep) return;
+      const { ctx, w, h } = prep;
+      const pal = palette();
+
+      if (type === "interlock") drawInterlock(ctx, w, h, val, pal);
+      else if (type === "kerf") drawKerfFold(ctx, w, h, val, pal);
+      else if (type === "cure") drawCureCurve(ctx, w, h, val, pal);
+      else if (type === "vision") drawVisionGate(ctx, w, h, val, pal);
+      else drawPooledNest(ctx, w, h, val, pal);
+    }
+
+    /* 1. TAPER-LOCK STRUCTURAL NODE */
+    function drawInterlock(ctx, w, h, pct, pal) {
+      const t = Math.max(0, Math.min(100, pct)) / 100;
+      const cx = w * 0.38;
+      const baseY = h * 0.84;
+      const scale = Math.min(1, h / 230);
+
+      const sway = (1 - Math.min(1, t / 0.62)) * 20 * scale;
+      const lift = (1 - t) * 52 * scale;
+      const wedge = Math.max(0, (t - 0.72) / 0.28);
+
+      // Centerline datum
+      ctx.save();
+      ctx.strokeStyle = pal.faint;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(cx, 12);
+      ctx.lineTo(cx, h - 12);
+      ctx.stroke();
+      ctx.restore();
+
+      // Lower steel female socket
+      const hw = 56 * scale;
+      const shW = 28 * scale;
+      const tipW = 16 * scale;
+      const sockH = 58 * scale;
+
+      ctx.fillStyle = pal.steel;
+      ctx.strokeStyle = pal.ink;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(cx - hw, baseY);
+      ctx.lineTo(cx - hw, baseY - sockH);
+      ctx.lineTo(cx - shW, baseY - sockH);
+      ctx.lineTo(cx - tipW, baseY - 18 * scale);
+      ctx.lineTo(cx + tipW, baseY - 18 * scale);
+      ctx.lineTo(cx + shW, baseY - sockH);
+      ctx.lineTo(cx + hw, baseY - sockH);
+      ctx.lineTo(cx + hw, baseY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Upper descending male spigot
+      const ux = cx + sway;
+      const uy = baseY - sockH - lift;
+      ctx.fillStyle = t >= 0.95 ? pal.verified : pal.blueprint;
+      ctx.globalAlpha = 0.88;
+      ctx.beginPath();
+      ctx.moveTo(ux - hw * 0.94, uy - 62 * scale);
+      ctx.lineTo(ux + hw * 0.94, uy - 62 * scale);
+      ctx.lineTo(ux + hw * 0.94, uy);
+      ctx.lineTo(ux + shW * 0.96, uy);
+      ctx.lineTo(ux + tipW * 0.95, uy + 39 * scale);
+      ctx.lineTo(ux - tipW * 0.95, uy + 39 * scale);
+      ctx.lineTo(ux - shW * 0.96, uy);
+      ctx.lineTo(ux - hw * 0.94, uy);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.stroke();
+
+      // Captive cross-wedge
+      const wx = cx - 68 * scale + wedge * 44 * scale;
+      const wy = baseY - 38 * scale;
+      ctx.fillStyle = pal.accent;
+      ctx.beginPath();
+      ctx.moveTo(wx, wy - 5 * scale);
+      ctx.lineTo(wx + 54 * scale, wy - 2.5 * scale);
+      ctx.lineTo(wx + 54 * scale, wy + 4 * scale);
+      ctx.lineTo(wx, wy + 5 * scale);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      const driftMm = ((1 - Math.min(1, t / 0.62)) * 18).toFixed(1);
+      const preload = Math.round(wedge * 85);
+      drawTelemetryOverlay(ctx, w - 150, 12, 138, [
+        ["SWAY", `${driftMm} mm`],
+        ["PRELOAD", `${preload} kN`],
+        ["HOOK", `${(38 - t * 32.5).toFixed(1)} m`]
+      ], pal);
+    }
+
+    /* 2. FLAT-PACK LASER-KERFED BOX FOLDING */
+    function drawKerfFold(ctx, w, h, degVal, pal) {
+      const deg = Math.max(0, Math.min(90, degVal));
+      const rad = (deg * Math.PI) / 180;
+      const cx = w * 0.36;
+      const cy = h * 0.76;
+      const side = Math.min(w * 0.16, h * 0.28);
+
+      const p0 = { x: cx - side / 2, y: cy };
+      const p1 = { x: cx + side / 2, y: cy };
+      const lWall = { x: p0.x - Math.cos(rad) * side, y: p0.y - Math.sin(rad) * side };
+      const rWall = { x: p1.x + Math.cos(rad) * side, y: p1.y - Math.sin(rad) * side };
+      const lid = { x: rWall.x + Math.cos(2 * rad) * side, y: rWall.y - Math.sin(2 * rad) * side };
+
+      if (deg >= 86) {
+        ctx.fillStyle = state.theme === "dark" ? "rgba(74,222,128,0.14)" : "rgba(22,101,52,0.12)";
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(p1.x, p1.y);
+        ctx.lineTo(rWall.x, rWall.y);
+        ctx.lineTo(lWall.x, lWall.y);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.lineWidth = 5.5;
+      ctx.strokeStyle = deg >= 88 ? pal.verified : pal.steel;
+      ctx.beginPath();
+      ctx.moveTo(lWall.x, lWall.y);
+      ctx.lineTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+      ctx.lineTo(rWall.x, rWall.y);
+      ctx.lineTo(lid.x, lid.y);
+      ctx.stroke();
+
+      // Kerf hinges
+      [p0, p1, rWall].forEach(pt => {
+        ctx.fillStyle = pal.accent;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      const ixx = (1 + 18.2 * Math.pow(Math.sin(rad), 1.7)).toFixed(1);
+      const perTruck = Math.round(240 - (deg / 90) * 202);
+      drawTelemetryOverlay(ctx, w - 154, 12, 142, [
+        ["ANGLE", `${Math.round(deg)}°`],
+        ["STIFFNESS", `${ixx}×`],
+        ["TRUCK", `${perTruck} pcs`]
+      ], pal);
+    }
+
+    /* 3. RAPID-GEOBINDER STRENGTH CURVE VS OPC */
+    function drawCureCurve(ctx, w, h, tempC, pal) {
+      const T = Math.max(0, Math.min(40, tempC));
+      const padL = 36, padR = 16, padT = 18, padB = 26;
+      const gw = w - padL - padR;
+      const gh = h - padT - padB;
+
+      ctx.strokeStyle = pal.faint;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padL, padT);
+      ctx.lineTo(padL, padT + gh);
+      ctx.lineTo(padL + gw, padT + gh);
+      ctx.stroke();
+
+      const xHr = hr => padL + (hr / 24) * gw;
+      const yMpa = mpa => padT + gh - (Math.min(45, mpa) / 45) * gh;
+
+      // 20 MPa Form-Strip Gate
+      const yGate = yMpa(20);
+      ctx.save();
+      ctx.strokeStyle = pal.verified;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(padL, yGate);
+      ctx.lineTo(padL + gw, yGate);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = pal.verified;
+      ctx.font = "600 9.5px 'JetBrains Mono', monospace";
+      ctx.fillText("20 MPa STRIP GATE", padL + 6, yGate - 5);
+
+      const kGeo = 0.24 * Math.exp(0.038 * (T - 15));
+      const kOpc = 0.045 * Math.exp(0.052 * (T - 15));
+
+      // OPC Baseline (Dashed)
+      ctx.save();
+      ctx.strokeStyle = pal.muted;
+      ctx.lineWidth = 1.8;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      for (let hr = 0; hr <= 24; hr += 0.5) {
+        const mpa = 38 * (1 - Math.exp(-kOpc * Math.max(0, hr - 1.6)));
+        const px = xHr(hr), py = yMpa(mpa);
+        if (hr === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // ASKA GeoBinder (Solid Accent)
+      ctx.strokeStyle = pal.accent;
+      ctx.lineWidth = 2.6;
+      let stripHr = null;
+      ctx.beginPath();
+      for (let hr = 0; hr <= 24; hr += 0.25) {
+        const mpa = 41 * (1 - Math.exp(-kGeo * Math.max(0, hr - 0.55)));
+        if (stripHr === null && mpa >= 20) stripHr = hr;
+        const px = xHr(hr), py = yMpa(mpa);
+        if (hr === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.stroke();
+
+      if (stripHr !== null) {
+        const sx = xHr(stripHr);
+        ctx.fillStyle = pal.accent;
+        ctx.beginPath();
+        ctx.arc(sx, yGate, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Axis labels
+      ctx.fillStyle = pal.muted;
+      ctx.font = "500 9.5px 'JetBrains Mono', monospace";
+      [0, 4, 8, 12, 18, 24].forEach(hr => {
+        ctx.fillText(`${hr}h`, xHr(hr) - 6, padT + gh + 15);
+      });
+
+      drawTelemetryOverlay(ctx, w - 148, padT + gh - 68, 134, [
+        ["SITE TEMP", `${T}°C`],
+        ["STRIP AT", stripHr ? `${stripHr.toFixed(1)} hrs` : ">24h"],
+        ["CO2e", "-61%"]
+      ], pal);
+    }
+
+    /* 4. MILL-EYE LASER PROFILE & MTC VERIFIER */
+    function drawVisionGate(ctx, w, h, severity, pal) {
+      const sev = Math.max(0, Math.min(100, severity)) / 100;
+      const cx = w * 0.28;
+      const cy = h * 0.53;
+      const beamH = Math.min(h * 0.56, 118);
+      const flangeW = Math.min(w * 0.26, 86);
+      const tiltPx = sev * 14;
+
+      // Laser scan plane line
+      ctx.save();
+      ctx.strokeStyle = pal.accent;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(12, cy);
+      ctx.lineTo(w * 0.52, cy);
+      ctx.stroke();
+      ctx.restore();
+
+      // Ideal ASTM A6 envelope (ghost outline)
+      ctx.strokeStyle = pal.faint;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(cx - flangeW / 2, cy - beamH / 2, flangeW, beamH);
+
+      // Actual scanned Wide-Flange I-Beam section with flange tilt anomaly
+      ctx.strokeStyle = sev > 0.45 ? pal.accent : pal.verified;
+      ctx.lineWidth = 5;
+      ctx.lineCap = "round";
+      // Top flange (tilted by anomaly)
+      ctx.beginPath();
+      ctx.moveTo(cx - flangeW / 2, cy - beamH / 2 - tiltPx);
+      ctx.lineTo(cx + flangeW / 2, cy - beamH / 2 + tiltPx);
+      ctx.stroke();
+      // Web
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - beamH / 2);
+      ctx.lineTo(cx, cy + beamH / 2);
+      ctx.stroke();
+      // Bottom flange
+      ctx.beginPath();
+      ctx.moveTo(cx - flangeW / 2, cy + beamH / 2);
+      ctx.lineTo(cx + flangeW / 2, cy + beamH / 2);
+      ctx.stroke();
+
+      // Right side: Deterministic MTC Check Card
+      const rx = w * 0.54;
+      const rw = w * 0.42;
+      const tiltMm = (0.3 + sev * 6.4).toFixed(1);
+      const yieldMpa = sev > 0.8 ? 262 : 366;
+      const cev = (0.39 + sev * 0.11).toFixed(2);
+      const status = sev > 0.8 ? "REJECT (GRADE)" : sev > 0.45 ? "HOLD (FLANGE)" : "PASS SPEC";
+
+      drawTelemetryOverlay(ctx, rx, Math.max(14, cy - 46), rw, [
+        ["TILT", `${tiltMm} mm`],
+        ["YIELD", `${yieldMpa} MPa`],
+        ["CEV", cev],
+        ["GATE", status]
+      ], pal);
+    }
+
+    /* 5. MULTI-JOB POOLED CUT NESTER */
+    function drawPooledNest(ctx, w, h, jobsCount, pal) {
+      const jobs = Math.max(1, Math.min(6, Math.round(jobsCount)));
+      const pad = 14;
+      const sheetW = w - 166;
+      const sheetH = h - pad * 2;
+
+      // Raw Steel Plate Stock (Red-tinted unused scrap background)
+      ctx.fillStyle = state.theme === "dark" ? "rgba(234,106,71,0.16)" : "rgba(194,65,36,0.13)";
+      ctx.strokeStyle = pal.ink;
+      ctx.lineWidth = 1.4;
+      drawBox(ctx, pad, pad, sheetW, sheetH, 4, true, true);
+
+      // Job 1 Primary Large Structural Parts (Always present)
+      const blocks = [
+        { j: 1, x: 0.02, y: 0.04, w: 0.44, h: 0.58 },
+        { j: 1, x: 0.48, y: 0.04, w: 0.49, h: 0.36 },
+        { j: 1, x: 0.02, y: 0.66, w: 0.56, h: 0.29 },
+        // Job 2 fills medium pockets
+        { j: 2, x: 0.48, y: 0.43, w: 0.26, h: 0.20 },
+        { j: 2, x: 0.60, y: 0.66, w: 0.22, h: 0.29 },
+        // Job 3 gussets
+        { j: 3, x: 0.76, y: 0.43, w: 0.21, h: 0.20 },
+        // Job 4 baseplates
+        { j: 4, x: 0.84, y: 0.66, w: 0.13, h: 0.16 },
+        // Job 5 shims
+        { j: 5, x: 0.84, y: 0.84, w: 0.13, h: 0.11 },
+        // Job 6 stiffener clips
+        { j: 6, x: 0.48, y: 0.64, w: 0.10, h: 0.02 }
+      ];
+
+      const colors = [pal.steel, pal.blueprint, pal.verified, pal.amber, pal.accent, pal.ink];
+
+      blocks.filter(b => b.j <= jobs).forEach(b => {
+        const bx = pad + b.x * sheetW;
+        const by = pad + b.y * sheetH;
+        const bw = b.w * sheetW;
+        const bh = b.h * sheetH;
+        ctx.fillStyle = colors[(b.j - 1) % colors.length];
+        ctx.globalAlpha = 0.86;
+        drawBox(ctx, bx, by, bw, bh, 2, true, false);
+        ctx.globalAlpha = 1;
+
+        if (bw > 26 && bh > 16) {
+          ctx.fillStyle = "#FFFFFF";
+          ctx.font = "600 9.5px 'JetBrains Mono', monospace";
+          ctx.fillText(`J${b.j}`, bx + 5, by + 13);
+        }
+      });
+
+      const scrapTable = { 1: "18.4%", 2: "10.9%", 3: "7.1%", 4: "4.6%", 5: "3.8%", 6: "3.2%" };
+      const saveTable = { 1: "$0", 2: "$10.6k", 3: "$15.8k", 4: "$19.4k", 5: "$20.5k", 6: "$21.4k" };
+
+      drawTelemetryOverlay(ctx, w - 144, pad, 132, [
+        ["POOLED", `${jobs} job(s)`],
+        ["SCRAP", scrapTable[jobs]],
+        ["SAVED", saveTable[jobs]]
+      ], pal);
+    }
+
+    /* --- Bay Canvas Pointer Interaction --- */
+    function bindBayCanvasInteraction() {
+      const canvas = document.getElementById("bayCanvas");
+      if (!canvas) return;
+
+      const pickNearest = (evt) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = (evt.clientX - rect.left) / rect.width;
+        const my = (evt.clientY - rect.top) / rect.height;
+        let best = null;
+        let bestDist = 0.14;
+        state.projects.forEach(p => {
+          const d = Math.hypot(p.coords.x - mx, p.coords.y - my);
+          if (d < bestDist) {
+            bestDist = d;
+            best = p;
+          }
+        });
+        return best;
+      };
+
+      canvas.addEventListener("click", evt => {
+        const hit = pickNearest(evt);
+        if (hit) {
+          state.baySelectedSlug = hit.slug;
+          renderBayInspector();
+          drawBaySchematic();
+        }
+      });
+
+      canvas.addEventListener("dblclick", evt => {
+        const hit = pickNearest(evt);
+        if (hit) openSubpage(hit.slug);
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    /* ========================================================================
+       7. INITIALIZE MVP ON LOAD & RESIZE
+       ======================================================================== */
+    window.addEventListener("resize", () => requestAnimationFrame(redrawVisibleCanvases));
+
+    window.addEventListener("DOMContentLoaded", () => {
+      bindBayCanvasInteraction();
+      parseHashRoute();
+      syncAskaPhysicalOrg();
+    });
+  </script>
+</body>
+</html>
