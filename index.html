@@ -188,7 +188,7 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-[var(--accent)] selection:text-white">
+<body class="min-h-screen flex flex-col antialiased overflow-x-hidden selection:bg-[var(--accent)] selection:text-white">
 
   <!-- ========================================================================
        SINGULAR SITE HEADER + SUBPAGE NAVIGATION BAR
@@ -1397,15 +1397,15 @@
       el.innerHTML = READINESS_RUNGS.map(r => {
         const matching = state.projects.filter(p => p.rung === r.rung);
         return `
-          <div class="p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div class="space-y-0.5">
+          <div class="p-3.5 flex flex-col sm:flex-row sm:items-center sm:flex-wrap justify-between gap-2">
+            <div class="space-y-0.5 min-w-0">
               <div class="flex items-center gap-2">
                 <span class="badge-pill ${r.badge}">Rung ${r.rung}</span>
                 <span class="text-xs sm:text-sm font-semibold">${escapeHtml(r.label)}</span>
               </div>
               <p class="text-xs text-[var(--fg-muted)]">${escapeHtml(r.desc)}</p>
             </div>
-            <div class="flex flex-wrap gap-1.5 shrink-0">
+            <div class="flex flex-wrap gap-1.5">
               ${matching.length > 0
                 ? matching.map(m => `<a href="#/${m.slug}" class="font-mono-tech text-[11px] px-2 py-0.5 rounded border border-[var(--border)] bg-[var(--bg-subtle)] hover:border-[var(--fg)]">${escapeHtml(m.shortName)}</a>`).join("")
                 : `<span class="font-mono-tech text-[11px] text-[var(--fg-faint)]">—</span>`
