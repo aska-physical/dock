@@ -9,3 +9,4 @@ Site: https://aska-physical.github.io/dock/
 
 - `#/funi-floors` (`funi-floors-dock.js`) — 6-domain SIP funicular floor cassette & 313 psf flush collar sizer
 - `#/funi-frame` (`funi-frame-dock.js`) — whole-building vibro-thermal funicular data-center shell, 3-tier TES & W45 silica-gel sorption sizer
+- `#/optifab` (`optifab-dock.js`) — whole-campus model, plant gate & 64-byte frame sizer (optifab v0.2.0)
