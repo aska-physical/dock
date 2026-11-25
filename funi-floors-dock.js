@@ -1,9 +1,9 @@
-/* aska-physical/dock \u2014 Funi-Floors (#/funi-floors) Interactive Workbench & 6-Domain Sizer (v0.1.0) */
+/* aska-physical/dock \u2014 Funi-Floors (#/funi-floors) Interactive Workbench & 6-Domain Sizer (v0.1.0 + exact-Q studies, -O-safe verify) */
 (function () { if (typeof CORE_PROJECTS === "undefined" || typeof state === "undefined") return;
 const FUNI_FLOORS_PROJECT = { slug: "funi-floors", shortName: "Funi-Floors",
 title: "SIP Self-Prestressing Funicular Floor Cassettes & 313 psf Collars", sector: "Structural", station: "05 \u00b7 Precast & Floor Bay",
-coords: { x: 0.56, y: 0.28 }, rung: 3, statusNote: "v0.1.0 \u00b7 10/10 controls & 3 SymPy theorems",
-caveat: "Full-scale 27 m\u00b2 ASTM E119 loaded furnace & 2M-cycle fatigue open in Issues #1\u2013#6",
+coords: { x: 0.56, y: 0.28 }, rung: 3, statusNote: "v0.1.0 \u00b7 10/10 controls & 3 SymPy theorems \u00b7 -O-safe require() \u00b7 exact-Q checkerboard/end-interlock study",
+caveat: "Full-scale 27 m\u00b2 ASTM E119 loaded furnace & 2M-cycle fatigue open in Issues #1\u2013#6 \u00b7 study audits #1/#3 in exact Q; anchor pull-out tests still settle sleeve/wedge",
 externalRepoUrl: "https://github.com/aska-physical/funi-floors", visualType: "funi-floors",
 sliderLabel: "Fe-SMA Joule Prestress & 313 psf AI Rack Load Stage", sliderMin: 0, sliderMax: 100, sliderDefault: 78, sliderUnit: "% stage", presets: [
 { label: "Demold + Cold Tie (15%)", val: 15 }, { label: "175 \u00b0C Joule Camber (55%)", val: 55 },
@@ -19,7 +19,8 @@ walkthrough: [
 ], metrics: [ { value: "-76.1%", label: "Concrete Volume (74.1 vs 310 mm)", cite: "funi-floors v0.1.0 cert" },
 { value: "8.62 Hz", label: "DG11 Floor Freq (0.31% g <= 0.50%)", cite: "AISC DG11 2-way modal" },
 { value: "2,756 kN", label: "Flush Collar phi*Vn (vs 2,208 kN Vu)", cite: "ACI 318M-19 \u00a722.6.5.2" },
-{ value: "-67.8%", label: "Embodied Carbon (38.8 kg CO2e/m\u00b2)", cite: "Cradle-to-gate A1\u2013A3" } ], shopMethod: {
+{ value: "-67.8%", label: "Embodied Carbon (38.8 kg CO2e/m\u00b2)", cite: "Cradle-to-gate A1\u2013A3" },
+{ value: "714.2 kN/rib", label: "certificate arch thrust vs 720 kN net-ligament tear gate (graded 4-pin 249.97 \u2264 260 kN PASS)", cite: "studies/checkerboard-bracing-and-interlock-audit" } ], shopMethod: {
 tooling: "CNC waterjet 3 mm mineral-basalt/carbon SIP pan, Torayca T1100G + Fe-Mn-Si tie loom, 48 V DC Joule power supply, 50 MPa LC3 concrete batch",
 steps: [
 { phase: "01 \u00b7 Fold SIP Pan & Loom Hybrid Tie", detail: "Fold 9.0 m \u00d7 3.0 m stay-in-place basalt-carbon pan; seat 4\u00d7 (360 mm\u00b2 T1100G CFRP + 980 mm\u00b2 Fe-Mn-Si) bottom chords and 45\u00b0 octagonal MEP collars." },
@@ -34,7 +35,7 @@ inputs: [ { key: "spanM", label: "Bay Span L (m)", min: 6.0, max: 12.0, step: 0.
 { key: "jouleTempC", label: "Fe-SMA Joule Temp T_act (\u00b0C)", min: 20, max: 210, step: 5, default: 175, unit: "\u00b0C" } ] },
 specFilename: "funi-floors-cassette-spec.toml", verification: {
 propose: "Parametric cassette geometry (L, f, h = 380 mm), hybrid T1100G CFRP + Fe-Mn-Si tie schedule, and 200 mm octagonal MEP penetrations.",
-verify: "Deterministic verify.py checks 3 SymPy identities + 10/10 must-fail gates: crown stress, MEP web shear, DG11 vibration, ACI 318 punching, 120-min ISO 834 fire, and Cole EIS.",
+verify: "Deterministic verify.py checks 3 SymPy identities + 10/10 must-fail gates (crown stress, MEP web shear, DG11 vibration, ACI 318 punching, 120-min ISO 834 fire, Cole EIS) with -O-safe require() guards and R5 regression tests (PR #9). Add-only exact-Q study (PR #8) certifies: checkerboard half-span arch bending M(L/4) = 3645/64 kN\u00b7m with 405/8 kN shear-key demand and 51.33 mm thrust eccentricity inside the 380 mm kern; 0 floppy modes with 45\u00b0 octagonal web bracing vs 4 unbraced; carbon end-interlock at 714.2 kN/rib \u2014 ligament 714.2 \u2264 720 kN PASS, uniform 4-pin 280.58 > 260 kN FAIL, graded 4-pin 249.97 \u2264 260 kN PASS.",
 sign: "Emits results/certificate.json + TOML shop traveler; blocks berth if passive tie cracks crown, DG11 < 8.0 Hz, or collar utilization > 1.00." },
 tableHeaders: ["Floor System (9 m \u00d7 9 m, 313 psf)", "Total Depth + MEP", "Dead Mass", "DG11 Vibration", "Gate Result"], tableRows: [
 ["310 mm PT Flat Slab + Drop Caps", "590\u2013660 mm", "744 kg/m\u00b2", "Pass (heavy mass)", "Baseline (120.6 kg CO2e/m\u00b2)"],
