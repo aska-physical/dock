@@ -4,29 +4,29 @@ const MASTS_PROJECT = { slug: "cfrp-masts", shortName: "CFRP Masts",
 title: "Snap-Locked Deployable CFRP Masts, Telecom Towers & Space Booms",
 sector: "Deployable Structures", station: "05 · Field Deployment", coords: { x: 0.55, y: 0.86 }, rung: 2,
 statusNote: "v0.1.0 · 5 must-fail controls · -O-safe CheckFailure guards (PR #4) · rejection flags are the measurements (dock#8)",
-caveat: "Model/checker only — no physical deployment-cycle test yet; dock#8: checker passed on a clean re-run, not a bench measurement",
+caveat: "Model/checker only, no physical deployment-cycle test yet; dock#8: checker passed on a clean re-run, not a bench measurement",
 externalRepoUrl: "https://github.com/aska-physical/cfrp-masts", visualType: "cfrp-masts",
 sliderLabel: "Deployment (stowed → snap-locked taut)", sliderMin: 0, sliderMax: 100, sliderDefault: 90, sliderUnit: "% deployed",
 presets: [ { label: "Stowed (0%)", val: 0 }, { label: "Half-Rigged (50%)", val: 50 }, { label: "Snap-Locked Taut (100%)", val: 100 } ],
-builderSummary: "Solid rods buckle early, so metal booms are heavy. A thin-walled carbon tube (radius ratio 0.80) resists 4.56× more buckling for the same material, and its bays snap-lock via 12 cables at full deployment. A 5 m boom then weighs 14.06 kg — 59% less than titanium — with 14× the stiffness per kg and 0.30 mm of pointing drift per 100 °C, 38.5× steadier than aluminium.",
+builderSummary: "Solid rods buckle early, so metal booms are heavy. A thin-walled carbon tube (radius ratio 0.80) resists 4.56× more buckling for the same material, and its bays snap-lock via 12 cables at full deployment. A 5 m boom then weighs 14.06 kg, 59% less than titanium, with 14× the stiffness per kg and 0.30 mm of pointing drift per 100 °C, 38.5× steadier than aluminium.",
 plainExplain: "A deployable mast or space boom wants to be light, stiff, and stable when the temperature swings. Thin-walled pultruded carbon tubes get their buckling resistance from the radius ratio (η = 0.80 gives 4.56× a solid rod); twelve non-intersecting 45° cables fold slack while stowed and snap taut at full deployment, locking shear rigidity without hinges to wear. The sizer scales a 5 m K13D2U boom by length and checks mass, bending stiffness, and thermal drift against aluminium and titanium octets.",
 kpis: [
-  { tag: "Cost", value: "59% lighter", note: "14.06 kg for a 5 m boom vs a Ti-6Al-4V octet — launch or erection mass falls with it" },
+  { tag: "Cost", value: "59% lighter", note: "14.06 kg for a 5 m boom vs a Ti-6Al-4V octet, launch or erection mass falls with it" },
   { tag: "Efficiency", value: "14.02× EI/kg", note: "specific bending stiffness vs Ti (586.1 kN·m²)" },
-  { tag: "Quality", value: "0.30 mm / 100 K", note: "pointing drift, 38.5× lower than Al 6061 — antennas stay aimed" },
+  { tag: "Quality", value: "0.30 mm / 100 K", note: "pointing drift, 38.5× lower than Al 6061, antennas stay aimed" },
   { tag: "Integration", value: "Stows to 30%", note: "1.51 m stowed for a 5 m boom; a 15 m telecom mast packs to 4.52 m" }
 ],
-engineerSummary: "5.0 m K13D2U space boom: 14.06 kg, EI = 586.1 kN·m² — 14.02× the specific EI of a 3D-printed Ti-6Al-4V octet and 59% lighter than Ti; thermal drift 0.30 mm per 100 K (38.5× lower than Al 6061's 11.55 mm); stows to 1.51 m. 15.0 m T1100G telecom mast stows to 4.52 m. Timoshenko shear + Haringx buckling verified with 5 must-fail controls; verify.py passes under python3 -O (CheckFailure, not asserts — PR #4).",
+engineerSummary: "5.0 m K13D2U space boom: 14.06 kg, EI = 586.1 kN·m², 14.02× the specific EI of a 3D-printed Ti-6Al-4V octet and 59% lighter than Ti; thermal drift 0.30 mm per 100 K (38.5× lower than Al 6061's 11.55 mm); stows to 1.51 m. 15.0 m T1100G telecom mast stows to 4.52 m. Timoshenko shear + Haringx buckling verified with 5 must-fail controls; verify.py passes under python3 -O (CheckFailure, not asserts, PR #4).",
 howToRead: "Drag from stowed to 100% deployed. The cable lattice goes slack in the stowed bundle and snaps taut at full extension, locking shear rigidity; watch mass, specific EI, and the 100 K pointing drift against the metal benchmarks.",
 walkthrough: [
 { title: "Why Metal Booms Lose", val: 20, text: "Fixed filament-wound trusses and printed lattices can't fold compactly (1.0× compaction) and carry heavy metallic mass; slit-tube/inflatable booms stow small but suffer low torsional stiffness, hysteresis, and mm–cm thermal pointing drift." },
-{ title: "η = 0.80 Thin-Wall Tubes", val: 45, text: "Inner/outer radius ratio 0.80 gives 4.56× higher local Euler buckling resistance than solid rods of the same mass — the bay tube, not the cable, carries compression." },
+{ title: "η = 0.80 Thin-Wall Tubes", val: 45, text: "Inner/outer radius ratio 0.80 gives 4.56× higher local Euler buckling resistance than solid rods of the same mass, the bay tube, not the cable, carries compression." },
 { title: "Snap-Lock Shear Rigidity", val: 75, text: "12 non-intersecting 45° octagonal-pore cables (β_iso = 0.362323) fold slack during stowage and snap taut at full deployment: GA_eff > 0, so the boom carries shear and torsion, not just bending." },
 { title: "Benchmarks at 5 m / 100 K", val: 100, text: "14.06 kg vs 21.09 kg Al / 34.61 kg Ti; EI 586.1 vs 62.3 / 102.9 kN·m² → 14.02× specific EI vs Ti; drift 0.30 mm vs 11.55 mm Al (38.5× lower); stowed 1.51 m." }
 ],
-metrics: [ { value: "14.06 kg", label: "5 m K13D2U boom — 59% lighter than Ti-6Al-4V octet", cite: "verify.py cert" },
+metrics: [ { value: "14.06 kg", label: "5 m K13D2U boom, 59% lighter than Ti-6Al-4V octet", cite: "verify.py cert" },
 { value: "14.02×", label: "specific EI/kg vs Ti octet (586.1 kN·m²)", cite: "Timoshenko + Haringx" },
-{ value: "0.30 mm", label: "pointing drift per 100 K — 38.5× lower than Al 6061", cite: "thermal drift model" },
+{ value: "0.30 mm", label: "pointing drift per 100 K, 38.5× lower than Al 6061", cite: "thermal drift model" },
 { value: "1.51 m", label: "stowed length of the 5 m boom (15 m mast: 4.52 m)", cite: "folding geometry" } ],
 shopMethod: {
 tooling: "Pultrusion/filament-winding for bay tubes, pre-formed 45° octagonal-pore cable guides, snap-lock end fittings, deployment ground rig for proof cycles.",
@@ -45,7 +45,7 @@ inputs: [ { key: "lenM", label: "Boom Length (m)", min: 3.0, max: 15.0, step: 0.
 specFilename: "cfrp-masts-boom-spec.toml",
 verification: {
 propose: "Exact continuous folding geometry (Foundation-0/incentre-lattices), area-graded tubular buckling and octagonal-pore cable laws (fibral-rigidity), rational linkage state certification (Foundation-0/rigid-realizations).",
-verify: "Deterministic verify.py: Timoshenko shear + Haringx buckling + 5 must-fail controls; passes on a clean re-run including under python3 -O (CheckFailure guards — PR #4 closed issue #3; NaN/Zone-B hardening pattern available). Per dock#8 the rejection flags are the measurements — still not a bench test.",
+verify: "Deterministic verify.py: Timoshenko shear + Haringx buckling + 5 must-fail controls; passes on a clean re-run including under python3 -O (CheckFailure guards, PR #4 closed issue #3; NaN/Zone-B hardening pattern available). Per dock#8 the rejection flags are the measurements, still not a bench test.",
 sign: "Model/checker only. No physical deployment cycle, hinge fatigue, or pointing test exists; a person signs nothing yet."
 },
 tableHeaders: ["Metric", "Al 6061 Octet", "Ti-6Al-4V Printed Octet", "CFRP Snap-Lock (K13D2U)", "Advantage"],
@@ -76,7 +76,7 @@ if (driftMm > 11.55) fails.push("DRIFT " + driftMm.toFixed(2) + " mm > Al 11.55 
 if (stowed > stowBudget) fails.push("STOWED " + stowed.toFixed(2) + " m > budget " + stowBudget.toFixed(2) + " m");
 const badge = fails.length === 0 ? { cls: "badge-pill badge-verified", text: "✓ " + mass.toFixed(1) + " kg · " + (specEI / tiSpec).toFixed(1) + "× SPECIFIC EI vs Ti · DRIFT " + driftMm.toFixed(2) + " mm" }
 : { cls: "badge-pill badge-accent", text: "FAIL-CLOSED · " + fails[0] };
-const specText = [ "# ASKA PHYSICAL — CFRP-MASTS BOOM SPEC (v0.1.0, model/checker only)", "repo = \"https://github.com/aska-physical/cfrp-masts\"",
+const specText = [ "# ASKA PHYSICAL: CFRP-MASTS BOOM SPEC (v0.1.0, model/checker only)", "repo = \"https://github.com/aska-physical/cfrp-masts\"",
 "gate_status = \"" + (fails.length === 0 ? "PASS" : "FAIL_CLOSED") + "\" # -O-safe CheckFailure (PR #4); rejection flags are the measurements",
 "", "[boom]", "length_m = " + lenM.toFixed(1), "tube_radius_ratio_eta = " + eta.toFixed(2) + " # local Euler ≈ 4.56× solid rod @ η=0.80",
 "mass_kg = " + mass.toFixed(2) + " # reference 14.06 kg @ 5 m K13D2U",

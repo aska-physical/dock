@@ -4,12 +4,12 @@ const IMPEDENCE_PROJECT = { slug: "impedence-analyzers", shortName: "Impedence A
 title: "Artifact-Rejecting Multi-Frequency Impedance Analyzers (Structural NDT & Clinical BIA)",
 sector: "Instrumentation & NDT", station: "03 · Sensing & QC", coords: { x: 0.36, y: 0.80 }, rung: 2,
 statusNote: "v0.1.0 · 5 must-fail controls · dock#8 P5 identifiability study · -O-safe verify",
-caveat: "Model/checker only — no bench attached; private clinical spectrometry data stays in its own review (dock#8); public claims here are structural NDT",
+caveat: "Model/checker only, no bench attached; private clinical spectrometry data stays in its own review (dock#8); public claims here are structural NDT",
 externalRepoUrl: "https://github.com/aska-physical/impedence-analyzers", visualType: "impedence",
 sliderLabel: "Sweep Schedule (7-frequency → 50-point)", sliderMin: 7, sliderMax: 50, sliderDefault: 7, sliderUnit: " points",
 presets: [ { label: "Guarded 7-point (7.14× faster)", val: 7 }, { label: "25 points", val: 25 }, { label: "Legacy 50-point", val: 50 } ],
-builderSummary: "A 50-point frequency sweep takes minutes and drains the battery, most of it on frequencies that barely move the answer. Seven chosen frequencies — anchored at 50 kHz where the signal is sharpest — give the same fit to 0.00000% residual in 7.14× less time, and a guard pair rejects bad-contact readings automatically.",
-plainExplain: "Impedance spectroscopy asks how a material resists current at many frequencies; the shape of that curve reveals cracks, corrosion, or a debonded retrofit. Sweeping 50 points wastes time on frequencies that add nothing. Choosing 7 well-placed ones — concentrated at the dispersion knees and anchored at 50 kHz — recovers the same Cole-model fit exactly and conditions the maths better (13.85 vs 14.34), while a dual-frequency guard gate flags when the probe contact itself is the artifact.",
+builderSummary: "A 50-point frequency sweep takes minutes and drains the battery, most of it on frequencies that barely move the answer. Seven chosen frequencies, anchored at 50 kHz where the signal is sharpest, give the same fit to 0.00000% residual in 7.14× less time, and a guard pair rejects bad-contact readings automatically.",
+plainExplain: "Impedance spectroscopy asks how a material resists current at many frequencies; the shape of that curve reveals cracks, corrosion, or a debonded retrofit. Sweeping 50 points wastes time on frequencies that add nothing. Choosing 7 well-placed ones, concentrated at the dispersion knees and anchored at 50 kHz, recovers the same Cole-model fit exactly and conditions the maths better (13.85 vs 14.34), while a dual-frequency guard gate flags when the probe contact itself is the artifact.",
 kpis: [
   { tag: "Efficiency", value: "7.14× faster", note: "sweep time and MCU energy vs legacy 50-point analyzers" },
   { tag: "Quality", value: "0.00000% residual", note: "Cole-EIS fits for structural NDT and clinical BIA; conditioning 13.85 vs 14.34" },
@@ -19,10 +19,10 @@ kpis: [
 engineerSummary: "Scale-invariant Marquardt 7-frequency Cole+T_d estimator with a dual artifact gate (Scharfetter Hook-effect contact phase lead; stray cable shunt capacitance 30–50 pF above 100 kHz) and an exact square-patch cell constant 2πa/(2−√2). dock#8 P5 study names the 5 free fit parameters (R∞, R0, f_c, α, T_d) and shows one injected defect inside that span the residual misses and one outside it the residual catches (rank-1 ΔR_eff Laplacian).",
 howToRead: "Slide the sweep length from 7 to 50 points. At 7 points the run is 7.14× faster with conditioning 13.85 and the artifact gate rejects Hook-effect and stray-capacitance fits; at 50 points you burn 7× excess time catching nothing extra.",
 walkthrough: [
-{ title: "Why 50-Point Sweeps Waste Battery", val: 50, text: "50-frequency (5 kHz–1 MHz) refits showed 50 kHz phase + calibrated frequencies already give R² ≈ 0.96 vs DXA lean mass — the extra 43 points burn 7× time and energy without catching cable artifacts." },
+{ title: "Why 50-Point Sweeps Waste Battery", val: 50, text: "50-frequency (5 kHz–1 MHz) refits showed 50 kHz phase + calibrated frequencies already give R² ≈ 0.96 vs DXA lean mass, the extra 43 points burn 7× time and energy without catching cable artifacts." },
 { title: "Guarded 7-Frequency Schedule", val: 7, text: "5, 12, 28, 50, 110, 250, 600 kHz: 7.14× faster, conditioning 13.85 vs 14.34 (ratio 0.9659), 0.00000% RMS residual on both clinical BIA (410/620 Ω, 50 kHz, α = 0.80) and structural NDT (240/1850 Ω, 18 kHz, α = 0.72)." },
 { title: "Dual Artifact Gate", val: 28, text: "Legacy analyzers logged 305 failed fits and 46 unphysical negative-T_d fits from asymmetric contact phase lead (Hook effect) and unguarded 30–50 pF stray capacitance above 100 kHz; the gate rejects both." },
-{ title: "What the Fit Can Move (dock#8 P5)", val: 70, text: "The fit moves 5 parameters — R∞, R0, f_c, α, T_d. The P5 study shows a rank-1 ΔR_eff conductance defect inside that span that the residual misses, and one outside it that the residual catches." }
+{ title: "What the Fit Can Move (dock#8 P5)", val: 70, text: "The fit moves 5 parameters, R∞, R0, f_c, α, T_d. The P5 study shows a rank-1 ΔR_eff conductance defect inside that span that the residual misses, and one outside it that the residual catches." }
 ],
 metrics: [ { value: "7.14×", label: "faster sweeps vs 50-point analyzers", cite: "verify.py schedule" },
 { value: "13.85 / 0.9659", label: "Jacobian conditioning vs 14.34 legacy", cite: "Marquardt conditioning" },
@@ -46,7 +46,7 @@ specFilename: "impedence-cole-sweep-spec.toml",
 verification: {
 propose: "13,276-spectrum Cole-dispersion findings (Foundation-0/nhanes-bioimpedance) and electrostatic patch geometry (Foundation-0/point-charges) translated into a guarded 7-frequency architecture; exact-Q NDT rank-1 identifiability study (PR #5, dock#8 P5) scopes the Cole obstruction to the zero-delay slice.",
 verify: "Deterministic verify.py with 5 must-fail controls; -O-safe after PR #3/#6 (bare asserts → fail-closed guards; NaN/Inf, array/param validation, atomic dir_fd Zone-B canonical cert I/O). Fit recovers Cole params to 0.00000% RMS on both BIA and NDT references.",
-sign: "Claimed by model only — no bench attached. dock#8 P5 satisfied in the checker: the 5 movable parameters are named, one injected defect inside the span is missed by the residual, one outside is caught. Clinical data stays private; a person signs nothing yet."
+sign: "Claimed by model only, no bench attached. dock#8 P5 satisfied in the checker: the 5 movable parameters are named, one injected defect inside the span is missed by the residual, one outside is caught. Clinical data stays private; a person signs nothing yet."
 },
 tableHeaders: ["Schedule", "Sweep Time", "Conditioning", "Artifact Gate", "R² vs reference", "Verdict"],
 tableRows: [
@@ -66,14 +66,14 @@ const speedup = 50 / points;
 const conditioning = points <= 7 ? 13.85 : (points >= 50 ? 14.34 : 13.85 + (points - 7) * (14.34 - 13.85) / 43);
 const r2 = points <= 7 ? 0.96 : 0.96; /* 50 kHz phase anchors R² ≈ 0.96 at any schedule ≥ 7 */
 const fails = [];
-if (stray > 50) fails.push("STRAY C " + stray + " pF > 50 pF — unguarded above 100 kHz");
+if (stray > 50) fails.push("STRAY C " + stray + " pF > 50 pF, unguarded above 100 kHz");
 if (r2 < targetR2) fails.push("R² " + r2.toFixed(2) + " < " + targetR2.toFixed(2) + " required");
 if (speedup < 1) fails.push("NO SPEEDUP");
 const gateOk = stray <= 50 && speedup >= 1;
 const badge = fails.length === 0 && points <= 7 ? { cls: "badge-pill badge-verified", text: "✓ GUARDED 7-POINT · " + speedup.toFixed(2) + "× vs 50-pt · COND " + conditioning.toFixed(2) }
-: fails.length === 0 ? { cls: "badge-pill badge-amber", text: "● " + points + " PTS — works but " + speedup.toFixed(2) + "× slower than needed" }
+: fails.length === 0 ? { cls: "badge-pill badge-amber", text: "● " + points + " PTS, works but " + speedup.toFixed(2) + "× slower than needed" }
 : { cls: "badge-pill badge-accent", text: "FAIL-CLOSED · " + fails[0] };
-const specText = [ "# ASKA PHYSICAL — IMPEDENCE-ANALYZERS SWEEP SPEC (v0.1.0, model only)", "repo = \"https://github.com/aska-physical/impedence-analyzers\"",
+const specText = [ "# ASKA PHYSICAL: IMPEDENCE-ANALYZERS SWEEP SPEC (v0.1.0, model only)", "repo = \"https://github.com/aska-physical/impedence-analyzers\"",
 "gate_status = \"" + (fails.length === 0 ? "PASS" : "FAIL_CLOSED") + "\"",
 "", "[sweep]", "points = " + points + " # guarded schedule 5,12,28,50,110,250,600 kHz when points = 7",
 "speedup_vs_50pt = " + speedup.toFixed(2) + "x", "jacobian_conditioning = " + conditioning.toFixed(2) + " # legacy 50-pt: 14.34",
@@ -126,7 +126,7 @@ if (w >= 420) {
 ctx.font = "600 11px 'JetBrains Mono', monospace"; ctx.fillStyle = fg;
 ctx.fillText("COLE ARC · " + n + " PTS · " + (50 / n).toFixed(2) + "× vs 50-pt · COND " + (n <= 7 ? "13.85" : "14.34") + " · GATE: HOOK+STRAY-C", 14, 20);
 ctx.fillStyle = n <= 7 ? ver : accent;
-ctx.fillText(n <= 7 ? "GUARDED 7-FREQ 5–600 kHz · 0.00000% RMS · CELL 2πa/(2−√2)" : "LEGACY " + n + "-PT — " + (50 / n).toFixed(1) + "× slower, gate unguarded", 14, h - 10); } }
+ctx.fillText(n <= 7 ? "GUARDED 7-FREQ 5–600 kHz · 0.00000% RMS · CELL 2πa/(2−√2)" : "LEGACY " + n + "-PT, " + (50 / n).toFixed(1) + "× slower, gate unguarded", 14, h - 10); } }
 if (!CORE_PROJECTS.some(function (p) { return p.slug === "impedence-analyzers"; })) { CORE_PROJECTS.push(IMPEDENCE_PROJECT); }
 const existingIdx = state.projects.findIndex(function (p) { return p.slug === "impedence-analyzers"; }); if (existingIdx >= 0) {
 state.projects[existingIdx] = IMPEDENCE_PROJECT; } else { state.projects.push(IMPEDENCE_PROJECT); } if (typeof initProjectDefaults === "function") {

@@ -8,8 +8,8 @@ externalRepoUrl: "https://github.com/aska-physical/funi-floors", visualType: "fu
 sliderLabel: "Fe-SMA Joule Prestress & 313 psf AI Rack Load Stage", sliderMin: 0, sliderMax: 100, sliderDefault: 78, sliderUnit: "% stage", presets: [
 { label: "Demold + Cold Tie (15%)", val: 15 }, { label: "175 \u00b0C Joule Camber (55%)", val: 55 },
 { label: "313 psf AI Rack + EIS (100%)", val: 100 } ],
-builderSummary: "A flat slab carries load by bending, so it needs 310 mm of concrete plus a 280 mm ceiling plenum for services. A funicular cassette is shaped like its own load path, so 380 mm flush does the same job \u2014 76% less concrete, 68% less embodied carbon, one storey saved every 12 floors, and it still carries 313 psf data-center racks.",
-plainExplain: "Concrete floors are thick because a flat slab resists load by bending. Shape the floor as an arch in its own plane \u2014 a funicular \u2014 and the same load travels as compression, which concrete is good at. The cassette arrives as a 3 mm stay-in-place basalt/carbon pan, is prestressed by a 0.32 kWh/m\u00b2 resistive pulse instead of hydraulic jacks, and seats flush on columns through a collar that checks punching shear (2,756 kN capacity vs 2,208 kN demand). A 50 kHz impedance twin on the soffit senses coolant leaks.",
+builderSummary: "A flat slab carries load by bending, so it needs 310 mm of concrete plus a 280 mm ceiling plenum for services. A funicular cassette is shaped like its own load path, so 380 mm flush does the same job, 76% less concrete, 68% less embodied carbon, one storey saved every 12 floors, and it still carries 313 psf data-center racks.",
+plainExplain: "Concrete floors are thick because a flat slab resists load by bending. Shape the floor as an arch in its own plane, a funicular, and the same load travels as compression, which concrete is good at. The cassette arrives as a 3 mm stay-in-place basalt/carbon pan, is prestressed by a 0.32 kWh/m\u00b2 resistive pulse instead of hydraulic jacks, and seats flush on columns through a collar that checks punching shear (2,756 kN capacity vs 2,208 kN demand). A 50 kHz impedance twin on the soffit senses coolant leaks.",
 kpis: [
   { tag: "Carbon", value: "\u221267.8% CO\u2082e", note: "38.8 kg CO\u2082e/m\u00b2 cradle-to-gate vs 120.6 baseline" },
   { tag: "Efficiency", value: "\u221276.1% concrete", note: "380 mm flush cassette vs 310 mm slab + 280 mm plenum; one storey per 12 floors" },
@@ -42,7 +42,7 @@ inputs: [ { key: "spanM", label: "Bay Span L (m)", min: 6.0, max: 12.0, step: 0.
 { key: "jouleTempC", label: "Fe-SMA Joule Temp T_act (\u00b0C)", min: 20, max: 210, step: 5, default: 175, unit: "\u00b0C" } ] },
 specFilename: "funi-floors-cassette-spec.toml", verification: {
 propose: "Parametric cassette geometry (L, f, h = 380 mm), hybrid T1100G CFRP + Fe-Mn-Si tie schedule, and 200 mm octagonal MEP penetrations.",
-verify: "Deterministic verify.py checks 3 SymPy identities + 10/10 must-fail gates (crown stress, MEP web shear, DG11 vibration, ACI 318 punching, 120-min ISO 834 fire, Cole EIS) with -O-safe require() guards and R5 regression tests (PR #9). Add-only exact-Q study (PR #8) certifies: checkerboard half-span arch bending M(L/4) = 3645/64 kN\u00b7m with 405/8 kN shear-key demand and 51.33 mm thrust eccentricity inside the 380 mm kern; 0 floppy modes with 45\u00b0 octagonal web bracing vs 4 unbraced; carbon end-interlock at 714.2 kN/rib \u2014 ligament 714.2 \u2264 720 kN PASS, uniform 4-pin 280.58 > 260 kN FAIL, graded 4-pin 249.97 \u2264 260 kN PASS.",
+verify: "Deterministic verify.py checks 3 SymPy identities + 10/10 must-fail gates (crown stress, MEP web shear, DG11 vibration, ACI 318 punching, 120-min ISO 834 fire, Cole EIS) with -O-safe require() guards and R5 regression tests (PR #9). Add-only exact-Q study (PR #8) certifies: checkerboard half-span arch bending M(L/4) = 3645/64 kN\u00b7m with 405/8 kN shear-key demand and 51.33 mm thrust eccentricity inside the 380 mm kern; 0 floppy modes with 45\u00b0 octagonal web bracing vs 4 unbraced; carbon end-interlock at 714.2 kN/rib, ligament 714.2 \u2264 720 kN PASS, uniform 4-pin 280.58 > 260 kN FAIL, graded 4-pin 249.97 \u2264 260 kN PASS.",
 sign: "Emits results/certificate.json + TOML shop traveler; blocks berth if passive tie cracks crown, DG11 < 8.0 Hz, or collar utilization > 1.00." },
 tableHeaders: ["Floor System (9 m \u00d7 9 m, 313 psf)", "Total Depth + MEP", "Dead Mass", "DG11 Vibration", "Gate Result"], tableRows: [
 ["310 mm PT Flat Slab + Drop Caps", "590\u2013660 mm", "744 kg/m\u00b2", "Pass (heavy mass)", "Baseline (120.6 kg CO2e/m\u00b2)"],
@@ -108,7 +108,7 @@ if (VqUls > phiVoct) fails.push("MEP WEB SHEAR (" + VqUls.toFixed(0) + " > " + p
 const badge = fails.length === 0
 ? { cls: "badge-pill badge-verified", text: "10/10 GATES PASS \u00b7 " + Math.round(qL * 20.885) + " PSF BERTH-READY" }
 : { cls: "badge-pill badge-accent", text: "FAIL-CLOSED \u00b7 " + fails[0] };
-const specText = [ "# ASKA PHYSICAL \u2014 FUNI-FLOORS v0.1.0 SHOP & SITE SPEC PACKET", "repo = \"https://github.com/aska-physical/funi-floors\"",
+const specText = [ "# ASKA PHYSICAL: FUNI-FLOORS v0.1.0 SHOP & SITE SPEC PACKET", "repo = \"https://github.com/aska-physical/funi-floors\"",
 "gate_status = \"" + (fails.length === 0 ? "PASS" : "FAIL_CLOSED") + "\"", "", "[geometry]", "cassette_plan_m = [" + L.toFixed(2) + ", 3.00]",
 "total_flush_depth_mm = " + hTot.toFixed(0), "funicular_rise_mm = " + fMm.toFixed(0),
 "eq_concrete_thickness_mm = " + volEqMm.toFixed(2) + " # -76.1% vs 310 mm PT slab",

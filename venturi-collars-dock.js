@@ -4,28 +4,28 @@ const VENTURI_PROJECT = { slug: "venturi-collars", shortName: "Venturi Collars",
 title: "Battery-Free Aeroelastic Venturi Collars for HVAC & Industrial Ducts",
 sector: "HVAC & Energy", station: "01 · Duct & Airflow", coords: { x: 0.22, y: 0.32 }, rung: 2,
 statusNote: "v0.1.0 · 5 must-fail controls · exact-Q cascaded-choke study · -O-safe verify",
-caveat: "Model/checker only — no bench measurement attached; pure-PVDF harvest is a verified NEGATIVE finding (dock#8: model, not measured)",
+caveat: "Model/checker only, no bench measurement attached; pure-PVDF harvest is a verified NEGATIVE finding (dock#8: model, not measured)",
 externalRepoUrl: "https://github.com/aska-physical/venturi-collars", visualType: "venturi",
 sliderLabel: "Duct Airspeed (VAV turndown → nominal)", sliderMin: 1.8, sliderMax: 4.0, sliderDefault: 4.0, sliderUnit: " m/s",
 presets: [ { label: "Turndown (1.8 m/s)", val: 1.8 }, { label: "Mid (2.5 m/s)", val: 2.5 }, { label: "Nominal (4.0 m/s)", val: 4.0 } ],
-builderSummary: "Every VAV air terminal in a building carries a battery that someone climbs a ladder to replace. A venturi collar instead speeds the duct's own airflow just enough to flutter six carbon reeds past a printed coil, harvesting 0.1–0.9 mW — 11× what the wireless node needs — at 1.6 Pa of pressure loss, well inside the 15 Pa fan budget. No batteries, no bearings.",
-plainExplain: "Air is already moving through every duct; the question is whether that motion can be turned into a little electricity without costing more fan power than it saves. A shaped collar accelerates the flow at its throat past the speed where a reed starts to flutter, and the reed's magnet tip sweeps a printed coil to generate power. The diffuser behind the throat recovers over 85% of the pressure, so the total cost is 1.62 Pa at full flow — more than 30× less than a sharp baffle. A plain plastic-film harvester was also modelled and found to produce 100× too little: a verified negative result, so the reed design is what the page ships.",
+builderSummary: "Every VAV air terminal in a building carries a battery that someone climbs a ladder to replace. A venturi collar instead speeds the duct's own airflow just enough to flutter six carbon reeds past a printed coil, harvesting 0.1–0.9 mW, 11× what the wireless node needs, at 1.6 Pa of pressure loss, well inside the 15 Pa fan budget. No batteries, no bearings.",
+plainExplain: "Air is already moving through every duct; the question is whether that motion can be turned into a little electricity without costing more fan power than it saves. A shaped collar accelerates the flow at its throat past the speed where a reed starts to flutter, and the reed's magnet tip sweeps a printed coil to generate power. The diffuser behind the throat recovers over 85% of the pressure, so the total cost is 1.62 Pa at full flow, more than 30× less than a sharp baffle. A plain plastic-film harvester was also modelled and found to produce 100× too little: a verified negative result, so the reed design is what the page ships.",
 kpis: [
   { tag: "Efficiency", value: "0.924 mW @ 4 m/s", note: "11.55× the 80 µW BLE/LoRa node draw, zero bearings to clog" },
   { tag: "Cost", value: "~500 battery swaps avoided", note: "per 100 VAV zones over 20 years" },
   { tag: "Efficiency", value: "1.62 Pa pressure loss", note: "vs the ASHRAE < 15 Pa VAV budget; > 30× below a sharp baffle" },
   { tag: "Quality", value: "PVDF gives 0.0476 mW", note: "verified negative finding (must-fail #2); the reed + magnet hybrid is 19.4× better" }
 ],
-engineerSummary: "Coupled hydraulic + electromechanical model: gradual β = 0.64 throat + 7° diffuser recovers > 85% of dynamic head (1.615 Pa total at 4.0 m/s, > 30× below a sharp baffle, inside the ASHRAE < 15 Pa VAV budget); bearing-free M55J reed + PCB-coil transduction boosts harvested DC power 19.4× over pure PVDF (which makes only 0.0476 mW — verified negative finding, must-fail #2).",
+engineerSummary: "Coupled hydraulic + electromechanical model: gradual β = 0.64 throat + 7° diffuser recovers > 85% of dynamic head (1.615 Pa total at 4.0 m/s, > 30× below a sharp baffle, inside the ASHRAE < 15 Pa VAV budget); bearing-free M55J reed + PCB-coil transduction boosts harvested DC power 19.4× over pure PVDF (which makes only 0.0476 mW, verified negative finding, must-fail #2).",
 howToRead: "Drag duct airspeed from 1.8 to 4.0 m/s. Watch the throat speed cross the 2.23 m/s flutter cut-in, harvested power climb 0.104 → 0.924 mW (11.55× margin over an 80 µW BLE/LoRa node at nominal), and pressure loss stay at 1.62 Pa.",
 walkthrough: [
-{ title: "The PVDF Negative Finding", val: 20, text: "A pure thin-film PVDF-TrFE bimorph in a 200 mm duct makes only 0.0476 mW at 4.0 m/s — sub-100 µm lever arms give < 0.03% RMS strain and k31² ≈ 0.02. Verified by must-fail #2: it cannot run an 80–150 µW node." },
+{ title: "The PVDF Negative Finding", val: 20, text: "A pure thin-film PVDF-TrFE bimorph in a 200 mm duct makes only 0.0476 mW at 4.0 m/s, sub-100 µm lever arms give < 0.03% RMS strain and k31² ≈ 0.02. Verified by must-fail #2: it cannot run an 80–150 µW node." },
 { title: "Venturi Throat Past Cut-In", val: 45, text: "β = 0.64 throat accelerates 1.8 m/s turndown to 2.81 m/s, above the 2.23 m/s flutter cut-in where a straight duct harvests 0.00 mW (must-fail #3)." },
-{ title: "Bearing-Free Hybrid 19.4×", val: 75, text: "A 0.35 g NdFeB tip shim on each fatigue-immune M55J reed oscillating past a flush 4-layer PCB stator coil boosts power to 0.924 mW at 4.0 m/s — zero bearings to clog with HVAC dust." },
+{ title: "Bearing-Free Hybrid 19.4×", val: 75, text: "A 0.35 g NdFeB tip shim on each fatigue-immune M55J reed oscillating past a flush 4-layer PCB stator coil boosts power to 0.924 mW at 4.0 m/s, zero bearings to clog with HVAC dust." },
 { title: "Pressure Budget & Batteries", val: 100, text: "7° conical diffuser recovers > 85% of dynamic head: 1.615 Pa total at nominal 4.0 m/s vs > 50 Pa for a sharp baffle. ~500 lithium battery replacements avoided per 100 VAV zones over 20 years." }
 ],
-metrics: [ { value: "0.924 mW", label: "hybrid harvest at 4.0 m/s — 11.55× the 80 µW node", cite: "verify.py velocity sweep" },
-{ value: "0.0476 mW", label: "pure PVDF at 4.0 m/s — VERIFIED NEGATIVE finding", cite: "must-fail #2" },
+metrics: [ { value: "0.924 mW", label: "hybrid harvest at 4.0 m/s, 11.55× the 80 µW node", cite: "verify.py velocity sweep" },
+{ value: "0.0476 mW", label: "pure PVDF at 4.0 m/s, VERIFIED NEGATIVE finding", cite: "must-fail #2" },
 { value: "1.62 Pa", label: "total pressure loss at 4.0 m/s (>30× < sharp baffle; ASHRAE <15 Pa)", cite: "K_venturi model" },
 { value: "~500", label: "battery replacements avoided per 100 VAV zones over 20 yr", cite: "README.md" } ],
 shopMethod: {
@@ -46,14 +46,14 @@ specFilename: "venturi-collar-harvest-spec.toml",
 verification: {
 propose: "Coupled hydraulic + electromechanical equations swept over 1.8–6.0 m/s; exact-Q study (PR #5) certifies K-stage cascaded load splitting (moment ÷ K³, thrust ÷ K), a contractive choke converging to ≈ 0.5216 vs 521× positive-feedback runaway, and cycle-space Kirchhoff solves showing tree/ring collar manifolds carry zero convective power when blocked.",
 verify: "Deterministic verify.py with 5 must-fail controls, -O-safe after PR #3 (bare asserts → CheckFailure; NaN clamp and Zone-B canonical cert I/O closed). Pure-PVDF 0.0476 mW is a must-fail control, not a claim.",
-sign: "Claimed by model only — no bench measurement exists; a person signs nothing yet. Harvested-power vs flutter-speed needs a duct rig before any product claim (dock#8: a model number stays a model number)."
+sign: "Claimed by model only, no bench measurement exists; a person signs nothing yet. Harvested-power vs flutter-speed needs a duct rig before any product claim (dock#8: a model number stays a model number)."
 },
 tableHeaders: ["Duct U (m/s)", "Throat U (m/s)", "ΔP (Pa)", "Pure PVDF (mW)", "Hybrid M55J+PCB (mW)", "Node margin vs 80 µW"],
 tableRows: [
 ["1.8 (turndown)", "2.81", "0.33", "0.003", "0.104", "1.30×"],
 ["2.5", "3.91", "0.63", "0.011", "0.365", "4.56×"],
 ["4.0 (nominal)", "6.25", "1.62", "0.028 (0.0476 cell)", "0.924", "11.55×"],
-["Straight duct 1.8", "1.80 < 2.23 cut-in", "—", "0.00", "0.00", "0× — must-fail #3"]
+["Straight duct 1.8", "1.80 < 2.23 cut-in", "n/a", "0.00", "0.00", "0×, must-fail #3"]
 ],
 untested: "No bench measurement of harvested power vs flutter speed on a real duct rig; dust loading on the PCB stator coils over years; reed fatigue beyond the model; the cascaded-choke contraction is study-only (not yet a verify.py control)."
 };
@@ -79,13 +79,13 @@ const throat = pt[1], dP = pt[2], mw = pt[3];
 const margin = (mw * 1000) / nodeUw;
 const cutIn = throat >= 2.23;
 const fails = [];
-if (!cutIn) fails.push("THROAT " + throat.toFixed(2) + " m/s < 2.23 m/s FLUTTER CUT-IN — 0.00 mW");
+if (!cutIn) fails.push("THROAT " + throat.toFixed(2) + " m/s < 2.23 m/s FLUTTER CUT-IN, 0.00 mW");
 if (mw * 1000 < nodeUw) fails.push("HARVEST " + (mw * 1000).toFixed(0) + " µW < " + nodeUw + " µW NODE DRAW");
 if (dP > 15) fails.push("PRESSURE LOSS " + dP.toFixed(2) + " Pa > 15 Pa ASHRAE VAV BUDGET");
 const badge = fails.length === 0 ? { cls: "badge-pill badge-verified", text: "✓ HARVESTS " + (mw * 1000).toFixed(0) + " µW · " + margin.toFixed(2) + "× NODE MARGIN · ΔP " + dP.toFixed(2) + " Pa" }
 : { cls: "badge-pill badge-accent", text: "FAIL-CLOSED · " + fails[0] };
-const specText = [ "# ASKA PHYSICAL — VENTURI-COLLAR HARVEST SPEC (v0.1.0, model only)", "repo = \"https://github.com/aska-physical/venturi-collars\"",
-"gate_status = \"" + (fails.length === 0 ? "PASS" : "FAIL_CLOSED") + "\" # model/checker — no bench measurement",
+const specText = [ "# ASKA PHYSICAL: VENTURI-COLLAR HARVEST SPEC (v0.1.0, model only)", "repo = \"https://github.com/aska-physical/venturi-collars\"",
+"gate_status = \"" + (fails.length === 0 ? "PASS" : "FAIL_CLOSED") + "\" # model/checker, no bench measurement",
 "", "[duct]", "duct_diameter_mm = " + (c.ductMm ?? 200), "duct_airspeed_m_s = " + U.toFixed(1),
 "venturi_throat_beta = 0.64 # throat speed = " + throat.toFixed(2) + " m/s (flutter cut-in 2.23 m/s)",
 "diffuser_deg = 7 # recovers > 85% of dynamic head", "",
@@ -94,7 +94,7 @@ const specText = [ "# ASKA PHYSICAL — VENTURI-COLLAR HARVEST SPEC (v0.1.0, mod
 "node_draw_uW = " + nodeUw + " # margin = " + margin.toFixed(2) + "x",
 "batteries_avoided_20yr = " + Math.round(zones * 5) + " # ~500 per 100 VAV zones" ].join("\n");
 return { outputs: [
-{ label: "Throat Speed vs Cut-In", value: throat.toFixed(2) + " m/s", sub: cutIn ? "Above 2.23 m/s flutter cut-in" : "BELOW cut-in — 0.00 mW" },
+{ label: "Throat Speed vs Cut-In", value: throat.toFixed(2) + " m/s", sub: cutIn ? "Above 2.23 m/s flutter cut-in" : "BELOW cut-in, 0.00 mW" },
 { label: "Harvested Power & Margin", value: (mw * 1000).toFixed(0) + " µW · " + margin.toFixed(2) + "×", sub: "vs " + nodeUw + " µW node · 19.4× over pure PVDF" },
 { label: "Pressure Loss", value: dP.toFixed(2) + " Pa", sub: ">30× below a sharp baffle (>50 Pa) · budget < 15 Pa" },
 { label: "Batteries Avoided", value: "~" + Math.round(zones * 5) + " / 20 yr", sub: zones + " VAV zones · zero bearings to clog" }

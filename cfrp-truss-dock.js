@@ -4,14 +4,14 @@ const TRUSS_PROJECT = { slug: "cfrp-truss", shortName: "CFRP Truss",
 title: "Truss-Anchored, Self-Sensing CFRP Concrete & Column Retrofit Kits",
 sector: "Structural", station: "02 · Shop Fabrication", coords: { x: 0.66, y: 0.80 }, rung: 2,
 statusNote: "v0.3.0 · 12 must-fail controls · Volkersen anchor study · NaN/Zone-B hardening (PR #7)",
-caveat: "Model/checker only — no bench pull-out of adhesive dowels yet (dock#8); EIS debond thresholds are model-only",
+caveat: "Model/checker only, no bench pull-out of adhesive dowels yet (dock#8); EIS debond thresholds are model-only",
 externalRepoUrl: "https://github.com/aska-physical/cfrp-truss", visualType: "cfrp-truss",
 sliderLabel: "Retrofit Engagement (EBR strip → NSM + 45° truss kit)", sliderMin: 0, sliderMax: 100, sliderDefault: 80, sliderUnit: "% kit",
 presets: [ { label: "EBR Flat Strip (10%)", val: 10 }, { label: "NSM Grooves (45%)", val: 45 }, { label: "45° Truss + Anchors (100%)", val: 100 } ],
-builderSummary: "Carbon sheet glued to a concrete beam can peel off at the ends. Cut shallow grooves instead, lay the sheet in them, and stitch the grooves with 45° carbon dowels anchored into the stirrups: 12 × 8 mm dowels carry 195.76 kN against a 182.28 kN demand. Result: +77% moment capacity at equal carbon area — or the same strength with half the carbon.",
-plainExplain: "Externally bonded carbon-fiber reinforcement strengthens a beam, but the bond can peel, especially near the ends where shear spikes after the steel yields (5.36× the elastic flow). Near-surface-mounted (NSM) strips sit in grooves cut into the concrete cover, and angled truss dowels cross those grooves, tying the sheet into the beam's own stirrups. The checker sizes the dowel group per ACI 318 and finds 8 mm dowels are the right size — upsizing to 16 mm actually reduces group bond by 43.7% because the group is width-truncated.",
+builderSummary: "Carbon sheet glued to a concrete beam can peel off at the ends. Cut shallow grooves instead, lay the sheet in them, and stitch the grooves with 45° carbon dowels anchored into the stirrups: 12 × 8 mm dowels carry 195.76 kN against a 182.28 kN demand. Result: +77% moment capacity at equal carbon area, or the same strength with half the carbon.",
+plainExplain: "Externally bonded carbon-fiber reinforcement strengthens a beam, but the bond can peel, especially near the ends where shear spikes after the steel yields (5.36× the elastic flow). Near-surface-mounted (NSM) strips sit in grooves cut into the concrete cover, and angled truss dowels cross those grooves, tying the sheet into the beam's own stirrups. The checker sizes the dowel group per ACI 318 and finds 8 mm dowels are the right size, upsizing to 16 mm actually reduces group bond by 43.7% because the group is width-truncated.",
 kpis: [
-  { tag: "Efficiency", value: "+77.34% moment", note: "at equal CFRP area — or 50% less carbon for the same strength" },
+  { tag: "Efficiency", value: "+77.34% moment", note: "at equal CFRP area, or 50% less carbon for the same strength" },
   { tag: "Quality", value: "195.76 vs 182.28 kN", note: "anchor group capacity vs demand; 16 mm dowels would cut bond −43.7%" },
   { tag: "Cost", value: "4 × 600 mL epoxy", note: "dual-cartridge epoxy per 6 m beam (2,288.4 mL total, 95.4% utilized)" },
   { tag: "Integration", value: "Self-sensing", note: "EIS debond thresholds flag peel before it becomes a failure (model-only today)" }
@@ -19,7 +19,7 @@ kpis: [
 engineerSummary: "Exact coupled cracked-section solver (ACI 440.2R-17 §10.2.8–10.2.9: 0.60/0.45 f'c concrete, 0.80 fy steel, 0.55 ffu creep-rupture), 40-station finite-difference chord shear-flow with the post-yield 5.36× spike (79.00 → 423.14 N/mm), and full ACI 318M-19 Ch. 17 adhesive-dowel group design (cone, bond, pryout, 5/3 interaction). SymPy proves group bond scales inversely with dowel diameter when beam width truncates it: 16 mm dowels cut φN_ag −43.7% to 110.23 kN (FAIL). 3,200 µε active pre-strain in the truss end-anchors restores serviceability (f_c,s 21.64 → 18.77 MPa).",
 howToRead: "Drag from plain EBR to the full truss kit. Watch the shear-flow spike at the load point demand 45° stitches, the anchor group capacity fall if you upsize dowels to 16 mm (width-truncated bond), and the epoxy count come out to exactly 4 dual cartridges per 6 m beam.",
 walkthrough: [
-{ title: "EBR Alone: +77.34% at Equal Area", val: 10, text: "Unanchored EBR flat strips gain +77.34% moment capacity at equal CFRP area vs the unstrengthened beam — but bondline peel can govern before the laminate is used fully." },
+{ title: "EBR Alone: +77.34% at Equal Area", val: 10, text: "Unanchored EBR flat strips gain +77.34% moment capacity at equal CFRP area vs the unstrengthened beam, but bondline peel can govern before the laminate is used fully." },
 { title: "Post-Yield Shear-Flow Spike 5.36×", val: 45, text: "Once steel yields, dT_f/dx jumps 79.00 → 423.14 N/mm; unassisted groove stress 4.07 MPa exceeds the 2.66 MPa peel cap, so pairs of 8 mm 45° stitches at 150 mm carry the 21.94 kN excess (22.16 ≤ 34.18 kN)." },
 { title: "Anchor Group: 8 mm Not 16 mm", val: 75, text: "Beam-width truncation makes group bond scale inversely with dowel diameter (SymPy-proved): 12 × 8 mm 45° dowels give φN_ag = 195.76 kN PASS vs 182.28 kN; 16 mm drops to 110.23 kN (−43.7%) FAIL; 90° vertical pins fail in guillotine shear." },
 { title: "Pre-Strain + Epoxy Count", val: 100, text: "3,200 µε locked into the truss end-anchors cuts service concrete stress to 18.77 MPa (≤ 21.0); 2,288.4 mL gross epoxy = 4 × 600 mL dual cartridges per 6.0 m beam at 95.4% utilization. 4-wire Cole EIS through the carbon chord self-senses strain (+0.409% @ 2 MHz), moisture (22.4% @ 50 kHz), debond (+111.6% @ 100 Hz)." }
@@ -46,14 +46,14 @@ specFilename: "cfrp-truss-retrofit-spec.toml",
 verification: {
 propose: "NSM + 45° truss-stitched T1100G kits with ACI 318M-19 Ch. 17 adhesive-dowel end anchorage (ICC-ES ESR-3814), 40-station FD shear-flow solver; exact-Q Volkersen discrete shear-lag study (PR #5) re-derives the 12-anchor group as an SPD tridiagonal system; perforation-tear gate included.",
 verify: "Deterministic verify.py: 12/12 must-fail controls + SymPy identities (inverse dowel-diameter theorem, transformed section); NaN-swallowing max/min closed and atomic dir_fd Zone-B cert I/O (PR #7, assumed merged); -O-safe since PR #6.",
-sign: "Claimed by checker only — no bench pull-out of the dowel group exists; per dock#8 a claim moves to hardware only when a receiving-side checker fails a bad case and passes the real one. A person signs nothing yet."
+sign: "Claimed by checker only, no bench pull-out of the dowel group exists; per dock#8 a claim moves to hardware only when a receiving-side checker fails a bad case and passes the real one. A person signs nothing yet."
 },
 tableHeaders: ["Anchor Case", "φN_ag (kN)", "vs 182.28 kN demand", "Service f_c,s (MPa) vs 21.0", "Verdict"],
 tableRows: [
 ["12 × 8 mm 45° (stirrup core)", "195.76", "PASS (+7.4%)", "18.77 with 3,200 µε", "PASS"],
-["12 × 16 mm (oversized)", "110.23", "FAIL (−39.5%)", "—", "REJECTED (−43.7%)"],
-["90° vertical pins", "guillotine shear", "FAIL", "—", "REJECTED"],
-["Unreinforced cover cone", "180 kN end prestress w/o stirrup core", "FAIL", "—", "must-fail control"]
+["12 × 16 mm (oversized)", "110.23", "FAIL (−39.5%)", "n/a", "REJECTED (−43.7%)"],
+["90° vertical pins", "guillotine shear", "FAIL", "n/a", "REJECTED"],
+["Unreinforced cover cone", "180 kN end prestress w/o stirrup core", "FAIL", "n/a", "must-fail control"]
 ],
 untested: "No physical pull-out test of the adhesive dowel group or the end-interlock (funi-floors study flags 700 vs 714.2 kN/rib as model); fire exposure of the epoxy bondline; long-term creep of the 0.55·ffu gate beyond the model."
 };
@@ -75,7 +75,7 @@ if (phiN < demand) fails.push("ANCHOR GROUP " + phiN.toFixed(2) + " < " + demand
 if (fcS > 21.0) fails.push("SERVICE CONCRETE " + fcS.toFixed(2) + " > 21.0 MPa (0.60 f'c)");
 const badge = fails.length === 0 ? { cls: "badge-pill badge-verified", text: "✓ KIT HOLDS · φN_ag " + phiN.toFixed(1) + " kN · f_c,s " + fcS.toFixed(2) + " MPa" }
 : { cls: "badge-pill badge-accent", text: "FAIL-CLOSED · " + fails[0] };
-const specText = [ "# ASKA PHYSICAL — CFRP-TRUSS RETROFIT SPEC (v0.3.0, model only)", "repo = \"https://github.com/aska-physical/cfrp-truss\"",
+const specText = [ "# ASKA PHYSICAL: CFRP-TRUSS RETROFIT SPEC (v0.3.0, model only)", "repo = \"https://github.com/aska-physical/cfrp-truss\"",
 "gate_status = \"" + (fails.length === 0 ? "PASS" : "FAIL_CLOSED") + "\"",
 "", "[flexure]", "beam_length_m = " + beamM.toFixed(1), "moment_gain_pct = 77.34 # equal area; higher at 50% lower CFRP mass",
 "", "[anchorage_aci318_ch17]", "dowels = \"12 x " + dowel + " mm @ 45 deg, L_drill 226–230 mm, stirrup core\"",

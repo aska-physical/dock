@@ -9,16 +9,16 @@ externalRepoUrl: "https://github.com/aska-physical/funi-frame", visualType: "fun
 sliderLabel: "Whole-Hall Vibro-Thermal & Waste-Heat Dispatch Stage", sliderMin: 0, sliderMax: 100, sliderDefault: 82, sliderUnit: "% dispatch",
 presets: [ { label: "Exoskeleton + CLD Isolation (20%)", val: 20 }, { label: "58 \u00b0C W45 Sorption Loop (60%)", val: 60 },
 { label: "Full 3-Tier TES + Sky/ATES (100%)", val: 100 } ],
-builderSummary: "Data-center cooling usually means chillers that add roughly 40% to the power bill and evaporate millions of litres of water. A funi-frame hall cools itself: the roof radiates heat to the night sky, and the 58 \u00b0C water returning from the servers drives a silica-gel chiller for the air side \u2014 possible only below a 41.46 \u00b0C re-cooling limit, a hard thermodynamic ceiling the sizer enforces. PUE falls from 1.38 to 1.074 with zero water, and 3.06 MW of freed utility power carries 2.85\u20132.96 MW of new IT load.",
-plainExplain: "Servers turn electricity into heat, and most halls throw that heat away with chillers and cooling towers. A funi-frame hall uses it: a 24 m roof vault radiates 93 W/m\u00b2 to the cold night sky, and the warm water leaving the servers (58 \u00b0C) drives a silica-gel adsorption chiller that cools the remaining air load \u2014 but only while the re-cooling temperature stays under 41.46 \u00b0C, the second-law limit. Leftover heat charges three cheap stores (phase-change material, crushed basalt at $0.014/kWh, and 200 ground piles), and the walls hold rack vibration to 9.0e-5 g so optical links stay aligned.",
+builderSummary: "Data-center cooling usually means chillers that add roughly 40% to the power bill and evaporate millions of litres of water. A funi-frame hall cools itself: the roof radiates heat to the night sky, and the 58 \u00b0C water returning from the servers drives a silica-gel chiller for the air side, possible only below a 41.46 \u00b0C re-cooling limit, a hard thermodynamic ceiling the sizer enforces. PUE falls from 1.38 to 1.074 with zero water, and 3.06 MW of freed utility power carries 2.85\u20132.96 MW of new IT load.",
+plainExplain: "Servers turn electricity into heat, and most halls throw that heat away with chillers and cooling towers. A funi-frame hall uses it: a 24 m roof vault radiates 93 W/m\u00b2 to the cold night sky, and the warm water leaving the servers (58 \u00b0C) drives a silica-gel adsorption chiller that cools the remaining air load, but only while the re-cooling temperature stays under 41.46 \u00b0C, the second-law limit. Leftover heat charges three cheap stores (phase-change material, crushed basalt at $0.014/kWh, and 200 ground piles), and the walls hold rack vibration to 9.0e-5 g so optical links stay aligned.",
 kpis: [
   { tag: "Cost", value: "$71\u2013148M/yr", note: "revenue from 2.85\u20132.96 MW of new IT load carried by the freed 3.06 MW of utility power, per 10 MW hall, at $25\u201350M per MW-yr" },
-  { tag: "Efficiency", value: "PUE 1.38 \u2192 1.074", note: "cooling power \u221285.1%; WUE 0.0 L/kWh \u2014 157.7M litres of water saved per 10 MW hall per year" },
+  { tag: "Efficiency", value: "PUE 1.38 \u2192 1.074", note: "cooling power \u221285.1%; WUE 0.0 L/kWh, 157.7M litres of water saved per 10 MW hall per year" },
   { tag: "Quality", value: "9.0e-5 g_rms", note: "rack vibration, 18% of the 5e-4 g optical limit; hall noise \u221211 dBA" },
   { tag: "Carbon", value: "Basalt TES $0.014/kWh", note: "4.86\u00d7 cheaper than Li-ion, on top of zero cooling water" },
   { tag: "Integration", value: "Whole-hall stack", note: "couples funi-floors cassettes, energy piles/ATES, and the optifab campus gate" }
 ],
-engineerSummary: "Proves self-cooling above \u03b1_liq* = 1/(1 + COP_ads) = 61.73% using 58 \u00b0C ASHRAE W45 return water to drive silica-gel adsorption (COP 0.62)\u2014thermodynamically possible only below a 41.46 \u00b0C re-cooling limit (reversible COP 2.051 at the 30 \u00b0C design point)\u2014paired with O(r^-2) Fe-Mn-Si + \u00b145\u00b0 CFRP CLD hysteretic isolation (9.0e-5 g_rms) and HS24 PCM + $0.014/kWh_th basalt TES.",
+engineerSummary: "Proves self-cooling above \u03b1_liq* = 1/(1 + COP_ads) = 61.73% using 58 \u00b0C ASHRAE W45 return water to drive silica-gel adsorption (COP 0.62), thermodynamically possible only below a 41.46 \u00b0C re-cooling limit (reversible COP 2.051 at the 30 \u00b0C design point), paired with O(r^-2) Fe-Mn-Si + \u00b145\u00b0 CFRP CLD hysteretic isolation (9.0e-5 g_rms) and HS24 PCM + $0.014/kWh_th basalt TES.",
 howToRead: "24 m roof vault rejects 93 W/m\u00b2 to the 8\u201313 \u03bcm sky window; 260 mm Carbon-TRC + Poraver/mPCM walls block heat/noise and hold cold aisles safe for 28.3 min; 58 \u00b0C GPU water powers silica-gel RDHx cooling and charges PCM, crushed-basalt, and 200 energy-pile/ATES loops.",
 walkthrough: [
 { title: "24 m Sky-Cool Funicular Vault", val: 20, text: "1,480 mm Fe-SMA-tied shell spans 24 m at L/2,044 stiffness (-52.3% roof mass, R-46) with PVDF-HFP/BaSO4 radiative sky-cooling skin (93 W/m\u00b2)." },
@@ -26,8 +26,8 @@ walkthrough: [
 { title: "58 \u00b0C W45 Sorption Self-Cooling", val: 72, text: "85% direct-to-chip capture exceeds \u03b1_liq* = 61.73%; 2.42 MW_th of 58 \u00b0C GPU water drives silica-gel chillers (COP 0.62) to cool the entire 15% RDHx air load." },
 { title: "3-Tier PCM + Basalt + ATES Sink", val: 100, text: "83.3 m\u00b3 savE HS24 PCM + 88.7 m\u00b3 crushed basalt ($0.014/kWh_th) + 200 energy piles/ATES yield PUE 1.074, WUE 0.0 L/kWh, and +3.06 MW freed utility power = +2.85\u20132.96 MW IT ($71.35\u2013$147.95M/yr at $25\u201350M/MW-yr IT)." }
 ], metrics: [ { value: "1.074 PUE", label: "Closed-Loop Cooling (-85.1% kW_e)", cite: "WUE = 0.0 L/kWh (157.7M L/yr saved)" },
-{ value: "+2.85\u20132.96 MW IT", label: "Freed 3.06 MW utility carries this IT load", cite: "$71.35\u2013$147.95M/yr · Must-fail #14" },
-{ value: "41.46 \u00b0C", label: "Second-law re-cooling limit for COP 0.62 (58 \u00b0C drive, 18 \u00b0C water)", cite: "Must-fail #13 · reversible COP 2.051 @ 30 \u00b0C" },
+{ value: "+2.85\u20132.96 MW IT", label: "Freed 3.06 MW utility carries this IT load", cite: "$71.35\u2013$147.95M/yr \u00b7 Must-fail #14" },
+{ value: "41.46 \u00b0C", label: "Second-law re-cooling limit for COP 0.62 (58 \u00b0C drive, 18 \u00b0C water)", cite: "Must-fail #13 \u00b7 reversible COP 2.051 @ 30 \u00b0C" },
 { value: "9.0e-5 g", label: "Rack Vibration (17.9% of 5e-4 g)", cite: "-63.7 dB vs steel frame" },
 { value: "$0.014/kWh", label: "Crushed-Basalt TES Annualized Capex", cite: "4.86x cheaper than Li-ion" } ], shopMethod: {
 tooling: "Precast Carbon-TRC wall beds, 24 m SIP vault segments, Fe-Mn-Si plinths + \u00b145\u00b0 CFRP CLD cassettes, savE HS24 PCM vessel, insulated basalt silo, silica-gel adsorption skids",
@@ -46,7 +46,7 @@ inputs: [ { key: "itMw", label: "IT Hall Compute Load P_IT (MW)", min: 2.0, max:
 specFilename: "funi-frame-hall-spec.toml", verification: {
 propose: "Integrated 24 m R-46 vault, 260 mm R-43.2/NRC-0.72/mPCM walls, 3-stage hysteretic vibration cascade, and W45 silica-gel + 3-tier PCM/basalt/ATES loop.",
 verify: "Deterministic verify.py (v0.1.1) checks 5 SymPy theorems + 14/14 must-fail controls across deflection, thermal bridging, acoustics, 5e-4 g_rms optical jitter, seismic drift, PUE/WUE, the 41.46 \u00b0C re-cooling limit (#13) and freed-utility-is-not-IT-power (#14); -O-safe require() guards; declared_inputs disclosed in the certificate.",
-sign: "Emits results/certificate.json + hall spec; fails closed if T_ret < 53 \u00b0C collapses adsorption COP, \u03b1_liq < \u03b1_liq* forces auxiliary chillers, plinth f_n1 breaches 5e-4 g_rms, or re-cooling ≥ 41.46 \u00b0C makes COP 0.62 thermodynamically impossible."
+sign: "Emits results/certificate.json + hall spec; fails closed if T_ret < 53 \u00b0C collapses adsorption COP, \u03b1_liq < \u03b1_liq* forces auxiliary chillers, plinth f_n1 breaches 5e-4 g_rms, or re-cooling \u2265 41.46 \u00b0C makes COP 0.62 thermodynamically impossible."
 }, tableHeaders: ["Data-Center Subsystem", "Conventional Steel + Evap Hall", "Aska Funi-Frame v0.1.0", "Physics Advantage", "Gate"], tableRows: [
 ["24 m Roof + Envelope", "2,400 mm truss + steel-pinned PCSP (R-2.5)", "1,480 mm vault (R-46) + CFRP wall (R-43.2)", "-920 mm plenum, +93 W/m\u00b2 sky cool", "PASS"],
 ["Rack Vibration & Hall Noise", "0.137 g_rms \u00b7 bare concrete (NRC 0.03)", "0.000090 g_rms \u00b7 Helmholtz Poraver (NRC 0.72)", "-63.7 dB vib \u00b7 -11.0 dBA hall noise", "PASS"],
@@ -99,10 +99,10 @@ if (pueFuni > 1.12) fails.push("PUE GATE (" + pueFuni.toFixed(3) + " > 1.120)");
 /* v0.1.1 Must-fail #13: COP 0.62 at 58 \u00b0C drive / 18 \u00b0C water needs re-cooling below 41.46 \u00b0C (reversible COP 2.051 at 30 \u00b0C, 0.423 at 45 \u00b0C dry). */
 const TREC_MAX_C = 41.46;
 const copRev30 = (291.15 / (303.15 - 291.15)) * ((331.15 - 303.15) / 331.15);
-if (TaC >= TREC_MAX_C) fails.push("RECOOLING " + TaC + " \u00b0C ≥ " + TREC_MAX_C + " \u00b0C SECOND-LAW LIMIT (COP 0.62 IMPOSSIBLE)");
+if (TaC >= TREC_MAX_C) fails.push("RECOOLING " + TaC + " \u00b0C \u2265 " + TREC_MAX_C + " \u00b0C SECOND-LAW LIMIT (COP 0.62 IMPOSSIBLE)");
 const badge = fails.length === 0 ? { cls: "badge-pill badge-verified", text: "14/14 GATES PASS \u00b7 PUE " + pueFuni.toFixed(3) + " \u00b7 WUE 0.0" }
 : { cls: "badge-pill badge-accent", text: "FAIL-CLOSED \u00b7 " + fails[0] };
-const specText = [ "# ASKA PHYSICAL \u2014 FUNI-FRAME v0.1.1 WHOLE-HALL & 3-TIER TES SPEC", "repo = \"https://github.com/aska-physical/funi-frame\"",
+const specText = [ "# ASKA PHYSICAL: FUNI-FRAME v0.1.1 WHOLE-HALL & 3-TIER TES SPEC", "repo = \"https://github.com/aska-physical/funi-frame\"",
 "gate_status = \"" + (fails.length === 0 ? "PASS" : "FAIL_CLOSED") + "\"", "", "[shell_and_seismic]", "hall_it_capacity_MW = " + Pit.toFixed(1),
 "roof_vault = \"24.0 m clear span, 1480 mm depth, R-46.0, 93 W/m2 sky-cool\"",
 "sandwich_walls = \"260 mm Carbon-TRC + PIR/aerogel + Helmholtz Poraver/mPCM (R-43.2, NRC 0.72, STC 60.1 dB)\"",
