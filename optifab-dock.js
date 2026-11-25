@@ -10,7 +10,14 @@ externalRepoUrl: "https://github.com/aska-physical/optifab", visualType: "optifa
 sliderLabel: "IT Load as % of 10 MW Nameplate", sliderMin: 0, sliderMax: 100, sliderDefault: 100, sliderUnit: "% of nameplate",
 presets: [ { label: "Below Load Floor (4%)", val: 4 }, { label: "Half Load (50%)", val: 50 },
 { label: "Full Load (100%)", val: 100 } ],
-builderSummary: "One checked stack for a whole data-center campus: the building, the cooling plant, and the software gate that decides what may change — so a scheduler sees the load floor, the recooling limit, and the thermal budget before it places a single job.",
+builderSummary: "A campus runs on a scheduler that places jobs on machines, and a bad placement wastes the whole plant. Optifab models the building, the cooling plant, and the software gate as one checked stack, and blocks any change that breaks the load floor (0.564 MW), the 41.46 °C re-cooling limit, or the 2,500 kWh thermal budget (14.69 min of ride-through at full load). 16 theorems proved in Lean, 29/29 controls passing.",
+plainExplain: "Think of a data-center campus as one machine with a software gate at the door: the scheduler may place jobs only within three budgets — a minimum load floor so the plant stays in its efficient band, a re-cooling ceiling set by thermodynamics, and a thermal battery that buys ride-through when the grid wobbles. Optifab writes those budgets down as a checked model — every claim proved in Lean or explicitly flagged — so a proposed change is verified before it touches a valve. Nothing here is measured yet; it is a model, and the page says so.",
+kpis: [
+  { tag: "Integration", value: "One checked stack", note: "building + cooling plant + software gate; agrees with the funi-frame v0.1.1 certificate (2.854–2.959 vs 2.85–2.96 MW IT)" },
+  { tag: "Quality", value: "16 theorems · 29/29", note: "proved in Lean under 6 kernels; 29/29 must-fail controls; 130 citations" },
+  { tag: "Efficiency", value: "14.69 min ride-through", note: "at full load, from the 2,500 kWh_th PCM budget" },
+  { tag: "Cost", value: "0.564 MW load floor", note: "below it the plant runs inefficiently; the floor is site-dependent (2.804 MW @ 38 °C, none @ 41 °C)" }
+],
 engineerSummary: "Models the ideal datacenter as one structure across four organisations: funi-frame v0.1.1's 10 MW / 2,500 m² campus, a sorption plant with the adopted 41.46 °C second-law recooling limit, a 2,500 kWh_th PCM budget (14.69 min full-load ride-through with the fixed heat counted), a 12-margin vector with radius 0.1989 at the certified point, and Weft's gate predicate with the plant model proved in Lean (16 theorems) over exact integers.",
 howToRead: "Drag the slider from 0% to 100% of the 10 MW nameplate. Watch the load bar cross the 5.6% floor: below it the campus stops cooling itself and the air-side load must move to the aquifer loop; above it the sorption loop, the PCM budget, and the margin radius hold the contract.",
 walkthrough: [

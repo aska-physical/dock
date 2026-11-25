@@ -8,7 +8,11 @@ caveat: "Nothing on this page is a claim. Per dock#8 P6, graphene stays untouche
 externalRepoUrl: "https://github.com/aska-physical/graph-fab", visualType: "graph-fab",
 sliderLabel: "Research scope exploration (no claims)", sliderMin: 0, sliderMax: 100, sliderDefault: 25, sliderUnit: "% scoped",
 presets: [ { label: "Literature scan (25%)", val: 25 }, { label: "Candidate feedstocks (60%)", val: 60 }, { label: "Checker design (100%)", val: 100 } ],
-builderSummary: "graph-fab is where graphene materials research lives. Today it holds a README and nothing else — deliberately. Under the dock#8 plan (P6), no repository content and no public claim is made until a verify.py exists and returns a result.",
+builderSummary: "This page deliberately makes no claims. graph-fab is a holding pen: under the dock#8 plan (P6), graphene research stays unpublished until a re-runnable checker exists and returns a result.",
+plainExplain: "Graphene is surrounded by marketing, so the rule on this dock is simple: no public claim before a checker exists. graph-fab holds a README and nothing else, on purpose — when a verify.py appears and returns results, this subpage will carry them with the same propose · verify · sign structure as every other project.",
+kpis: [
+  { tag: "Quality", value: "0 claims", note: "no verify.py, no results/, no certificate — by policy (dock#8 P6)" }
+],
 engineerSummary: "The lattice and hardware repos (fibral-rigidity, cfrp-masts, cfrp-truss) carry the carbon-fiber claims with checkers. Graphene stays out of the profile figures until a checker can fail a bad case and pass a real one on the receiving side (dock#8).",
 howToRead: "This subpage is a placeholder with an explicit boundary: the slider moves research scope only; there is no calculator output because there is no checker to compute one.",
 walkthrough: [

@@ -20,4 +20,6 @@ Org repo subpages (one per aska-physical repo, kept current with each repo's mai
 - `#/cfrp-masts` (`cfrp-masts-dock.js`) — snap-locked deployable CFRP boom/mast sizer: mass, specific EI, thermal drift (v0.1.0, -O-safe)
 - `#/graph-fab` (`graph-fab-dock.js`) — graphene holding pen: README only, no checker, no claims (dock#8 P6)
 
+Each subpage carries plain-language copy first (`plainExplain` = first-principles explanation, `builderSummary` = plain headline, `kpis` = decision-maker KPIs tagged Cost / Efficiency / Quality / Carbon / Integration) alongside the engineering specs (`engineerSummary`, live sizer, spec packet, verification ledger).
+
 Plus the 5 core shop modules in `index.html` (taper-lock-node, kerf-box-beam, rapid-geobinder, mill-eye-dock, pooled-cut-nest). Repos without a bespoke file get a live fallback card from the GitHub org sync.

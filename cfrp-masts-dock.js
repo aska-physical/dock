@@ -8,7 +8,14 @@ caveat: "Model/checker only — no physical deployment-cycle test yet; dock#8: c
 externalRepoUrl: "https://github.com/aska-physical/cfrp-masts", visualType: "cfrp-masts",
 sliderLabel: "Deployment (stowed → snap-locked taut)", sliderMin: 0, sliderMax: 100, sliderDefault: 90, sliderUnit: "% deployed",
 presets: [ { label: "Stowed (0%)", val: 0 }, { label: "Half-Rigged (50%)", val: 50 }, { label: "Snap-Locked Taut (100%)", val: 100 } ],
-builderSummary: "Each mast bay is a thin-walled pultruded CFRP tube (radius ratio η = 0.80 → 4.56× the Euler buckling resistance of a solid rod) graded at α_K* = 2√2, with 12 non-intersecting 45° octagonal-pore T1100G/K13D2U cables that fold slack during stowage and snap taut at full deployment to lock shear rigidity (GA_eff > 0).",
+builderSummary: "Solid rods buckle early, so metal booms are heavy. A thin-walled carbon tube (radius ratio 0.80) resists 4.56× more buckling for the same material, and its bays snap-lock via 12 cables at full deployment. A 5 m boom then weighs 14.06 kg — 59% less than titanium — with 14× the stiffness per kg and 0.30 mm of pointing drift per 100 °C, 38.5× steadier than aluminium.",
+plainExplain: "A deployable mast or space boom wants to be light, stiff, and stable when the temperature swings. Thin-walled pultruded carbon tubes get their buckling resistance from the radius ratio (η = 0.80 gives 4.56× a solid rod); twelve non-intersecting 45° cables fold slack while stowed and snap taut at full deployment, locking shear rigidity without hinges to wear. The sizer scales a 5 m K13D2U boom by length and checks mass, bending stiffness, and thermal drift against aluminium and titanium octets.",
+kpis: [
+  { tag: "Cost", value: "59% lighter", note: "14.06 kg for a 5 m boom vs a Ti-6Al-4V octet — launch or erection mass falls with it" },
+  { tag: "Efficiency", value: "14.02× EI/kg", note: "specific bending stiffness vs Ti (586.1 kN·m²)" },
+  { tag: "Quality", value: "0.30 mm / 100 K", note: "pointing drift, 38.5× lower than Al 6061 — antennas stay aimed" },
+  { tag: "Integration", value: "Stows to 30%", note: "1.51 m stowed for a 5 m boom; a 15 m telecom mast packs to 4.52 m" }
+],
 engineerSummary: "5.0 m K13D2U space boom: 14.06 kg, EI = 586.1 kN·m² — 14.02× the specific EI of a 3D-printed Ti-6Al-4V octet and 59% lighter than Ti; thermal drift 0.30 mm per 100 K (38.5× lower than Al 6061's 11.55 mm); stows to 1.51 m. 15.0 m T1100G telecom mast stows to 4.52 m. Timoshenko shear + Haringx buckling verified with 5 must-fail controls; verify.py passes under python3 -O (CheckFailure, not asserts — PR #4).",
 howToRead: "Drag from stowed to 100% deployed. The cable lattice goes slack in the stowed bundle and snaps taut at full extension, locking shear rigidity; watch mass, specific EI, and the 100 K pointing drift against the metal benchmarks.",
 walkthrough: [

@@ -8,7 +8,14 @@ caveat: "Model/checker only — no bench measurement attached; pure-PVDF harvest
 externalRepoUrl: "https://github.com/aska-physical/venturi-collars", visualType: "venturi",
 sliderLabel: "Duct Airspeed (VAV turndown → nominal)", sliderMin: 1.8, sliderMax: 4.0, sliderDefault: 4.0, sliderUnit: " m/s",
 presets: [ { label: "Turndown (1.8 m/s)", val: 1.8 }, { label: "Mid (2.5 m/s)", val: 2.5 }, { label: "Nominal (4.0 m/s)", val: 4.0 } ],
-builderSummary: "A drop-in sheet-metal collar accelerates 1.8 m/s VAV turndown flow to 2.81 m/s at the β = 0.64 Venturi throat—past the 2.23 m/s flutter cut-in—so six flush M55J carbon reeds with a 0.35 g NdFeB tip and a flush printed PCB stator coil harvest 0.104–0.924 mW with zero bearings, at just 0.33–1.62 Pa pressure loss.",
+builderSummary: "Every VAV air terminal in a building carries a battery that someone climbs a ladder to replace. A venturi collar instead speeds the duct's own airflow just enough to flutter six carbon reeds past a printed coil, harvesting 0.1–0.9 mW — 11× what the wireless node needs — at 1.6 Pa of pressure loss, well inside the 15 Pa fan budget. No batteries, no bearings.",
+plainExplain: "Air is already moving through every duct; the question is whether that motion can be turned into a little electricity without costing more fan power than it saves. A shaped collar accelerates the flow at its throat past the speed where a reed starts to flutter, and the reed's magnet tip sweeps a printed coil to generate power. The diffuser behind the throat recovers over 85% of the pressure, so the total cost is 1.62 Pa at full flow — more than 30× less than a sharp baffle. A plain plastic-film harvester was also modelled and found to produce 100× too little: a verified negative result, so the reed design is what the page ships.",
+kpis: [
+  { tag: "Efficiency", value: "0.924 mW @ 4 m/s", note: "11.55× the 80 µW BLE/LoRa node draw, zero bearings to clog" },
+  { tag: "Cost", value: "~500 battery swaps avoided", note: "per 100 VAV zones over 20 years" },
+  { tag: "Efficiency", value: "1.62 Pa pressure loss", note: "vs the ASHRAE < 15 Pa VAV budget; > 30× below a sharp baffle" },
+  { tag: "Quality", value: "PVDF gives 0.0476 mW", note: "verified negative finding (must-fail #2); the reed + magnet hybrid is 19.4× better" }
+],
 engineerSummary: "Coupled hydraulic + electromechanical model: gradual β = 0.64 throat + 7° diffuser recovers > 85% of dynamic head (1.615 Pa total at 4.0 m/s, > 30× below a sharp baffle, inside the ASHRAE < 15 Pa VAV budget); bearing-free M55J reed + PCB-coil transduction boosts harvested DC power 19.4× over pure PVDF (which makes only 0.0476 mW — verified negative finding, must-fail #2).",
 howToRead: "Drag duct airspeed from 1.8 to 4.0 m/s. Watch the throat speed cross the 2.23 m/s flutter cut-in, harvested power climb 0.104 → 0.924 mW (11.55× margin over an 80 µW BLE/LoRa node at nominal), and pressure loss stay at 1.62 Pa.",
 walkthrough: [

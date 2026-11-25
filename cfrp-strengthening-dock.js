@@ -8,7 +8,14 @@ caveat: "Calculations only — no physical beam tested; ACI 440.2R-17 cited (sup
 externalRepoUrl: "https://github.com/aska-physical/cfrp-strengthening", visualType: "cfrp-strengthening",
 sliderLabel: "Factored Demand vs Strengthened Capacity", sliderMin: 300, sliderMax: 500, sliderDefault: 457.8, sliderUnit: " kip-ft",
 presets: [ { label: "Light (350 kip-ft)", val: 350 }, { label: "Worked Example (457.8 kip-ft)", val: 457.8 }, { label: "Heavy (490 kip-ft)", val: 490 } ],
-builderSummary: "One beam at a time: a small public Python checker (src/flexure440.py) runs the ACI 440.2R flexure checks from a stated input file and prints value, limit, and pass/fail for each. On the Track 1 Simpson Strong-Tie worked example it reproduces ten printed quantities and gives a strengthened design strength of 481.7 kip-ft against a 457.8 kip-ft demand.",
+builderSummary: "The code for strengthening a beam with carbon fiber (ACI 440.2R) is dozens of equations nobody should run by hand. This repo is a small public script that runs them from a plain text input and prints every result with its limit and PASS or FAIL — reproducing all ten printed numbers of the code's own worked example, and printing FAIL out loud when the service-stress check fails.",
+plainExplain: "ACI 440.2R is the building code for fiber-reinforced-polymer strengthening of concrete: a stack of equations with easy-to-miss clamps (yield of the existing steel, creep rupture at 0.55·ffu, pre-strain). The checker reads one input file, computes each quantity, and compares it to its limit — on the code's Track 1 worked example all ten printed values match. Where the service check fails (3.38 vs 1.80 ksi allowed) the certificate says FAIL instead of quietly passing, and every claim on the page is labelled PROVEN, VERIFIED, KNOWN, or CONJECTURE.",
+kpis: [
+  { tag: "Quality", value: "10 / 10 reproduced", note: "printed quantities of the Track 1 worked example (VERIFIED)" },
+  { tag: "Quality", value: "FAIL disclosed", note: "service concrete stress 3.38 vs 1.80 ksi — printed as FAIL, not hidden" },
+  { tag: "Integration", value: "Anyone can re-run", note: "open repo, deterministic verify.py, certificate.json emitted per run" },
+  { tag: "Quality", value: "Yield clamped", note: "existing Mn ≈ 896 kip-ft with the yield clamp (was ≈ 986 assumed)" }
+],
 engineerSummary: "The checker uses the ACI 318 Whitney block for the existing section and the ACI 440.2R-17 Chapter 10 stress-block factors for the strengthened section. With the PR #7 checker fixes: the §10.2.8 service concrete check (0.45 f'c limit) now runs and the Track 1 beam FAILS it (3.38 ksi vs 1.80 ksi at c = 6 in) — disclosed, not hidden; and existing_strength no longer assumes steel yields (As = 12 in² gives Mn ≈ 896 kip-ft, was ≈ 986).",
 howToRead: "Slide the factored demand. ULS flexure passes at 481.7 kip-ft, but the service concrete stress check now fails on this beam — the result discloses it rather than claiming serviceability. A mismatch with a published example starts an inquiry, since published examples carry rounding.",
 walkthrough: [

@@ -8,7 +8,14 @@ externalRepoUrl: "https://github.com/aska-physical/funi-floors", visualType: "fu
 sliderLabel: "Fe-SMA Joule Prestress & 313 psf AI Rack Load Stage", sliderMin: 0, sliderMax: 100, sliderDefault: 78, sliderUnit: "% stage", presets: [
 { label: "Demold + Cold Tie (15%)", val: 15 }, { label: "175 \u00b0C Joule Camber (55%)", val: 55 },
 { label: "313 psf AI Rack + EIS (100%)", val: 100 } ],
-builderSummary: "Replaces 310 mm post-tensioned slabs + 280 mm MEP plenums with a 380 mm flush stay-in-place funicular cassette\u2014cutting concrete 76.1%, passing 313 psf AI rack loads, and saving 1 full story every 12 floors.",
+builderSummary: "A flat slab carries load by bending, so it needs 310 mm of concrete plus a 280 mm ceiling plenum for services. A funicular cassette is shaped like its own load path, so 380 mm flush does the same job \u2014 76% less concrete, 68% less embodied carbon, one storey saved every 12 floors, and it still carries 313 psf data-center racks.",
+plainExplain: "Concrete floors are thick because a flat slab resists load by bending. Shape the floor as an arch in its own plane \u2014 a funicular \u2014 and the same load travels as compression, which concrete is good at. The cassette arrives as a 3 mm stay-in-place basalt/carbon pan, is prestressed by a 0.32 kWh/m\u00b2 resistive pulse instead of hydraulic jacks, and seats flush on columns through a collar that checks punching shear (2,756 kN capacity vs 2,208 kN demand). A 50 kHz impedance twin on the soffit senses coolant leaks.",
+kpis: [
+  { tag: "Carbon", value: "\u221267.8% CO\u2082e", note: "38.8 kg CO\u2082e/m\u00b2 cradle-to-gate vs 120.6 baseline" },
+  { tag: "Efficiency", value: "\u221276.1% concrete", note: "380 mm flush cassette vs 310 mm slab + 280 mm plenum; one storey per 12 floors" },
+  { tag: "Quality", value: "313 psf racks", note: "collar 2,756 kN vs 2,208 kN demand; floor vibration 8.62 Hz at 0.31% g (limit 0.50%)" },
+  { tag: "Integration", value: "Flush + self-sensing", note: "no plenum needed; 50 kHz Cole-EIS soffit twin reports leaks with 0.0% rack-load crosstalk" }
+],
 engineerSummary: "Couples Castigliano parabolic arch-tie compatibility (M(x) - H\u00b7z(x) = 0) with 175 \u00b0C Fe-Mn-Si Joule recovery (423.5 MPa), 45\u00b0 CFRP octagonal MEP web bracing, AISC DG11 2-way modal stiffness (8.62 Hz), and ACI 318M-19 \u00a722.6.5.2 active punching collars.",
 howToRead: "Top shell carries pure parabolic arch compression (fc = 13.67 MPa) into 380 mm corner haunches; bottom CFRP + Fe-Mn-Si tie locks horizontal thrust internally while 200 mm chilled-water ducts pass through quarter-span octagonal web openings.",
 walkthrough: [

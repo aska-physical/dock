@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Dock · ASKA Physical — R&D Hub & Project Subpages</title>
   <!-- Link previews: Open Graph + X cards -->
-  <meta name="description" content="ASKA Physical's R&amp;D hub: fifteen project subpages with plain shop numbers and test boundaries." />
+  <meta name="description" content="ASKA Physical's R&amp;D hub: every project explained in plain language first, with decision-maker KPIs and explicit test boundaries." />
   <meta property="og:title" content="The Dock · ASKA Physical — R&amp;D Hub &amp; Project Subpages" />
-  <meta property="og:description" content="ASKA Physical's R&amp;D hub: fifteen project subpages with plain shop numbers and test boundaries." />
+  <meta property="og:description" content="ASKA Physical's R&amp;D hub: every project explained in plain language first, with decision-maker KPIs and explicit test boundaries." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://dock.askaconsult.com/" />
   <meta property="og:site_name" content="The Dock · ASKA Physical" />
@@ -17,7 +17,7 @@
   <meta property="og:image:alt" content="The Dock: ASKA Physical R&amp;D hub, drafting-paper preview with beam joint and node drawings" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="The Dock · ASKA Physical — R&amp;D Hub &amp; Project Subpages" />
-  <meta name="twitter:description" content="ASKA Physical's R&amp;D hub: fifteen project subpages with plain shop numbers and test boundaries." />
+  <meta name="twitter:description" content="ASKA Physical's R&amp;D hub: every project explained in plain language first, with decision-maker KPIs and explicit test boundaries." />
   <meta name="twitter:image" content="https://dock.askaconsult.com/og-image.png" />
   <meta name="twitter:image:alt" content="The Dock: ASKA Physical R&amp;D hub, drafting-paper preview with beam joint and node drawings" />
   <!-- Tailwind CSS -->
@@ -214,10 +214,10 @@
       <div class="flex items-center gap-2">
         <div class="hidden sm:flex items-center bg-[var(--bg-subtle)] p-0.5 rounded-md border border-[var(--border)]" role="group" aria-label="Reading lens">
           <button id="lensBuilderBtn" onclick="setLens('builder')" class="px-2.5 py-1 rounded text-[11px] font-mono-tech transition-colors bg-[var(--fg)] text-[var(--bg)]">
-            Shop &amp; Site
+            Plain English
           </button>
           <button id="lensEngineerBtn" onclick="setLens('engineer')" class="px-2.5 py-1 rounded text-[11px] font-mono-tech transition-colors text-[var(--fg-muted)]">
-            R&amp;D Specs
+            Engineering Specs
           </button>
         </div>
         <button id="themeBtn" onclick="toggleTheme()" class="ctrl-btn" title="Toggle light or dark drafting paper">
@@ -255,11 +255,11 @@
 
       <div class="max-w-4xl space-y-4">
         <h1 class="font-serif-editorial text-4xl sm:text-6xl leading-[1.04] text-[var(--fg)]">
-          Physical R&amp;D, drawn so builders and makers can see inside it.
+          Physical R&amp;D, drawn so anyone can see inside it.
         </h1>
         <p class="text-base sm:text-lg text-[var(--fg-muted)] leading-relaxed">
-          Nobody running a fabrication shop or jobsite has an afternoon to decode an academic PDF before ordering steel or stripping concrete forms.
-          <strong class="text-[var(--fg)] font-medium">The Dock</strong> puts every <span class="font-mono-tech text-sm">aska-physical</span> engineering project in one place—each with its own interactive subpage, plain floor-and-field numbers, and explicit boundaries around what has and hasn't been tested yet.
+          ASKA Physical designs the parts of buildings and factories in the open, then proves each one with a script anyone can re-run before a crew cuts steel or pours concrete.
+          <strong class="text-[var(--fg)] font-medium">The Dock</strong> is that work on one page: every open <span class="font-mono-tech text-sm">aska-physical</span> project with a slider you can push, the numbers that set the size, and a plain statement of what has not been tested yet. Read it in plain language, or flip the lens to the engineering specs underneath.
         </p>
       </div>
 
@@ -267,9 +267,47 @@
       <div class="sm:hidden flex items-center justify-between surface-card p-3">
         <span class="font-mono-tech text-xs text-[var(--fg-muted)]">Explanation Lens:</span>
         <div class="flex gap-1.5">
-          <button id="lensBuilderBtnMobile" onclick="setLens('builder')" class="ctrl-btn active">Shop &amp; Site</button>
-          <button id="lensEngineerBtnMobile" onclick="setLens('engineer')" class="ctrl-btn">R&amp;D Specs</button>
+          <button id="lensBuilderBtnMobile" onclick="setLens('builder')" class="ctrl-btn active">Plain English</button>
+          <button id="lensEngineerBtnMobile" onclick="setLens('engineer')" class="ctrl-btn">Engineering Specs</button>
         </div>
+      </div>
+    </section>
+
+    <!-- DECISION KPIs // WHAT THE NUMBERS ARE FOR -->
+    <section class="space-y-4">
+      <div>
+        <div class="font-mono-tech text-xs text-[var(--fg-faint)]">∅ // WHAT THE NUMBERS ARE FOR</div>
+        <h2 class="font-serif-editorial text-2xl sm:text-3xl">The five questions every subpage answers</h2>
+        <p class="text-sm text-[var(--fg-muted)] leading-relaxed max-w-3xl mt-1">
+          The engineering specs stay one lens away. On every subpage the headline numbers are tagged with the five things a decision maker actually asks about:
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <a href="#/pooled-cut-nest" class="surface-card p-4 block space-y-1.5 hover:border-[var(--fg)] transition-colors">
+          <span class="badge-pill badge-accent font-semibold">COST</span>
+          <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-snug">What it saves or earns per year in dollars — crane hours, scrap, water, power, battery swaps.</p>
+          <div class="font-mono-tech text-[11px] text-[var(--accent)]">see it on #/pooled-cut-nest →</div>
+        </a>
+        <a href="#/rapid-geobinder" class="surface-card p-4 block space-y-1.5 hover:border-[var(--fg)] transition-colors">
+          <span class="badge-pill badge-accent font-semibold">EFFICIENCY</span>
+          <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-snug">Time, energy and material per unit of work — mold turns, sweep speed, metres per truck.</p>
+          <div class="font-mono-tech text-[11px] text-[var(--accent)]">see it on #/rapid-geobinder →</div>
+        </a>
+        <a href="#/mill-eye-dock" class="surface-card p-4 block space-y-1.5 hover:border-[var(--fg)] transition-colors">
+          <span class="badge-pill badge-accent font-semibold">QUALITY</span>
+          <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-snug">Defects caught and tolerances held before anything reaches the floor — certs, profiles, fit residuals.</p>
+          <div class="font-mono-tech text-[11px] text-[var(--accent)]">see it on #/mill-eye-dock →</div>
+        </a>
+        <a href="#/funi-floors" class="surface-card p-4 block space-y-1.5 hover:border-[var(--fg)] transition-colors">
+          <span class="badge-pill badge-accent font-semibold">CARBON</span>
+          <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-snug">CO₂e and water avoided per m² or per kWh — binders, concrete, cooling.</p>
+          <div class="font-mono-tech text-[11px] text-[var(--accent)]">see it on #/funi-floors →</div>
+        </a>
+        <a href="#/optifab" class="surface-card p-4 block space-y-1.5 hover:border-[var(--fg)] transition-colors">
+          <span class="badge-pill badge-accent font-semibold">INTEGRATION</span>
+          <p class="text-xs sm:text-sm text-[var(--fg-muted)] leading-snug">How it fits the systems around it — ducts, floors, plant, and the software gate.</p>
+          <div class="font-mono-tech text-[11px] text-[var(--accent)]">see it on #/optifab →</div>
+        </a>
       </div>
     </section>
 
@@ -304,7 +342,7 @@
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <div class="font-mono-tech text-xs text-[var(--fg-faint)]">01 // PROJECT SUBPAGES</div>
-          <h2 class="font-serif-editorial text-3xl sm:text-4xl">Test the mechanism here, or open its full subpage</h2>
+          <h2 class="font-serif-editorial text-3xl sm:text-4xl">Working models, not brochures — push a slider on any card</h2>
         </div>
         <div id="sectorFilterBar" class="flex flex-wrap gap-1.5">
           <!-- Sector filter buttons -->
@@ -322,7 +360,7 @@
         <div class="font-mono-tech text-xs text-[var(--fg-faint)]">02 // EPISTEMIC STANDARD</div>
         <h2 class="font-serif-editorial text-2xl sm:text-3xl">How every subpage separates simulation from steel</h2>
         <p class="text-sm text-[var(--fg-muted)] leading-relaxed">
-          Software can propose thousands of joints or concrete mixes overnight, and most of them will bind in muddy gloves or miss code. Every subpage reports its exact readiness rung and separates digital exploration, physical rig tests, and human sign-off.
+          Software can propose thousands of joints or mixes overnight, and most would bind in muddy gloves or miss code. So every subpage says plainly which of the three it has actually reached — simulation, rig test, or a signed engineering sign-off — and the ladder beside this shows where each project sits. Nothing is presented as more finished than it is.
         </p>
       </div>
       <div id="rungLegendList" class="lg:col-span-7 surface-card divide-y divide-[var(--border)]">
@@ -346,7 +384,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-[var(--fg-muted)]">
       <div class="space-y-1">
         <div class="font-mono-tech font-semibold text-[var(--fg)]">ASKA PHYSICAL // THE DOCK</div>
-        <div>Open R&amp;D in manufacturing &amp; construction. Confirm site-specific engineering with a licensed PE/P.Eng.</div>
+        <div>Open R&amp;D in manufacturing &amp; construction — plain language up front, engineering specs one lens away. Confirm site-specific engineering with a licensed PE/P.Eng.</div>
       </div>
       <div class="flex flex-wrap items-center gap-4 font-mono-tech">
         <a href="#/" class="hover:text-[var(--fg)] underline">Dock Index</a>
@@ -394,7 +432,14 @@
           { label: "Cone Capture (55%)", val: 55 },
           { label: "Seated + Wedge Locked (100%)", val: 100 }
         ],
-        builderSummary: "Drop a beam or upper column in wind without fighting bolt-hole drift—conical steel faces guide ±18 mm of sway home and lock with one captive wedge.",
+        builderSummary: "Bolt holes almost never line up at 40 ft in the wind, and every minute of prying bills the crane. This node's matched cone faces pull ±18 mm of sway home by themselves, carry the load on a machined steel shoulder, and lock with one captive wedge — 38 minutes on the hook down to 5.5, with zero field welding.",
+        plainExplain: "Connecting steel at height is slow because a bolted splice needs every hole aligned before the first bolt goes in. A taper-lock node replaces that with two matching cones: lower the upper column and the 14° taper pulls up to 18 mm of crane sway straight, the load then seats on a flat steel shoulder instead of the bolts, and one hammered wedge locks it. Nothing to weld, nothing to preheat in winter, and the crane is free in minutes.",
+        kpis: [
+          { tag: "Efficiency", value: "38 → 5.5 min", note: "crane hook time per connection, full-scale rig trials (tests/rig-stopwatch.csv)" },
+          { tag: "Cost", value: "≈ $258 per connection", note: "32.5 min saved at the $475/hr default crane + crew rate — an estimate; the sizer recomputes it for your rate" },
+          { tag: "Quality", value: "312 kN mean pull-out", note: "6 CNC S355 bench units; ±18 mm sway captured without prying" },
+          { tag: "Integration", value: "0 field welds", note: "drops into standard HSS / W-column erection — no hot-work permit, no fire watch" }
+        ],
         engineerSummary: "Biconical 14° self-indexing S355 connector transferring axial compression via flat shoulder bearing and uplift/shear via transverse preload wedge.",
         howToRead: "Drag the slider from 0% to 100%. Watch the upper blue member self-correct horizontal crane sway along the 14° taper, seat flush onto the grey bearing shoulders, and drive the rust preload wedge home.",
         walkthrough: [
@@ -464,7 +509,14 @@
           { label: "Strap-Winch Fold (45°)", val: 45 },
           { label: "Snap-Locked Tube (90°)", val: 90 }
         ],
-        builderSummary: "Ship hollow steel beams flat like plywood—6.4× more framing on every flatbed—then fold them into rigid closed box sections without a 400-ton press brake.",
+        builderSummary: "Hollow beams are mostly air, and freight is billed on volume. Kerf-box beams ship flat — one laser pass cuts the fold pattern, and two people fold each 6 m beam into a closed box in 3 minutes, no 400-ton press brake. One flatbed then carries 6.4× more framing.",
+        plainExplain: "A closed steel box is far stiffer than the flat sheet it starts as — 19.2× the bending stiffness — but folding one needs a huge press brake. Instead, a fiber laser cuts a row of kerfs (fold lines) in a single pass; the sheet self-registers through interlocking seam teeth and two people fold and latch it into a rigid box. It ships flat like plywood, so one truck carries 6.4× more linear metres of framing.",
+        kpis: [
+          { tag: "Cost", value: "6.4× per flatbed", note: "more linear metres shipped per 40-ft trailer, so freight per metre falls accordingly" },
+          { tag: "Efficiency", value: "3.0 min fold", note: "two-person fold and latch of a 6 m × 150 mm beam; −84% peak folding torque vs press brake" },
+          { tag: "Quality", value: "L/360 checked", note: "serviceability deflection verified per section in the sizer" },
+          { tag: "Integration", value: "Standard connections", note: "beam ends bolt or weld as usual — no new detail for the crew to learn" }
+        ],
         engineerSummary: "Staggered laser-cut relief kerf bridges along bend lines cut plastic folding torque by 84% while interlocking dovetail tabs restore closed-tube torsion & shear flow.",
         howToRead: "Slide from 0° (flat laser-cut steel sheet) to 90°. Watch the four walls fold up around the orange laser-kerf hinges until the top dovetail seam closes, boosting stiffness 19.2×.",
         walkthrough: [
@@ -534,7 +586,14 @@
           { label: "Standard Shop (15°C)", val: 15 },
           { label: "Summer Yard (32°C)", val: 32 }
         ],
-        builderSummary: "Pour at 7 AM, strip forms at 11 AM—turn every steel precast mold twice a day without burning natural gas for steam curing.",
+        builderSummary: "A precast element can only be lifted at about 20 MPa, and steam curing burns gas to get there overnight. This low-clinker binder gets there in 3.9 hours at 15 °C with no steam — every steel mold turns twice a day — and emits 61% less CO₂ than Portland cement.",
+        plainExplain: "Precast yards make money on mold turnover, and a mold is stuck until the concrete reaches crane-lifting strength. Steam curing gets there overnight but burns natural gas. This binder packs the sand more densely (23% less water) and uses a low-clinker blend, so the same beds pour at 7 AM and strip at 11 AM — twice a day, no steam line, and a 48-minute workable window from a dry-bagged retarder.",
+        kpis: [
+          { tag: "Efficiency", value: "2× mold turns/day", note: "same steel beds, zero steam heat; 3.9 h to 20 MPa at 15 °C" },
+          { tag: "Carbon", value: "−61% CO₂e", note: "binder emissions vs Type GU/I Portland cement" },
+          { tag: "Efficiency", value: "48 min slump window", note: "workable time controlled with a dry-bagged retarder dose" },
+          { tag: "Cost", value: "No new capex", note: "twice the output from the beds you already own" }
+        ],
         engineerSummary: "Slag-calcined clay-silicate binder with bimodal micro-sand particle packing hitting 22 MPa in 4 hours at 15°C with 61% lower embodied CO₂e.",
         howToRead: "Adjust ambient site temperature (0°C–40°C). Compare the solid rust strength curve (Rapid-GeoBinder) against conventional Portland cement (dashed grey) and the green 20 MPa crane-lifting gate.",
         walkthrough: [
@@ -604,7 +663,14 @@
           { label: "Warped Flange Toe (56%)", val: 56 },
           { label: "Wrong Yield / Grade Trap (90%)", val: 90 }
         ],
-        builderSummary: "Catch out-of-square flanges and mismatched steel Mill Test Certificates while the bundle is still on the truck—not six weeks later when CNC saws jam.",
+        builderSummary: "Bad steel is usually discovered weeks after delivery, when a CNC saw jams on a tilted flange. This gate scans the end of each bundle in 1.8 seconds and checks the mill certificate against fixed rules while the truck is still at the dock — offline, because warehouses have no Wi-Fi.",
+        plainExplain: "A Mill Test Certificate is a scanned PDF that someone reads by eye, and a tilted flange only shows up when the saw jams — weeks later. The dock gate laser-scans the end of each bundle (1.8 s, ±0.18 mm) and checks chemistry, yield, and weldability (carbon equivalent) against deterministic rules on an offline tablet. Across 610 real certificates it caught all 42 seeded traps.",
+        kpis: [
+          { tag: "Quality", value: "42 / 42 traps caught", note: "seeded grade, heat and CEV traps across 610 real MTCs" },
+          { tag: "Efficiency", value: "1.8 s per bundle", note: "end-profile laser scan plus certificate check, fully offline" },
+          { tag: "Quality", value: "±0.18 mm", note: "profile accuracy against calibrated micrometers" },
+          { tag: "Integration", value: "Holds at the gate", note: "the bundle stays on the truck until the receiving lead signs every hold" }
+        ],
         engineerSummary: "Clip-on stereo line-laser cross-section gauge (±0.18 mm) paired with deterministic ASTM A6 & EN 10204 3.1 MTC heat-chemistry verifier.",
         howToRead: "Slide anomaly severity from 0% to 100%. Left displays live laser cross-section vs ASTM A6 flange squareness bounds; right displays deterministic Mill Test Certificate yield & weldability checks.",
         walkthrough: [
@@ -674,7 +740,14 @@
           { label: "3-Job Window", val: 3 },
           { label: "6-Job Shop Pool (3.2% Scrap)", val: 6 }
         ],
-        builderSummary: "Stop paying $1,400/tonne for steel plate and throwing 18% in the scrap hopper—automatically tuck next week's small gussets and shims into today's offcut pockets.",
+        builderSummary: "Cutting one job at a time leaves 18% of bought plate in the scrap hopper. The pooled nester looks three jobs ahead and tucks next week's small parts into today's offcuts, sharing torch lines between parts: scrap fell from 18.4% to 3.2% across 140 t of shop bills of material — $21,400 saved per 100 t of steel. In daily floor use.",
+        plainExplain: "Plate steel costs about $1,400 a tonne, and a single-job nest usually wastes a fifth of it to the scrap hopper. Pooling three jobs of cutting into one nest lets today's offcut pockets become next week's gussets and shims, with common torch lines shared between parts (−31% pierces). Every nest is checked for collisions and grain angle before it reaches the machine, and etched tote codes keep the offcuts sorted.",
+        kpis: [
+          { tag: "Cost", value: "$21,400 / 100 t", note: "material saved per 100 tonnes of structural steel cut" },
+          { tag: "Efficiency", value: "18.4% → 3.2% scrap", note: "across 140 t of shop BOMs; −31% torch pierces via common-line cuts" },
+          { tag: "Quality", value: "0 collisions", note: "exact polygon and grain-angle gate verifies every DXF/NC file" },
+          { tag: "Integration", value: "Etched tote codes", note: "offcuts stay sorted and findable beside the plasma table" }
+        ],
         engineerSummary: "Exact non-overlapping polygon branch-and-price nester with rolling-grain constraints, shared plasma kerf lines, and laser-etched job tote sorting.",
         howToRead: "Slide from 1 Job (isolated workorder) to 6 Jobs pooled. Watch upcoming brackets and stiffeners fill the wasted space on the plate while scrap drops from 18.4% to 3.2%.",
         walkthrough: [
@@ -812,6 +885,8 @@
               visualType: visualFallbackOrder[i % visualFallbackOrder.length],
               builderSummary: repo.description || "Open manufacturing & construction R&D repository published under aska-physical.",
               engineerSummary: repo.description || "Open engineering repository under github.com/aska-physical.",
+              plainExplain: null,
+              kpis: [],
               externalRepoUrl: repo.html_url,
               coords: { x: 0.20 + ((i * 0.23) % 0.68), y: 0.38 + ((i * 0.19) % 0.30) }
             };
@@ -1278,7 +1353,7 @@
             ${escapeHtml(summary)}
           </p>
           <div class="grid grid-cols-2 gap-2 pt-1">
-            ${p.metrics.slice(0, 2).map(m => `
+            ${cardStats(p).map(m => `
               <div class="bg-[var(--bg-subtle)] border border-[var(--border)] rounded p-2.5">
                 <div class="font-mono-tech text-sm font-semibold text-[var(--fg)]">${escapeHtml(m.value)}</div>
                 <div class="text-[11px] text-[var(--fg-muted)] leading-tight mt-0.5">${escapeHtml(m.label)}</div>
@@ -1313,6 +1388,14 @@
           ${escapeHtml(sec)}
         </button>
       `).join("");
+    }
+
+    /* Builder lens shows decision KPIs on cards; engineer lens shows sourced technical metrics. */
+    function cardStats(p) {
+      if (state.lens === "builder" && Array.isArray(p.kpis) && p.kpis.length) {
+        return p.kpis.slice(0, 2).map(k => ({ value: k.value, label: k.tag + " — " + k.note }));
+      }
+      return (p.metrics || []).slice(0, 2);
     }
 
     function renderProjectCards() {
@@ -1370,7 +1453,7 @@
               </div>
 
               <div class="grid grid-cols-2 gap-2.5">
-                ${p.metrics.slice(0, 2).map(m => `
+                ${cardStats(p).map(m => `
                   <div class="p-2.5 rounded bg-[var(--bg-subtle)] border border-[var(--border)]">
                     <div class="font-mono-tech text-sm font-semibold">${escapeHtml(m.value)}</div>
                     <div class="text-xs text-[var(--fg-muted)] leading-snug mt-0.5">${escapeHtml(m.label)}</div>
@@ -1431,7 +1514,7 @@
       const repoUrl = p.externalRepoUrl || `https://github.com/aska-physical/${p.slug}`;
       const headlineSummary = state.lens === "builder" ? p.builderSummary : p.engineerSummary;
       const secondarySummary = state.lens === "builder" ? p.engineerSummary : p.builderSummary;
-      const secondaryLabel = state.lens === "builder" ? "Engineering Mechanism" : "Shop & Jobsite Translation";
+      const secondaryLabel = state.lens === "builder" ? "Engineering specs" : "Plain-language version";
 
       container.innerHTML = `
         <!-- Subpage Top Bar: Breadcrumb + In-Page Section Jump Links + GitHub Link -->
@@ -1476,7 +1559,28 @@
             ${escapeHtml(secondarySummary)}
           </div>
 
+          <!-- In plain terms (first principles) + decision KPIs -->
+          ${p.plainExplain ? `
+          <div class="surface-card p-4 sm:p-5 border-l-4 border-l-[var(--blueprint)] space-y-1.5">
+            <div class="font-mono-tech text-[11px] uppercase tracking-wider font-semibold text-[var(--fg)]">In plain terms — from first principles</div>
+            <p class="text-sm sm:text-base text-[var(--fg)] leading-relaxed">${escapeHtml(p.plainExplain)}</p>
+          </div>` : ""}
+          ${(p.kpis && p.kpis.length) ? `
+          <div class="space-y-2 pt-1">
+            <div class="font-mono-tech text-[11px] uppercase tracking-wider text-[var(--fg-faint)]">Decision KPIs — cost · efficiency · quality · carbon · integration</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              ${p.kpis.map(k => `
+              <div class="surface-card p-3.5 space-y-1">
+                <span class="badge-pill badge-blueprint font-semibold">${escapeHtml(k.tag)}</span>
+                <div class="font-serif-editorial text-2xl leading-tight">${escapeHtml(k.value)}</div>
+                <div class="text-[11px] text-[var(--fg-muted)] leading-snug">${escapeHtml(k.note)}</div>
+              </div>`).join("")}
+            </div>
+          </div>` : ""}
+
+
           <!-- 4 Sourced Headline Metrics -->
+          <div class="font-mono-tech text-[11px] uppercase tracking-wider text-[var(--fg-faint)] pt-2">Sourced headline numbers (test record &amp; citations)</div>
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
             ${p.metrics.map(m => `
               <div class="surface-card p-4 flex flex-col justify-between">

@@ -8,7 +8,14 @@ caveat: "Model/checker only — no bench attached; private clinical spectrometry
 externalRepoUrl: "https://github.com/aska-physical/impedence-analyzers", visualType: "impedence",
 sliderLabel: "Sweep Schedule (7-frequency → 50-point)", sliderMin: 7, sliderMax: 50, sliderDefault: 7, sliderUnit: " points",
 presets: [ { label: "Guarded 7-point (7.14× faster)", val: 7 }, { label: "25 points", val: 25 }, { label: "Legacy 50-point", val: 50 } ],
-builderSummary: "A 7-frequency schedule (5, 12, 28, 50, 110, 250, 600 kHz) cuts sweep time and MCU energy 7.14× versus legacy 50-point analyzers while achieving better Jacobian conditioning (13.85 vs 14.34, ratio 0.9659) and 0.00000% RMS residual—because it anchors 50 kHz and concentrates samples at dispersion knees.",
+builderSummary: "A 50-point frequency sweep takes minutes and drains the battery, most of it on frequencies that barely move the answer. Seven chosen frequencies — anchored at 50 kHz where the signal is sharpest — give the same fit to 0.00000% residual in 7.14× less time, and a guard pair rejects bad-contact readings automatically.",
+plainExplain: "Impedance spectroscopy asks how a material resists current at many frequencies; the shape of that curve reveals cracks, corrosion, or a debonded retrofit. Sweeping 50 points wastes time on frequencies that add nothing. Choosing 7 well-placed ones — concentrated at the dispersion knees and anchored at 50 kHz — recovers the same Cole-model fit exactly and conditions the maths better (13.85 vs 14.34), while a dual-frequency guard gate flags when the probe contact itself is the artifact.",
+kpis: [
+  { tag: "Efficiency", value: "7.14× faster", note: "sweep time and MCU energy vs legacy 50-point analyzers" },
+  { tag: "Quality", value: "0.00000% residual", note: "Cole-EIS fits for structural NDT and clinical BIA; conditioning 13.85 vs 14.34" },
+  { tag: "Integration", value: "One guarded schedule", note: "structural NDT (debond, leak twin) and BIA from the same 7 frequencies" },
+  { tag: "Cost", value: "~7× battery life", note: "on portable units, from the sweep-energy cut" }
+],
 engineerSummary: "Scale-invariant Marquardt 7-frequency Cole+T_d estimator with a dual artifact gate (Scharfetter Hook-effect contact phase lead; stray cable shunt capacitance 30–50 pF above 100 kHz) and an exact square-patch cell constant 2πa/(2−√2). dock#8 P5 study names the 5 free fit parameters (R∞, R0, f_c, α, T_d) and shows one injected defect inside that span the residual misses and one outside it the residual catches (rank-1 ΔR_eff Laplacian).",
 howToRead: "Slide the sweep length from 7 to 50 points. At 7 points the run is 7.14× faster with conditioning 13.85 and the artifact gate rejects Hook-effect and stray-capacitance fits; at 50 points you burn 7× excess time catching nothing extra.",
 walkthrough: [
